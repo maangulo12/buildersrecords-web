@@ -16,7 +16,6 @@
         };
         return service;
 
-        // POST /api/auth (authenticates user)
         function authenticate(login, password) {
             var data = {
                 login:    login,
@@ -42,12 +41,10 @@
                 }
         }
 
-        // POST /api/auth/<email> (checks if email already exists)
         function checkEmail(email) {
             return $http.post(url + '/email', { email : email });
         }
 
-        // POST /api/auth/<username> (checks if username already exists)
         function checkUsername(username) {
             return $http.post(url + '/username', { username : username });
         }
