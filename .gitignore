@@ -55,3 +55,10 @@ docs/_build/
 
 # PyBuilder
 target/
+
+### Vagrant
+.vagrant/
+
+### Sass
+.sass-cache
+*.css.map
