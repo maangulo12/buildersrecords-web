@@ -33,8 +33,6 @@
                 exp_year:  vm.exp_year,
                 name:      vm.card_name.toUpperCase()
             };
-            // Remember to change this to live key
-            Stripe.setPublishableKey('pk_test_KY3H8e295UxwoHrrqHBobKRC');
             Stripe.card.createToken(data, responseHandler);
 
             function responseHandler(status, response) {
