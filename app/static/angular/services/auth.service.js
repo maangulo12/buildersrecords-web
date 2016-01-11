@@ -8,7 +8,7 @@
     authService.$inject = ['$http', 'store', 'jwtHelper', '$q'];
 
     function authService($http, store, jwtHelper, $q) {
-        var url = '/api/auth';
+        var url = store.get('api_url') + '/api/auth';
         var service = {
             authenticate:  authenticate,
             checkEmail:    checkEmail,
