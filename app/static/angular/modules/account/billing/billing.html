@@ -1,0 +1,439 @@
+<!-- Container -->
+<div class="container">
+    <div class="row">
+        <!-- Left Side -->
+        <div class="col-md-3">
+            <!-- List Group -->
+            <ul class="list-group">
+                <!-- Tutorial -->
+                <a ui-sref="tutorial" class="list-group-item">
+                    <span class="glyphicon glyphicon-book glyphicon-padding" aria-hidden="true"></span>
+                    <b> Tutorial </b>
+                </a>
+                <!-- Projects -->
+                <a ui-sref="projects" class="list-group-item">
+                    <span class="glyphicon glyphicon-folder-open glyphicon-padding" aria-hidden="true"></span>
+                    <b> Projects </b>
+                </a>
+                <!-- Account Settings -->
+                <a ui-sref="account" class="list-group-item active">
+                    <span class="glyphicon glyphicon-cog glyphicon-padding" aria-hidden="true"></span>
+                    <b> Account Settings </b>
+                </a>
+                <!-- Send Feedback -->
+                <a ui-sref="feedback" class="list-group-item">
+                    <span class="glyphicon glyphicon-star glyphicon-padding" aria-hidden="true"></span>
+                    <b> Send Feedback </b>
+                </a>
+            </ul>
+        </div>
+        <!-- Right Side -->
+        <div class="col-md-9">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1> Account Settings </h1>
+            </div>
+            <!-- Tabs -->
+            <ul class="nav nav-tabs">
+                <!-- Account -->
+                <li>
+                    <a ui-sref="account">
+                        <span class="glyphicon glyphicon-user glyphicon-padding" aria-hidden="true"></span>
+                        Account
+                    </a>
+                </li>
+                <!-- Billing -->
+                <li class="active">
+                    <a ui-sref="billing">
+                        <span class="glyphicon glyphicon-credit-card glyphicon-padding" aria-hidden="true"></span>
+                        Billing
+                    </a>
+                </li>
+            </ul>
+            <!-- Error Alert -->
+            <div ng-if="error_msg_get">
+                <!-- Line Break -->
+                <br>
+                <!-- Alert -->
+                <div class="alert alert-danger alert-dismissible text-center" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign glyphicon-padding" aria-hidden="true"></span>
+                    <span class="sr-only"> Error: </span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true"> &times; </span>
+                    </button> <b> Could not access your billing information. Please refresh your page. </b>
+                </div>
+            </div>
+            <!-- Header -->
+            <div class="page-header">
+                <h3> Billing Information  </h3>
+                <!-- Horizontal Rule -->
+                <hr>
+            </div>
+            <!-- Well -->
+            <div class="well">
+                <!-- Form -->
+                <div class="form-horizontal">
+                    <!-- Card Details -->
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label"> This account is billed to </label>
+                        <div class="col-sm-9">
+                            <!-- Cardholder Name -->
+                            <input class="form-control"
+                                   name="last4"
+                                   type="text"
+                                   ng-model="user.card.name"
+                                   readonly>
+                            <!-- Line Break -->
+                            <br>
+                            <!-- Card Last 4 Digits -->
+                            <input class="form-control"
+                                   name="last4"
+                                   type="text"
+                                   value="Card ending in {{ user.card.last4 }} ({{ user.card.brand }})"
+                                   readonly>
+                        </div>
+                    </div>
+                    <!-- Update Button -->
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            <button class="btn btn-primary" title="Update Credit Card"
+                                    ng-click="showUpdateCardModal()"> <b> Update Credit Card </b>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Header -->
+            <div class="page-header">
+                <h3> Subscription </h3>
+                <!-- Horizontal Rule -->
+                <hr>
+            </div>
+            <!-- Well -->
+            <div class="well">
+                <!-- Form -->
+                <form class="form-horizontal">
+                    <!-- Plan Field -->
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="plan"> Plan </label>
+                        <div class="col-sm-9">
+                            <!-- Monthly Plan -->
+                            <div class="radio-inline">
+                                <input name="plan"
+                                       type="radio"
+                                       value="monthly"
+                                       ng-model="user.plan"> Monthly - $25
+                            </div>
+                            <!-- Line Break -->
+                            <br>
+                            <!-- Yearly Plan -->
+                            <div class="radio-inline">
+                                <input name="plan"
+                                       type="radio"
+                                       value="yearly"
+                                       ng-model="user.plan"> Yearly - $267
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Update Button -->
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            <button type="submit" class="btn btn-primary"> <b> Update Plan </b> </button>
+                        </div>
+                    </div>
+                </form>
+                <!-- Form -->
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-sm-3 control-label">
+                            <label class="text-danger"> Cancel Subscription </label>
+                        </div>
+                        <!-- Cancel Button -->
+                        <div class="col-sm-9">
+                            <div class="help-block">
+                                The subscription will remain active until the end of the period,
+                                at which point it will be canceled and not renewed.
+                                This will end future billings.
+                            </div>
+                            <button type="submit" class="btn btn-danger"> <b> Cancel Subscription </b> </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Header -->
+            <div class="page-header">
+                <h3> Previous Invoices </h3>
+                <!-- Horizontal Rule -->
+                <hr>
+            </div>
+            <!-- Well -->
+            <div class="well">
+                <!-- Form -->
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="receipts"> Receipts go receipts </label>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Line Breaks -->
+<br><br><br><br><br>
+<!-- END -->
+
+<!-- MODALS -->
+<!-- Modal - Update Card -->
+<div class="container">
+    <div id="update_card_modal" class="modal fade" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <!-- Close Button -->
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"> &times; </span>
+                    </button>
+                    <!-- Title -->
+                    <h4 class="modal-title">
+                        <b> Enter your payment information </b>
+                    </h4>
+                </div>
+                <!-- Form -->
+                <form name="updated_card_form" novalidate>
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+                        <!-- Alert -->
+                        <div class="alert alert-danger alert-dismissible text-center" role="alert"
+                             ng-if="updated_card_form.$invalid && updated_card_form.$submitted">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            <span class="sr-only"> Error: </span>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true"> &times; </span>
+                            </button> <b> There were problems with your credit card. </b>
+                        </div>
+                        <!-- Cardholder Name Field -->
+                        <div class="form-group"
+                             ng-class="{ 'has-error': (updated_card_form.card_name.$dirty ||
+                                                      updated_card_form.$submitted) &&
+                                                      updated_card_form.card_name.$invalid,
+                                         'has-feedback': (updated_card_form.card_name.$dirty ||
+                                                         updated_card_form.$submitted) &&
+                                                         updated_card_form.card_name.$invalid }">
+                            <label class="control-label" for="card_name"> Name on Card </label>
+                            <input class="form-control"
+                                   name="card_name"
+                                   type="text"
+                                   placeholder="Cardholder Name"
+                                   ng-model="updated_card.card_name"
+                                   required
+                                   ng-minlength=2
+                                   ng-maxlength=50>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(updated_card_form.card_name.$dirty ||
+                                         updated_card_form.$submitted) &&
+                                         updated_card_form.card_name.$invalid">
+                            </span>
+                            <div ng-messages="updated_card_form.card_name.$error"
+                                 ng-if="(updated_card_form.card_name.$dirty ||
+                                        updated_card_form.$submitted) &&
+                                        updated_card_form.card_name.$invalid">
+                                <div ng-message="required" class="help-block">
+                                    This field is required.
+                                </div>
+                                <div ng-message="minlength" class="help-block">
+                                    This field cannot be shorter than 2 characters.
+                                </div>
+                                <div ng-message="maxlength" class="help-block">
+                                    This field cannot be longer than 50 characters.
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card Number Field -->
+                        <div class="form-group"
+                             ng-class="{ 'has-error': (updated_card_form.card_number.$dirty ||
+                                                      updated_card_form.$submitted) &&
+                                                      updated_card_form.card_number.$invalid,
+                                         'has-feedback': (updated_card_form.card_number.$dirty ||
+                                                         updated_card_form.$submitted) &&
+                                                         updated_card_form.card_number.$invalid }">
+                            <label class="control-label" for="card_number"> Card Number </label>
+                            <input class="form-control"
+                                   name="card_number"
+                                   type="text"
+                                   placeholder="16-Digit Card Number"
+                                   ng-model="updated_card.card_number"
+                                   required
+                                   ng-minlength=16
+                                   ng-maxlength=16>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(updated_card_form.card_number.$dirty ||
+                                         updated_card_form.$submitted) &&
+                                         updated_card_form.card_number.$invalid">
+                            </span>
+                            <div ng-messages="updated_card_form.card_number.$error"
+                                 ng-if="(updated_card_form.card_number.$dirty ||
+                                        updated_card_form.$submitted) &&
+                                        updated_card_form.card_number.$invalid">
+                                <div ng-message="required" class="help-block">
+                                    This field is required.
+                                </div>
+                                <div ng-message="minlength" class="help-block">
+                                    A 16 digit card number required.
+                                </div>
+                                <div ng-message="maxlength" class="help-block">
+                                    This field cannot be longer than 16 digits.
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Expiration / CVC Fields -->
+                        <div class="row">
+                            <div class="col-md-8">
+                                <!-- Expiration Month & Year -->
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <!-- Expiration Month Field -->
+                                        <div class="form-group"
+                                             ng-class="{ 'has-error': (updated_card_form.exp_month.$dirty ||
+                                                                      updated_card_form.$submitted) &&
+                                                                      updated_card_form.exp_month.$invalid,
+                                                         'has-feedback': (updated_card_form.exp_month.$dirty ||
+                                                                         updated_card_form.$submitted) &&
+                                                                         updated_card_form.exp_month.$invalid }">
+                                            <label class="control-label" for="exp_month"> Expiration Month </label>
+                                            <select class="form-control"
+                                                    name="exp_month"
+                                                    ng-model="updated_card.exp_month"
+                                                    required>
+                                                <option value="" disabled selected> Month </option>
+                                                <option value="1"> 1-January </option>
+                                                <option value="2"> 2-February </option>
+                                                <option value="3"> 3-March </option>
+                                                <option value="4"> 4-April </option>
+                                                <option value="5"> 5-May </option>
+                                                <option value="6"> 6-June </option>
+                                                <option value="7"> 7-July </option>
+                                                <option value="8"> 8-August </option>
+                                                <option value="9"> 9-September </option>
+                                                <option value="10"> 10-October </option>
+                                                <option value="11"> 11-November </option>
+                                                <option value="12"> 12-December </option>
+                                            </select>
+                                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                                  ng-if="(updated_card_form.exp_month.$dirty ||
+                                                         updated_card_form.$submitted) &&
+                                                         updated_card_form.exp_month.$invalid">
+                                            </span>
+                                            <div ng-messages="updated_card_form.exp_month.$error"
+                                                 ng-if="(updated_card_form.exp_month.$dirty ||
+                                                        updated_card_form.$submitted) &&
+                                                        updated_card_form.exp_month.$invalid">
+                                                <div ng-message="required" class="help-block">
+                                                    This field is required.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <!-- Expiration Year Field -->
+                                        <div class="form-group"
+                                             ng-class="{ 'has-error': (updated_card_form.exp_year.$dirty ||
+                                                                      updated_card_form.$submitted) &&
+                                                                      updated_card_form.exp_year.$invalid,
+                                                         'has-feedback': (updated_card_form.exp_year.$dirty ||
+                                                                         updated_card_form.$submitted) &&
+                                                                         updated_card_form.exp_year.$invalid }">
+                                            <label class="control-label" for="exp_year"> Year </label>
+                                            <select class="form-control"
+                                                    name="exp_year"
+                                                    ng-model="updated_card.exp_year"
+                                                    required>
+                                                <option value="" disabled selected> Year </option>
+                                                <option value="2016"> 2016 </option>
+                                                <option value="2017"> 2017 </option>
+                                                <option value="2018"> 2018 </option>
+                                                <option value="2019"> 2019 </option>
+                                                <option value="2020"> 2020 </option>
+                                                <option value="2021"> 2021 </option>
+                                                <option value="2022"> 2022 </option>
+                                                <option value="2023"> 2023 </option>
+                                                <option value="2024"> 2024 </option>
+                                                <option value="2025"> 2025 </option>
+                                                <option value="2026"> 2026 </option>
+                                            </select>
+                                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                                  ng-if="(updated_card_form.exp_year.$dirty ||
+                                                         updated_card_form.$submitted) &&
+                                                         updated_card_form.exp_year.$invalid">
+                                            </span>
+                                            <div ng-messages="updated_card_form.exp_year.$error"
+                                                 ng-if="(updated_card_form.exp_year.$dirty ||
+                                                        updated_card_form.$submitted) &&
+                                                        updated_card_form.exp_year.$invalid">
+                                                <div ng-message="required" class="help-block">
+                                                    This field is required.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <!-- CVC Field -->
+                                <div class="form-group"
+                                     ng-class="{ 'has-error': (updated_card_form.cvc.$dirty ||
+                                                              updated_card_form.$submitted) &&
+                                                              updated_card_form.cvc.$invalid,
+                                                 'has-feedback': (updated_card_form.cvc.$dirty ||
+                                                                 updated_card_form.$submitted) &&
+                                                                 updated_card_form.cvc.$invalid }">
+                                    <label class="control-label" for="cvc"> CVC </label>
+                                    <input class="form-control"
+                                           name="cvc"
+                                           type="text"
+                                           placeholder="Security Code"
+                                           ng-model="updated_card.cvc"
+                                           required
+                                           ng-minlength=3
+                                           ng-maxlength=4>
+                                    <span class="glyphicon glyphicon-remove form-control-feedback"
+                                          ng-if="(updated_card_form.cvc.$dirty ||
+                                                 updated_card_form.$submitted) &&
+                                                 updated_card_form.cvc.$invalid">
+                                    </span>
+                                    <div ng-messages="updated_card_form.cvc.$error"
+                                         ng-if="(updated_card_form.cvc.$dirty ||
+                                                updated_card_form.$submitted) &&
+                                                updated_card_form.cvc.$invalid">
+                                        <div ng-message="required" class="help-block">
+                                            This field is required.
+                                        </div>
+                                        <div ng-message="minlength" class="help-block">
+                                            This field cannot be shorter than 3 digits.
+                                        </div>
+                                        <div ng-message="maxlength" class="help-block">
+                                            This field cannot be longer than 4 digits.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                        <!-- Close Button -->
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            <b> Close </b>
+                        </button>
+                        <!-- Submit Button -->
+                        <button id="update_card_button" type="submit" class="btn btn-primary"
+                                data-loading-text="Processing..."
+                                ng-click="updated_card_form.$valid && updateCard()">
+                            <b> Save Changes </b>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
