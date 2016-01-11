@@ -18,23 +18,11 @@
 
             if (isValid) {
                 console.log('MADE IT');
-                getToken()
+                // getToken()
 
 
             } else {
                 error();
-            }
-
-            function getToken() {
-                return stripeService.createToken(vm)
-                    .then()
-                    .catch();
-
-                function responseHandler() {
-                    Subscription.create($scope.signup, response.id)
-                        .then(responseHandler1)
-                        .catch(errorHandler1);
-                }
             }
 
             function stripeResponseHandler(status, response) {
