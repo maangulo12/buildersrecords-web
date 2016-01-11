@@ -1,0 +1,30 @@
+<nav ng-if="pages.length >= 2">
+    <ul class="pagination">
+        <li class="pagination-button">
+            <a style="text-decoration: none;" href ng-click="selectPage(1)">
+                <b> First </b>
+            </a>
+        </li>
+        <li class="pagination-button">
+            <a style="text-decoration: none;" href ng-click="selectPage(currentPage - 1)">
+                <b> &lt; </b>
+            </a>
+        </li>
+        <li class="pagination-button">
+            <a style="text-decoration: none;">
+                <page-select></page-select>
+                <b> of {{ numPages }} Pages </b>
+            </a>
+        </li>
+        <li class="pagination-button">
+            <a style="text-decoration: none;" href ng-click="selectPage(currentPage + 1)">
+                <b> &gt; </b>
+            </a>
+        </li>
+        <li class="pagination-button">
+            <a style="text-decoration: none;" href ng-click="selectPage(numPages)">
+                <b> Last </b>
+            </a>
+        </li>
+    </ul>
+</nav>
