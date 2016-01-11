@@ -1,0 +1,169 @@
+// COLORS
+$white-color:        #fff;
+$blue-color:         #2c3e50;
+$dark-blue-color:    #233140;
+$lighter-gray-color: #ecf0f1;
+$light-gray-color:   #cdd7db;
+
+// FONTS
+$font-family: Montserrat, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+// SELECTORS
+.jumbotron {
+  background:      url('../img/house.jpg') no-repeat;
+  background-size: cover;
+  padding-bottom:  75px;
+  padding-top:     75px;
+
+  .name {
+    color:       $white-color;
+    display:     block;
+    font-family: $font-family;
+    font-size:   3.2em;
+    font-weight: 700;
+  }
+
+  .desc {
+    color:       $white-color;
+    font-size:   2em;
+    font-weight: 300;
+  }
+}
+
+@media(min-width: 768px) {
+  .jumbotron {
+    padding-bottom: 150px;
+    padding-top:    200px;
+
+    .name {
+      font-size: 4.75em;
+    }
+
+    .desc {
+      font-size: 3em;
+    }
+  }
+
+  .features {
+    padding-bottom: 100px;
+  }
+}
+
+.features {
+  padding-bottom: 50px;
+  padding-top:    20px;
+}
+
+.footer {
+  color: $white-color;
+
+  h3 {
+    margin-bottom: 30px;
+  }
+
+  .footer-above {
+    background-color: $blue-color;
+    padding-top:      50px;
+  }
+
+  .footer-col {
+    margin-bottom: 50px;
+  }
+
+  .footer-below {
+    background-color: $dark-blue-color;
+    padding:          25px 0;
+  }
+}
+
+.top-padding {
+  padding-top: 60px;
+}
+
+.padding {
+  padding-left: .75em;
+}
+
+li button {
+  width: 6em;
+}
+
+.glyphicon-padding {
+  padding-right: 8px;
+}
+
+.doughnut-legend {
+  font-size:  15px;
+  list-style: none;
+  margin:     0;
+  margin-top: 20px;
+  padding:    0;
+
+  li {
+    margin-bottom: 7px;
+
+    span {
+      border-radius: 7px;
+      display:       block;
+      float:         left;
+      height:        14px;
+      margin-right:  8px;
+      margin-top:    4px;
+      width:         14px;
+    }
+  }
+}
+
+.comm-how {
+  color:        $blue-color;
+  display:      inline-block;
+  float:        left;
+  margin-right: 40px;
+  text-align:   right;
+  width:        55px;
+}
+
+thead tr {
+  background-color: $blue-color;
+  color:            $white-color;
+}
+
+.footer-color {
+  background-color: $lighter-gray-color;
+}
+
+.st-sort-ascent:before {
+  content: '\25B2';
+}
+
+.st-sort-descent:before {
+  content: '\25BC';
+}
+
+.select-page {
+  text-align: center;
+  width:      50px;
+}
+
+.pagination li a input {
+  margin:  -5px 0;
+  padding: 0;
+}
+
+.pagination-button a {
+  background-color: $lighter-gray-color !important;
+  color:            $blue-color !important;
+}
+
+.pagination-button a:hover {
+  background-color: $light-gray-color !important;
+}
+
+.chart-size {
+  width:  100%;
+  height: 400px;
+}
+
+p {
+  margin-bottom: 0px;
+}
