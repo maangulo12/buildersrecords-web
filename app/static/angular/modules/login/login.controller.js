@@ -13,22 +13,21 @@
 
         $scope.logIn = function() {
             var btn = $('#login_button').button('loading');
-            authenticate();
+            authenticate()
+                .then(routeToProjects)
+                .catch(error);
 
             function authenticate() {
-                return authService.authenticate(vm.username, vm.password)
-                    .then(responseHandler)
-                    .catch(errorHandler);
-                    
-                function responseHandler(response) {
-                    $state.go('projects');
-                }
-                function errorHandler(response) {
-                    $scope.login_form.$invalid = true;
-                    $scope.login_form.$submitted = true;
-                    vm.password = '';
-                    btn.button('reset');
-                }
+                return authService.authenticate(vm.username, vm.password);
+            }
+            function routeToProjects(response) {
+                $state.go('projects');
+            }
+            function error(response) {
+                $scope.login_form.$invalid = true;
+                $scope.login_form.$submitted = true;
+                vm.password = '';
+                btn.button('reset');
             }
         }
     }
