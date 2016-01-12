@@ -22,6 +22,7 @@
                 return authService.checkUsername(username)
                     .then(responseHandler)
                     .catch(errorHandler);
+
                 function responseHandler(response) {
                     ctrl.$setValidity('usernameAvailability', true);
                     return response;

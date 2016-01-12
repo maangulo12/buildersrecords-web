@@ -36,8 +36,3 @@ css = Bundle('/css/main.scss', filters='scss', output='/css/main.min.css',
 @app.route('/<path:url>')
 def catch_all(url):
     return render_template('index.html')
-
-
-@app.errorhandler(404)
-def page_not_found(e):
-    return make_response(open('app/templates/error/404_error.html').read())

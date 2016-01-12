@@ -5,62 +5,46 @@
         .module('app.signup')
         .controller('SignupController', SignupController);
 
-    SignupController.$inject = ['$scope', 'store', '$state', 'authService', 'stripeService', 'Subscription', 'Mail'];
+    SignupController.$inject = ['$scope', 'store', '$state', 'authService', 'stripeService', 'subscriptionService', 'mailService'];
 
-    function SignupController($scope, store, $state, authService, stripeService, Subscription, Mail) {
+    function SignupController($scope, store, $state, authService, stripeService, subscriptionService, mailService) {
         var vm = this;
+        vm.plan = 'free';
         store.remove('jwt');
-        vm.plan = 'monthly';
 
         $scope.signUp = function() {
             var btn = $('#signup_button').button('loading');
-            var isValid = stripeService.validate(vm);
+            var valid = stripeService.validateCard(vm);
 
-            if (isValid) {
-                console.log('MADE IT');
-                getToken()
+            if (valid) {
+                createToken()
+                    .then(createSubscription)
+                    .then(sendRegistrationEmail)
+                    .then(authenticateUser)
+                    .then(routeToTutorial)
+                    .catch(error);
 
-
+                function createToken() {
+                    return stripeService.createToken(vm);
+                }
+                function createSubscription(response) {
+                    return subscriptionService.create(vm, response.id);
+                }
+                function sendRegistrationEmail(response) {
+                    return mailService.sendRegistration(vm);
+                }
+                function authenticateUser(response) {
+                    return authService.authenticate(vm.username, vm.password);
+                }
+                function routeToTutorial(response) {
+                    $state.go('tutorial');
+                }
             } else {
                 error();
             }
 
-            function getToken() {
-                return stripeService.createToken(vm)
-                    .then()
-                    .catch();
-
-                function responseHandler() {
-                    Subscription.create($scope.signup, response.id)
-                        .then(responseHandler1)
-                        .catch(errorHandler1);
-                }
-            }
-
-            function stripeResponseHandler(status, response) {
-                if (response.error) {
-                    error();
-                } else {
-
-                }
-            }
-            function responseHandler1(response) {
-                Mail.sendRegistrationEmail($scope.signup);
-                Auth.authenticate($scope.signup)
-                    .then(responseHandler2)
-                    .catch(errorHandler2);
-            }
-            function errorHandler1(response) {
-                error();
-            }
-            function responseHandler2(response) {
-                Utility.storeToken(response);
-                $state.go('tutorial');
-            }
-            function errorHandler2(response) {
-                $state.go('login');
-            }
             function error() {
+                // Display Error Message
                 $scope.signup_form.$invalid = true;
                 btn.button('reset');
             }

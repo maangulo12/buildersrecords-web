@@ -5,14 +5,16 @@
         .module('app.service.stripe', [])
         .factory('stripeService', stripeService);
 
-    function stripeService() {
+    stripeService.$inject = ['$q'];
+
+    function stripeService($q) {
         var service = {
-            validate:    validate,
-            createToken: createToken
+            validateCard: validateCard,
+            createToken:  createToken
         };
         return service;
 
-        function validate(vm) {
+        function validateCard(vm) {
             var num = Stripe.card.validateCardNumber(vm.card_number);
             var exp = Stripe.card.validateExpiry(vm.exp_month, vm.exp_year);
             var cvc = Stripe.card.validateCVC(vm.cvc);
@@ -33,17 +35,17 @@
                 exp_year:  vm.exp_year,
                 name:      vm.card_name.toUpperCase()
             };
-            // Remember to change this to live key
-            Stripe.setPublishableKey('pk_test_KY3H8e295UxwoHrrqHBobKRC');
-            Stripe.card.createToken(data, responseHandler);
+            return $q(function(resolve, reject) {
+                Stripe.card.createToken(data, responseHandler);
 
-            function responseHandler(status, response) {
-                if (response.error) {
-                    return $q.reject(response);
-                } else {
-                    return response;
+                function responseHandler(status, response) {
+                    if (response.error) {
+                        return reject(response);
+                    } else {
+                        return resolve(response);
+                    }
                 }
-            }
+            });
         }
     }
 })();

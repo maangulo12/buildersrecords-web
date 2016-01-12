@@ -27,34 +27,52 @@
     <script src="{{ url_for('static', filename='vendor/smart-table/smart-table.min.js') }}"></script>
     <script src="{{ url_for('static', filename='vendor/highcharts/highcharts.js') }}"></script>
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-    <!-- App JS Scripts -->
+    <!-- Application JS Scripts -->
+    <!-- App -->
     <script src="{{ url_for('static', filename='angular/app.module.js') }}"></script>
     <script src="{{ url_for('static', filename='angular/app.config.js') }}"></script>
     <script src="{{ url_for('static', filename='angular/app.run.js') }}"></script>
+    <!-- Directives -->
     <script src="{{ url_for('static', filename='angular/directives.js') }}"></script>
     <script src="{{ url_for('static', filename='angular/directives/email-availability.directive.js') }}"></script>
     <script src="{{ url_for('static', filename='angular/directives/username-availability.directive.js') }}"></script>
+    <!-- Services -->
     <script src="{{ url_for('static', filename='angular/services.js') }}"></script>
     <script src="{{ url_for('static', filename='angular/services/auth.service.js') }}"></script>
+    <script src="{{ url_for('static', filename='angular/services/mail.service.js') }}"></script>
+    <script src="{{ url_for('static', filename='angular/services/projects.service.js') }}"></script>
     <script src="{{ url_for('static', filename='angular/services/stripe.service.js') }}"></script>
+    <script src="{{ url_for('static', filename='angular/services/subscription.service.js') }}"></script>
+    <script src="{{ url_for('static', filename='angular/services/user.service.js') }}"></script>
+    <!-- Home module -->
     <script src="{{ url_for('static', filename='angular/modules/home/home.module.js') }}"></script>
     <script src="{{ url_for('static', filename='angular/modules/home/home.route.js') }}"></script>
     <script src="{{ url_for('static', filename='angular/modules/home/home.controller.js') }}"></script>
+    <!-- Login module -->
     <script src="{{ url_for('static', filename='angular/modules/login/login.module.js') }}"></script>
     <script src="{{ url_for('static', filename='angular/modules/login/login.route.js') }}"></script>
     <script src="{{ url_for('static', filename='angular/modules/login/login.controller.js') }}"></script>
+    <!-- Signup module -->
     <script src="{{ url_for('static', filename='angular/modules/signup/signup.module.js') }}"></script>
     <script src="{{ url_for('static', filename='angular/modules/signup/signup.route.js') }}"></script>
     <script src="{{ url_for('static', filename='angular/modules/signup/signup.controller.js') }}"></script>
+    <!-- Tutorial module -->
+    <script src="{{ url_for('static', filename='angular/modules/tutorial/tutorial.module.js') }}"></script>
+    <script src="{{ url_for('static', filename='angular/modules/tutorial/tutorial.route.js') }}"></script>
+    <script src="{{ url_for('static', filename='angular/modules/tutorial/tutorial.controller.js') }}"></script>
+    <!-- Projects module -->
+    <script src="{{ url_for('static', filename='angular/modules/projects/projects.module.js') }}"></script>
+    <script src="{{ url_for('static', filename='angular/modules/projects/projects.route.js') }}"></script>
+    <script src="{{ url_for('static', filename='angular/modules/projects/projects.controller.js') }}"></script>
+    <!-- Projects.* module -->
+    <script src="{{ url_for('static', filename='angular/modules/overview/overview.js') }}"></script>
+    <script src="{{ url_for('static', filename='angular/modules/budget/budget.js') }}"></script>
+    <script src="{{ url_for('static', filename='angular/modules/funds/funds.js') }}"></script>
+    <script src="{{ url_for('static', filename='angular/modules/expenditures/expenditures.js') }}"></script>
+    <script src="{{ url_for('static', filename='angular/modules/subcontractors/subcontractors.js') }}"></script>
+    <!-- Account module -->
     <script src="{{ url_for('static', filename='angular/modules/account/account.js') }}"></script>
-    <script src="{{ url_for('static', filename='angular/modules/account/billing/billing.js') }}"></script>
-    <script src="{{ url_for('static', filename='angular/modules/projects/projects.js') }}"></script>
-    <script src="{{ url_for('static', filename='angular/modules/projects/overview/overview.js') }}"></script>
-    <script src="{{ url_for('static', filename='angular/modules/projects/budget/budget.js') }}"></script>
-    <script src="{{ url_for('static', filename='angular/modules/projects/funds/funds.js') }}"></script>
-    <script src="{{ url_for('static', filename='angular/modules/projects/expenditures/expenditures.js') }}"></script>
-    <script src="{{ url_for('static', filename='angular/modules/projects/subcontractors/subcontractors.js') }}"></script>
-    <script src="{{ url_for('static', filename='angular/modules/tutorial/tutorial.js') }}"></script>
+    <script src="{{ url_for('static', filename='angular/modules/billing/billing.js') }}"></script>
     <!-- Angular base url (html5Mode) -->
     <base href="/" />
 </head>

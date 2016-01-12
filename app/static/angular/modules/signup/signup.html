@@ -189,8 +189,17 @@
                                      'has-feedback': signup_form.plan.$invalid }">
                         <label class="control-label" for="plan"> Pricing Choice </label>
                         <div class="row">
+                            <!-- Free -->
+                            <div class="col-xs-4 text-center">
+                                <input name="plan"
+                                       type="radio"
+                                       value="free"
+                                       ng-model="vm.plan">
+                                <br>
+                                <span> <b> Free </b> <span>
+                            </div>
                             <!-- Monthly -->
-                            <div class="col-xs-6 text-center">
+                            <div class="col-xs-4 text-center">
                                 <input name="plan"
                                        type="radio"
                                        value="monthly"
@@ -199,7 +208,7 @@
                                 <span> <b> $25 / month </b> <span>
                             </div>
                             <!-- Yearly -->
-                            <div class="col-xs-6 text-center">
+                            <div class="col-xs-4 text-center">
                                 <input name="plan"
                                        type="radio"
                                        value="yearly"

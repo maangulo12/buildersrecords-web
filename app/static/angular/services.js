@@ -283,21 +283,6 @@ app.service('SubcontractorService', function($http, store) {
 });
 // ******************** END ********************
 
-/*
-    Functions for Mail service:
-    -POST /api/email/registration (sends registration email)
-*/
-app.service('Mail', function($http) {
-    var url_prefix = '/api/mail';
-    // POST /api/mail/registration (sends registration email)
-    this.sendRegistrationEmail = function(form) {
-        return $http.post(url_prefix + '/registration', {
-            email:    form.email,
-            username: form.username
-        });
-    }
-});
-
 // Functions for /api/uploads
 app.service('UploadService', function($http) {
     // API: Uploads entry point
@@ -308,38 +293,5 @@ app.service('UploadService', function($http) {
             transformRequest: angular.identity,
             headers: { 'Content-Type': undefined }
         });
-    }
-});
-
-/*
-    Functions for /api/subscriptions
-    -GET  /api/subscriptions/<id> (retrieves a subscription)
-    -POST /api/subscriptions      (creates a subscription)
-    -PUT  /api/subscriptions/<id> (updates a subscription)
-*/
-app.service('Subscription', function($http, store) {
-    var url_prefix = '/api/subscriptions';
-    // GET /api/subscriptions/<id> (retrieves a subscription)
-    this.retrieve = function() {
-        return $http.get(url_prefix + '/' + store.get('user').stripe_id);
-    }
-    // POST /api/subscriptions (creates a subscription)
-    this.create = function(form, token_id) {
-        var data = {
-            email:    form.email,
-            username: form.username,
-            password: form.password,
-            plan:     form.plan,
-            token_id: token_id
-        };
-        return $http.post(url_prefix, data);
-    }
-    // PUT /api/subscriptions/<id> (updates a subscription)
-    this.update = function(token_id) {
-        var data = {
-            stripe_id: store.get('user').stripe_id,
-            token_id:  token_id
-        };
-        return $http.put(url_prefix + '/' + store.get('user').stripe_id, data);
     }
 });
