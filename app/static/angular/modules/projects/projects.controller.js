@@ -17,7 +17,6 @@
                 .catch(errorHandler);
 
             function responseHandler(response) {
-                console.log(response.data.objects);
                 $scope.project_list = response.data.objects;
             }
             function errorHandler(error) {
