@@ -13,6 +13,7 @@
                     return userService.retrieve()
                         .then(responseHandler)
                         .catch(errorHandler);
+
                     function responseHandler(response) {
                         return response.data;
                     }
