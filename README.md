@@ -2,6 +2,15 @@
 
 BuildersRecords Web Application.
 
+## TO DO
+
++ Priorities:
+```
+    * Flask-Assets
+    * Forgot Password
+    * Tutorial video
+```
+
 ## Required Software
 
 + [VirtualBox] (https://www.virtualbox.org/wiki/Downloads)
