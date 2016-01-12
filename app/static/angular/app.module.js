@@ -25,8 +25,8 @@
         'app.login',
         'app.signup',
         'app.tutorial',
-        'app.projects',
 
+        'app.projects',
         'app.projects.overview',
         'app.projects.budget',
         'app.projects.funds',
