@@ -7,7 +7,7 @@
 
     function route($stateProvider) {
         $stateProvider.state('billing', {
-            url: '/billing',
+            url: '/account/billing',
             resolve: {
                 User: function(userService, $q) {
                     return userService.retrieve()
