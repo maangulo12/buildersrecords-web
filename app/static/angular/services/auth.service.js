@@ -25,20 +25,20 @@
                 .then(responseHandler)
                 .catch(errorHandler);
 
-                function responseHandler(response) {
-                    var token   = response.data.token;
-                    var payload = jwtHelper.decodeToken(token);
-                    var user    = {
-                        id:        payload.user_id,
-                        stripe_id: payload.stripe_id
-                    };
-                    store.set('jwt', token);
-                    store.set('user', user);
-                    return response;
-                }
-                function errorHandler(response) {
-                    return $q.reject(response);
-                }
+            function responseHandler(response) {
+                var token   = response.data.token;
+                var payload = jwtHelper.decodeToken(token);
+                var user    = {
+                    id:        payload.user_id,
+                    stripe_id: payload.stripe_id
+                };
+                store.set('jwt', token);
+                store.set('user', user);
+                return response;
+            }
+            function errorHandler(response) {
+                return $q.reject(response);
+            }
         }
 
         function checkEmail(email) {
