@@ -34,6 +34,9 @@
                     controller:   'ProjectsController',
                     controllerAs: 'vm'
                 }
+            },
+            data: {
+                requiresLogin: true
             }
         });
     }

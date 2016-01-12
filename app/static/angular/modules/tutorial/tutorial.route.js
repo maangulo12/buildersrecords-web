@@ -34,6 +34,9 @@
                     controller:   'TutorialController',
                     controllerAs: 'vm'
                 }
+            },
+            data: {
+                requiresLogin: true
             }
         });
     }
