@@ -34,6 +34,9 @@
                     controller:   'AccountController',
                     controllerAs: 'vm'
                 }
+            },
+            data: {
+                requiresLogin: true
             }
         });
     }
