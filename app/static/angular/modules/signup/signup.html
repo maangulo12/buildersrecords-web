@@ -13,7 +13,7 @@
             <div class="well">
                 <!-- Alert -->
                 <div class="alert alert-danger alert-dismissible text-center" role="alert"
-                     ng-if="signup_form.$invalid && signup_form.$submitted">
+                     ng-if="signupForm.$invalid && signupForm.$submitted">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     <span class="sr-only"> Error: </span>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -21,15 +21,15 @@
                     </button> <b> There were problems creating your account. </b>
                 </div>
                 <!-- Form -->
-                <form name="signup_form" novalidate>
+                <form name="signupForm" novalidate>
                     <!-- Email Field -->
                     <div class="form-group"
-                         ng-class="{ 'has-error': (signup_form.email.$dirty ||
-                                                  signup_form.$submitted) &&
-                                                  signup_form.email.$invalid,
-                                     'has-feedback': (signup_form.email.$dirty ||
-                                                     signup_form.$submitted) &&
-                                                     signup_form.email.$invalid }">
+                         ng-class="{ 'has-error': (signupForm.email.$dirty ||
+                                                   signupForm.$submitted) &&
+                                                   signupForm.email.$invalid,
+                                     'has-feedback': (signupForm.email.$dirty ||
+                                                      signupForm.$submitted) &&
+                                                      signupForm.email.$invalid }">
                         <label class="control-label" for="email"> Email Address </label>
                         <input class="form-control"
                                name="email"
@@ -42,14 +42,14 @@
                                email-availability
                                autofocus>
                         <span class="glyphicon glyphicon-remove form-control-feedback"
-                              ng-if="(signup_form.email.$dirty ||
-                                     signup_form.$submitted) &&
-                                     signup_form.email.$invalid">
+                              ng-if="(signupForm.email.$dirty ||
+                                      signupForm.$submitted) &&
+                                      signupForm.email.$invalid">
                         </span>
-                        <div ng-messages="signup_form.email.$error"
-                             ng-if="(signup_form.email.$dirty ||
-                                    signup_form.$submitted) &&
-                                    signup_form.email.$invalid">
+                        <div ng-messages="signupForm.email.$error"
+                             ng-if="(signupForm.email.$dirty ||
+                                     signupForm.$submitted) &&
+                                     signupForm.email.$invalid">
                             <div ng-message="required" class="help-block">
                                 This field is required.
                             </div>
@@ -60,7 +60,7 @@
                                 This email address is already registered.
                             </div>
                         </div>
-                        <div ng-if="signup_form.email.$pending">
+                        <div ng-if="signupForm.email.$pending">
                             <span class="help-block">
                                 Checking Email...
                             </span>
@@ -68,12 +68,12 @@
                     </div>
                     <!-- Username Field -->
                     <div class="form-group"
-                         ng-class="{ 'has-error': (signup_form.username.$dirty ||
-                                                  signup_form.$submitted) &&
-                                                  signup_form.username.$invalid,
-                                     'has-feedback': (signup_form.username.$dirty ||
-                                                     signup_form.$submitted) &&
-                                                     signup_form.username.$invalid }">
+                         ng-class="{ 'has-error': (signupForm.username.$dirty ||
+                                                   signupForm.$submitted) &&
+                                                   signupForm.username.$invalid,
+                                     'has-feedback': (signupForm.username.$dirty ||
+                                                      signupForm.$submitted) &&
+                                                      signupForm.username.$invalid }">
                         <label class="control-label" for="username"> Username </label>
                         <input class="form-control"
                                name="username"
@@ -86,14 +86,14 @@
                                ng-model-options="{ debounce: 500 }"
                                username-availability>
                         <span class="glyphicon glyphicon-remove form-control-feedback"
-                              ng-if="(signup_form.username.$dirty ||
-                                     signup_form.$submitted) &&
-                                     signup_form.username.$invalid">
+                              ng-if="(signupForm.username.$dirty ||
+                                      signupForm.$submitted) &&
+                                      signupForm.username.$invalid">
                         </span>
-                        <div ng-messages="signup_form.username.$error"
-                             ng-if="(signup_form.username.$dirty ||
-                                    signup_form.$submitted) &&
-                                    signup_form.username.$invalid">
+                        <div ng-messages="signupForm.username.$error"
+                             ng-if="(signupForm.username.$dirty ||
+                                     signupForm.$submitted) &&
+                                     signupForm.username.$invalid">
                             <div ng-message="required" class="help-block">
                                 This field is required.
                             </div>
@@ -107,7 +107,7 @@
                                 This username is not available.
                             </div>
                         </div>
-                        <div ng-if="signup_form.username.$pending">
+                        <div ng-if="signupForm.username.$pending">
                             <span class="help-block">
                                 Checking Username...
                             </span>
@@ -118,12 +118,12 @@
                         <div class="col-sm-6">
                             <!-- Password Field -->
                             <div class="form-group"
-                                 ng-class="{ 'has-error': (signup_form.password.$dirty ||
-                                                          signup_form.$submitted) &&
-                                                          signup_form.password.$invalid,
-                                             'has-feedback': (signup_form.password.$dirty ||
-                                                             signup_form.$submitted) &&
-                                                             signup_form.password.$invalid }">
+                                 ng-class="{ 'has-error': (signupForm.password.$dirty ||
+                                                           signupForm.$submitted) &&
+                                                           signupForm.password.$invalid,
+                                             'has-feedback': (signupForm.password.$dirty ||
+                                                              signupForm.$submitted) &&
+                                                              signupForm.password.$invalid }">
                                 <label class="control-label" for="password"> Password </label>
                                 <input class="form-control"
                                        name="password"
@@ -132,14 +132,14 @@
                                        ng-model="vm.password"
                                        required>
                                 <span class="glyphicon glyphicon-remove form-control-feedback"
-                                      ng-if="(signup_form.password.$dirty ||
-                                             signup_form.$submitted) &&
-                                             signup_form.password.$invalid">
+                                      ng-if="(signupForm.password.$dirty ||
+                                              signupForm.$submitted) &&
+                                              signupForm.password.$invalid">
                                 </span>
-                                <div ng-messages="signup_form.password.$error"
-                                     ng-if="(signup_form.password.$dirty ||
-                                            signup_form.$submitted) &&
-                                            signup_form.password.$invalid">
+                                <div ng-messages="signupForm.password.$error"
+                                     ng-if="(signupForm.password.$dirty ||
+                                             signupForm.$submitted) &&
+                                             signupForm.password.$invalid">
                                     <div ng-message="required" class="help-block">
                                         This field is required.
                                     </div>
@@ -149,12 +149,12 @@
                         <div class="col-sm-6">
                             <!-- Confirm Password Field -->
                             <div class="form-group"
-                                 ng-class="{ 'has-error': (signup_form.confirm_password.$dirty ||
-                                                          signup_form.$submitted) &&
-                                                          signup_form.confirm_password.$invalid,
-                                             'has-feedback': (signup_form.confirm_password.$dirty ||
-                                                             signup_form.$submitted) &&
-                                                             signup_form.confirm_password.$invalid }">
+                                 ng-class="{ 'has-error': (signupForm.confirm_password.$dirty ||
+                                                           signupForm.$submitted) &&
+                                                           signupForm.confirm_password.$invalid,
+                                             'has-feedback': (signupForm.confirm_password.$dirty ||
+                                                              signupForm.$submitted) &&
+                                                              signupForm.confirm_password.$invalid }">
                                 <label class="control-label" for="confirm_password"> Confirm Password </label>
                                 <input class="form-control"
                                        name="confirm_password"
@@ -165,14 +165,14 @@
                                        ui-validate="'$value==vm.password'"
                                        ui-validate-watch="'vm.password'">
                                 <span class="glyphicon glyphicon-remove form-control-feedback"
-                                      ng-if="(signup_form.confirm_password.$dirty ||
-                                             signup_form.$submitted) &&
-                                             signup_form.confirm_password.$invalid">
+                                      ng-if="(signupForm.confirm_password.$dirty ||
+                                              signupForm.$submitted) &&
+                                              signupForm.confirm_password.$invalid">
                                 </span>
-                                <div ng-messages="signup_form.confirm_password.$error"
-                                     ng-if="(signup_form.confirm_password.$dirty ||
-                                            signup_form.$submitted) &&
-                                            signup_form.confirm_password.$invalid">
+                                <div ng-messages="signupForm.confirm_password.$error"
+                                     ng-if="(signupForm.confirm_password.$dirty ||
+                                             signupForm.$submitted) &&
+                                             signupForm.confirm_password.$invalid">
                                     <div ng-message="required" class="help-block">
                                         This field is required.
                                     </div>
@@ -183,51 +183,55 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Pricing Choice -->
+                    <!-- Subscription -->
                     <div class="form-group"
-                         ng-class="{ 'has-error': signup_form.plan.$invalid,
-                                     'has-feedback': signup_form.plan.$invalid }">
-                        <label class="control-label" for="plan"> Pricing Choice </label>
+                         ng-class="{ 'has-error': signupForm.plan.$invalid,
+                                     'has-feedback': signupForm.plan.$invalid }">
+                        <label class="control-label" for="plan"> Subscription </label>
                         <div class="row">
                             <!-- Free -->
                             <div class="col-xs-4 text-center">
-                                <input name="plan"
-                                       type="radio"
-                                       value="free"
-                                       ng-model="vm.plan">
-                                <br>
-                                <span> <b> Free </b> <span>
+                                <label class="btn btn-success">
+                                    <input name="plan"
+                                           type="radio"
+                                           value="free"
+                                           ng-model="vm.plan">
+                                    <br>
+                                    <span> <b> Free plan </b> <span>
+                                </label>
                             </div>
                             <!-- Monthly -->
                             <div class="col-xs-4 text-center">
-                                <input name="plan"
-                                       type="radio"
-                                       value="monthly"
-                                       ng-model="vm.plan">
-                                <br>
-                                <span> <b> $25 / month </b> <span>
+                                <label class="btn btn-success">
+                                    <input name="plan"
+                                           type="radio"
+                                           value="monthly"
+                                           ng-model="vm.plan">
+                                    <br>
+                                    <span> <b> $25 / month </b> <span>
+                                </label>
                             </div>
                             <!-- Yearly -->
                             <div class="col-xs-4 text-center">
-                                <input name="plan"
-                                       type="radio"
-                                       value="yearly"
-                                       ng-model="vm.plan">
-                                <br>
-                                <span> <b> $267 / year </b> <span>
-                                <br>
-                                <span class="text-success"> <b> Save $33 </b> <span>
+                                <label class="btn btn-success">
+                                    <input name="plan"
+                                           type="radio"
+                                           value="yearly"
+                                           ng-model="vm.plan">
+                                    <br>
+                                    <span> <b> $267 / year </b> <span>
+                                </label>
                             </div>
                         </div>
                     </div>
                     <!-- Cardholder Name Field -->
                     <div class="form-group"
-                         ng-class="{ 'has-error': (signup_form.card_name.$dirty ||
-                                                  signup_form.$submitted) &&
-                                                  signup_form.card_name.$invalid,
-                                     'has-feedback': (signup_form.card_name.$dirty ||
-                                                     signup_form.$submitted) &&
-                                                     signup_form.card_name.$invalid }">
+                         ng-class="{ 'has-error': (signupForm.card_name.$dirty ||
+                                                   signupForm.$submitted) &&
+                                                   signupForm.card_name.$invalid,
+                                     'has-feedback': (signupForm.card_name.$dirty ||
+                                                      signupForm.$submitted) &&
+                                                      signupForm.card_name.$invalid }">
                         <label class="control-label" for="card_name"> Name on Card </label>
                         <input class="form-control"
                                name="card_name"
@@ -238,14 +242,14 @@
                                ng-minlength=2
                                ng-maxlength=50>
                         <span class="glyphicon glyphicon-remove form-control-feedback"
-                              ng-if="(signup_form.card_name.$dirty ||
-                                     signup_form.$submitted) &&
-                                     signup_form.card_name.$invalid">
+                              ng-if="(signupForm.card_name.$dirty ||
+                                      signupForm.$submitted) &&
+                                      signupForm.card_name.$invalid">
                         </span>
-                        <div ng-messages="signup_form.card_name.$error"
-                             ng-if="(signup_form.card_name.$dirty ||
-                                    signup_form.$submitted) &&
-                                    signup_form.card_name.$invalid">
+                        <div ng-messages="signupForm.card_name.$error"
+                             ng-if="(signupForm.card_name.$dirty ||
+                                     signupForm.$submitted) &&
+                                     signupForm.card_name.$invalid">
                             <div ng-message="required" class="help-block">
                                 This field is required.
                             </div>
@@ -259,12 +263,12 @@
                     </div>
                     <!-- Card Number Field -->
                     <div class="form-group"
-                         ng-class="{ 'has-error': (signup_form.card_number.$dirty ||
-                                                  signup_form.$submitted) &&
-                                                  signup_form.card_number.$invalid,
-                                     'has-feedback': (signup_form.card_number.$dirty ||
-                                                     signup_form.$submitted) &&
-                                                     signup_form.card_number.$invalid }">
+                         ng-class="{ 'has-error': (signupForm.card_number.$dirty ||
+                                                   signupForm.$submitted) &&
+                                                   signupForm.card_number.$invalid,
+                                     'has-feedback': (signupForm.card_number.$dirty ||
+                                                      signupForm.$submitted) &&
+                                                      signupForm.card_number.$invalid }">
                         <label class="control-label" for="card_number"> Card Number </label>
                         <input class="form-control"
                                name="card_number"
@@ -275,14 +279,14 @@
                                ng-minlength=16
                                ng-maxlength=16>
                         <span class="glyphicon glyphicon-remove form-control-feedback"
-                              ng-if="(signup_form.card_number.$dirty ||
-                                     signup_form.$submitted) &&
-                                     signup_form.card_number.$invalid">
+                              ng-if="(signupForm.card_number.$dirty ||
+                                      signupForm.$submitted) &&
+                                      signupForm.card_number.$invalid">
                         </span>
-                        <div ng-messages="signup_form.card_number.$error"
-                             ng-if="(signup_form.card_number.$dirty ||
-                                    signup_form.$submitted) &&
-                                    signup_form.card_number.$invalid">
+                        <div ng-messages="signupForm.card_number.$error"
+                             ng-if="(signupForm.card_number.$dirty ||
+                                     signupForm.$submitted) &&
+                                     signupForm.card_number.$invalid">
                             <div ng-message="required" class="help-block">
                                 This field is required.
                             </div>
@@ -302,12 +306,12 @@
                                 <div class="col-md-7">
                                     <!-- Expiration Month Field -->
                                     <div class="form-group"
-                                         ng-class="{ 'has-error': (signup_form.exp_month.$dirty ||
-                                                                  signup_form.$submitted) &&
-                                                                  signup_form.exp_month.$invalid,
-                                                     'has-feedback': (signup_form.exp_month.$dirty ||
-                                                                     signup_form.$submitted) &&
-                                                                     signup_form.exp_month.$invalid }">
+                                         ng-class="{ 'has-error': (signupForm.exp_month.$dirty ||
+                                                                   signupForm.$submitted) &&
+                                                                   signupForm.exp_month.$invalid,
+                                                     'has-feedback': (signupForm.exp_month.$dirty ||
+                                                                      signupForm.$submitted) &&
+                                                                      signupForm.exp_month.$invalid }">
                                         <label class="control-label" for="exp_month"> Expiration Month </label>
                                         <select class="form-control"
                                                 name="exp_month"
@@ -328,14 +332,14 @@
                                             <option value="12"> 12-December </option>
                                         </select>
                                         <span class="glyphicon glyphicon-remove form-control-feedback"
-                                              ng-if="(signup_form.exp_month.$dirty ||
-                                                     signup_form.$submitted) &&
-                                                     signup_form.exp_month.$invalid">
+                                              ng-if="(signupForm.exp_month.$dirty ||
+                                                      signupForm.$submitted) &&
+                                                      signupForm.exp_month.$invalid">
                                         </span>
-                                        <div ng-messages="signup_form.exp_month.$error"
-                                             ng-if="(signup_form.exp_month.$dirty ||
-                                                    signup_form.$submitted) &&
-                                                    signup_form.exp_month.$invalid">
+                                        <div ng-messages="signupForm.exp_month.$error"
+                                             ng-if="(signupForm.exp_month.$dirty ||
+                                                     signupForm.$submitted) &&
+                                                     signupForm.exp_month.$invalid">
                                             <div ng-message="required" class="help-block">
                                                 This field is required.
                                             </div>
@@ -345,12 +349,12 @@
                                 <div class="col-md-5">
                                     <!-- Expiration Year Field -->
                                     <div class="form-group"
-                                         ng-class="{ 'has-error': (signup_form.exp_year.$dirty ||
-                                                                  signup_form.$submitted) &&
-                                                                  signup_form.exp_year.$invalid,
-                                                     'has-feedback': (signup_form.exp_year.$dirty ||
-                                                                     signup_form.$submitted) &&
-                                                                     signup_form.exp_year.$invalid }">
+                                         ng-class="{ 'has-error': (signupForm.exp_year.$dirty ||
+                                                                   signupForm.$submitted) &&
+                                                                   signupForm.exp_year.$invalid,
+                                                     'has-feedback': (signupForm.exp_year.$dirty ||
+                                                                      signupForm.$submitted) &&
+                                                                      signupForm.exp_year.$invalid }">
                                         <label class="control-label" for="exp_year"> Year </label>
                                         <select class="form-control"
                                                 name="exp_year"
@@ -370,14 +374,14 @@
                                             <option value="2026"> 2026 </option>
                                         </select>
                                         <span class="glyphicon glyphicon-remove form-control-feedback"
-                                              ng-if="(signup_form.exp_year.$dirty ||
-                                                     signup_form.$submitted) &&
-                                                     signup_form.exp_year.$invalid">
+                                              ng-if="(signupForm.exp_year.$dirty ||
+                                                      signupForm.$submitted) &&
+                                                      signupForm.exp_year.$invalid">
                                         </span>
-                                        <div ng-messages="signup_form.exp_year.$error"
-                                             ng-if="(signup_form.exp_year.$dirty ||
-                                                    signup_form.$submitted) &&
-                                                    signup_form.exp_year.$invalid">
+                                        <div ng-messages="signupForm.exp_year.$error"
+                                             ng-if="(signupForm.exp_year.$dirty ||
+                                                     signupForm.$submitted) &&
+                                                     signupForm.exp_year.$invalid">
                                             <div ng-message="required" class="help-block">
                                                 This field is required.
                                             </div>
@@ -389,12 +393,12 @@
                         <div class="col-md-4">
                             <!-- CVC Field -->
                             <div class="form-group"
-                                 ng-class="{ 'has-error': (signup_form.cvc.$dirty ||
-                                                          signup_form.$submitted) &&
-                                                          signup_form.cvc.$invalid,
-                                             'has-feedback': (signup_form.cvc.$dirty ||
-                                                             signup_form.$submitted) &&
-                                                             signup_form.cvc.$invalid }">
+                                 ng-class="{ 'has-error': (signupForm.cvc.$dirty ||
+                                                           signupForm.$submitted) &&
+                                                           signupForm.cvc.$invalid,
+                                             'has-feedback': (signupForm.cvc.$dirty ||
+                                                              signupForm.$submitted) &&
+                                                              signupForm.cvc.$invalid }">
                                 <label class="control-label" for="cvc"> CVC </label>
                                 <input class="form-control"
                                        name="cvc"
@@ -405,14 +409,14 @@
                                        ng-minlength=3
                                        ng-maxlength=4>
                                 <span class="glyphicon glyphicon-remove form-control-feedback"
-                                      ng-if="(signup_form.cvc.$dirty ||
-                                             signup_form.$submitted) &&
-                                             signup_form.cvc.$invalid">
+                                      ng-if="(signupForm.cvc.$dirty ||
+                                              signupForm.$submitted) &&
+                                              signupForm.cvc.$invalid">
                                 </span>
-                                <div ng-messages="signup_form.cvc.$error"
-                                     ng-if="(signup_form.cvc.$dirty ||
-                                            signup_form.$submitted) &&
-                                            signup_form.cvc.$invalid">
+                                <div ng-messages="signupForm.cvc.$error"
+                                     ng-if="(signupForm.cvc.$dirty ||
+                                             signupForm.$submitted) &&
+                                             signupForm.cvc.$invalid">
                                     <div ng-message="required" class="help-block">
                                         This field is required.
                                     </div>
@@ -426,7 +430,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Agreement Checkbox -->
+                    <!-- Agreement -->
                     <div class="form-group">
                         <div class="checkbox">
                             <label>
@@ -436,10 +440,10 @@
                                        required> I agree to the
                                 <a href="#"><b> Terms of Service </b></a> and the
                                 <a href="#"><b> Privacy Policy</b></a>.
-                                <div ng-messages="signup_form.agreement.$error"
-                                     ng-if="(signup_form.agreement.$dirty ||
-                                            signup_form.$submitted) &&
-                                            signup_form.agreement.$invalid">
+                                <div ng-messages="signupForm.agreement.$error"
+                                     ng-if="(signupForm.agreement.$dirty ||
+                                             signupForm.$submitted) &&
+                                             signupForm.agreement.$invalid">
                                     <div ng-message="required"
                                          class="help-block text-danger"> Agreement is required. </div>
                                 </div>
@@ -450,7 +454,7 @@
                     <div class="form-group text-right">
                         <button id="signup_button" type="submit" class="btn btn-success btn-block"
                                 data-loading-text="Processing..."
-                                ng-click="signup_form.$valid && signUp()"> <b> Sign Up </b>
+                                ng-click="signupForm.$valid && signUp()"> <b> Sign Up </b>
                         </button>
                     </div>
                 </form>
