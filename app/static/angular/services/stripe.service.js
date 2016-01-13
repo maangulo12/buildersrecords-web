@@ -5,12 +5,16 @@
         .module('app.service.stripe', [])
         .factory('stripeService', stripeService);
 
-    stripeService.$inject = ['$q'];
+    stripeService.$inject = ['$http', 'store', '$q'];
 
-    function stripeService($q) {
+    function stripeService($http, store, $q) {
+        var url = store.get('api_url') + '/api/stripe';
         var service = {
-            validateCard: validateCard,
-            createToken:  createToken
+            validateCard:         validateCard,
+            createCardToken:      createCardToken,
+            createSubscription:   createSubscription,
+            retrieveSubscription: retrieveSubscription,
+            updateSubscription:   updateSubscription
         };
         return service;
 
@@ -27,7 +31,7 @@
             }
         }
 
-        function createToken(vm) {
+        function createCardToken(vm) {
             var data = {
                 number:    vm.card_number,
                 cvc:       vm.cvc,
@@ -46,6 +50,27 @@
                     }
                 }
             });
+        }
+
+        function createSubscription(vm, token_id) {
+            var data = {
+                email:    vm.email,
+                plan:     vm.plan,
+                token_id: token_id
+            };
+            return $http.post(url, data);
+        }
+
+        function retrieveSubscription() {
+            return $http.get(url + '/' + store.get('user').stripe_id);
+        }
+
+        function updateSubscription(token_id) {
+            var data = {
+                stripe_id: store.get('user').stripe_id,
+                token_id:  token_id
+            };
+            return $http.put(url + '/' + store.get('user').stripe_id, data);
         }
     }
 })();
