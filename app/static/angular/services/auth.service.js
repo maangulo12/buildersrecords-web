@@ -10,9 +10,7 @@
     function authService($http, store, jwtHelper, $q) {
         var url = store.get('api_url') + '/api/auth';
         var service = {
-            authenticate:  authenticate,
-            checkEmail:    checkEmail,
-            checkUsername: checkUsername
+            authenticate: authenticate
         };
         return service;
 
@@ -39,14 +37,6 @@
             function errorHandler(response) {
                 return $q.reject(response);
             }
-        }
-
-        function checkEmail(email) {
-            return $http.post(url + '/email', { email : email });
-        }
-
-        function checkUsername(username) {
-            return $http.post(url + '/username', { username : username });
         }
     }
 })();
