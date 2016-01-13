@@ -2,12 +2,12 @@
     'use strict';
 
     angular
-        .module('app.projects')
+        .module('app.account')
         .config(route);
 
     function route($stateProvider) {
-        $stateProvider.state('projects', {
-            url: '/projects',
+        $stateProvider.state('account', {
+            url: '/account',
             resolve: {
                 User: function(userService, $q) {
                     return userService.retrieve()
@@ -30,8 +30,8 @@
                     }
                 },
                 'body': {
-                    templateUrl:  'static/angular/modules/projects/projects.html',
-                    controller:   'ProjectsController',
+                    templateUrl:  'static/angular/modules/account/account.html',
+                    controller:   'AccountController',
                     controllerAs: 'vm'
                 }
             },

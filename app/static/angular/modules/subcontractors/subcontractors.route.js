@@ -2,12 +2,12 @@
     'use strict';
 
     angular
-        .module('app.projects')
+        .module('app.projects.subcontractors')
         .config(route);
 
     function route($stateProvider) {
-        $stateProvider.state('projects', {
-            url: '/projects',
+        $stateProvider.state('subcontractors', {
+            url: '/projects/subcontractors',
             resolve: {
                 User: function(userService, $q) {
                     return userService.retrieve()
@@ -30,8 +30,8 @@
                     }
                 },
                 'body': {
-                    templateUrl:  'static/angular/modules/projects/projects.html',
-                    controller:   'ProjectsController',
+                    templateUrl:  'static/angular/modules/subcontractors/subcontractors.html',
+                    controller:   'SubcontractorsController',
                     controllerAs: 'vm'
                 }
             },
