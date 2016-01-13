@@ -13,38 +13,36 @@
         store.remove('jwt');
 
         $scope.signUp = function() {
-            var btn = $('#signup_button').button('loading');
+            var btn = $('#signup-button').button('loading');
             var valid = stripeService.validateCard(vm);
 
             if (valid) {
                 createToken()
-                    .then(subscribeUserToStripe)
-                    .then(saveUserInformation)
+                    .then(subscribeUser)
+                    .then(createUser)
                     .then(authenticateUser)
-                    .then(routeToTutorial)
+                    .then(goTutorial)
                     .catch(error);
-
-                function createToken() {
-                    return stripeService.createCardToken(vm);
-                }
-                function subscribeUserToStripe(response) {
-                    return stripeService.createSubscription(vm, response.id);
-                }
-                function saveUserInformation(response) {
-                    return userService.create(vm, response.data.id);
-                }
-                function authenticateUser(response) {
-                    return authService.authenticate(vm.username, vm.password);
-                }
-                function routeToTutorial(response) {
-                    $state.go('tutorial');
-                }
             } else {
                 error();
             }
 
+            function createToken() {
+                return stripeService.createCardToken(vm);
+            }
+            function subscribeUser(response) {
+                return stripeService.createSubscription(vm, response.id);
+            }
+            function createUser(response) {
+                return userService.create(vm, response.data.id);
+            }
+            function authenticateUser(response) {
+                return authService.authenticate(vm.username, vm.password);
+            }
+            function goTutorial(response) {
+                $state.go('tutorial');
+            }
             function error() {
-                // Display Error Message
                 $scope.signupForm.$invalid = true;
                 $scope.signupForm.$submitted = true;
                 btn.button('reset');
