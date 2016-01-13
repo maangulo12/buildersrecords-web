@@ -12,7 +12,7 @@
         store.remove('jwt');
 
         $scope.logIn = function() {
-            var btn = $('#login_button').button('loading');
+            var btn = $('#login-button').button('loading');
             authenticate()
                 .then(routeToProjects)
                 .catch(error);
@@ -24,8 +24,8 @@
                 $state.go('projects');
             }
             function error(response) {
-                $scope.login_form.$invalid = true;
-                $scope.login_form.$submitted = true;
+                $scope.loginForm.$invalid = true;
+                $scope.loginForm.$submitted = true;
                 vm.password = '';
                 btn.button('reset');
             }
