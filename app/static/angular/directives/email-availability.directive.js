@@ -3,7 +3,7 @@
 
     /**
     * @desc checks if an email address already exists
-    * @example <input email-availability></input>
+    * @example <input ng-model="myModel" email-availability></input>
     */
     angular
         .module('app.directive.email-availability', [])

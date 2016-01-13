@@ -3,7 +3,7 @@
 
     /**
     * @desc checks if a username already exists
-    * @example <input username-availability></input>
+    * @example <input ng-model="myModel" username-availability></input>
     */
     angular
         .module('app.directive.username-availability', [])
