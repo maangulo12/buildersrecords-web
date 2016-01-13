@@ -281,17 +281,3 @@ app.service('SubcontractorService', function($http, store) {
         return $http.delete(api_entry + '/' + subcontractor_id);
     }
 });
-// ******************** END ********************
-
-// Functions for /api/uploads
-app.service('UploadService', function($http) {
-    // API: Uploads entry point
-    var api_entry = '/api/uploads';
-    // UPLOAD UBuildIt File
-    this.uploadUbuildit = function(form) {
-        return $http.post(api_entry + '/ubuildit', form, {
-            transformRequest: angular.identity,
-            headers: { 'Content-Type': undefined }
-        });
-    }
-});
