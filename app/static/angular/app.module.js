@@ -18,6 +18,7 @@
         'app.service.stripe',
         'app.service.subscription',
         'app.service.user',
+        'app.service.utility',
         'app.home',
         'app.login',
         'app.signup',
