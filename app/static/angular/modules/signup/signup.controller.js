@@ -5,9 +5,9 @@
         .module('app.signup')
         .controller('SignupController', SignupController);
 
-    SignupController.$inject = ['$scope', 'store', '$state', 'authService', 'stripeService', 'subscriptionService', 'mailService'];
+    SignupController.$inject = ['$scope', 'store', '$state', 'stripeService', 'userService', 'authService'];
 
-    function SignupController($scope, store, $state, authService, stripeService, subscriptionService, mailService) {
+    function SignupController($scope, store, $state, stripeService, userService, authService) {
         var vm = this;
         vm.plan = 'free';
         store.remove('jwt');
@@ -18,20 +18,20 @@
 
             if (valid) {
                 createToken()
-                    .then(createSubscription)
-                    .then(sendRegistrationEmail)
+                    .then(subscribeUserToStripe)
+                    .then(saveUserInformation)
                     .then(authenticateUser)
                     .then(routeToTutorial)
                     .catch(error);
 
                 function createToken() {
-                    return stripeService.createToken(vm);
+                    return stripeService.createCardToken(vm);
                 }
-                function createSubscription(response) {
-                    return subscriptionService.create(vm, response.id);
+                function subscribeUserToStripe(response) {
+                    return stripeService.createSubscription(vm, response.id);
                 }
-                function sendRegistrationEmail(response) {
-                    return mailService.sendRegistration(vm);
+                function saveUserInformation(response) {
+                    return userService.create(vm, response.data.id);
                 }
                 function authenticateUser(response) {
                     return authService.authenticate(vm.username, vm.password);
