@@ -46,6 +46,7 @@
             function error() {
                 // Display Error Message
                 $scope.signupForm.$invalid = true;
+                $scope.signupForm.$submitted = true;
                 btn.button('reset');
             }
         }
