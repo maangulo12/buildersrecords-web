@@ -13,14 +13,15 @@
 
         $scope.logIn = function() {
             var btn = $('#login-button').button('loading');
-            authenticate()
-                .then(routeToProjects)
+
+            authenticateUser()
+                .then(goProjects)
                 .catch(error);
 
-            function authenticate() {
+            function authenticateUser() {
                 return authService.authenticate(vm.username, vm.password);
             }
-            function routeToProjects(response) {
+            function goProjects(response) {
                 $state.go('projects');
             }
             function error(response) {
