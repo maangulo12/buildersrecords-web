@@ -35,12 +35,21 @@
             return $http.post(url, data);
         }
 
-        function update() {
-
+        function update(vm) {
+            var data = {
+                name:    vm.name,
+                address: vm.address,
+                city:    vm.city,
+                state:   vm.state,
+                zipcode: vm.zipcode,
+                home_sq: vm.home_sq,
+                user_id: store.get('user').id
+            };
+            return $http.put(url + '/' + store.get('project').id, data);
         }
 
         function remove() {
-
+            return $http.delete(url + '/' + store.get('project').id);
         }
     }
 
