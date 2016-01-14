@@ -28,7 +28,7 @@
                 city:         vm.city,
                 state:        vm.state,
                 zipcode:      vm.zipcode,
-                home_sq:      vm.home_sq,
+                home_sq:      vm.homeSq,
                 project_type: vm.type,
                 user_id:      store.get('user').id
             };
@@ -42,7 +42,7 @@
                 city:    vm.city,
                 state:   vm.state,
                 zipcode: vm.zipcode,
-                home_sq: vm.home_sq,
+                home_sq: vm.homeSq,
                 user_id: store.get('user').id
             };
             return $http.put(url + '/' + store.get('project').id, data);

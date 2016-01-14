@@ -102,7 +102,7 @@
             vm.updatedProject.city    = store.get('project').city;
             vm.updatedProject.state   = store.get('project').state;
             vm.updatedProject.zipcode = store.get('project').zipcode;
-            vm.updatedProject.home_sq = store.get('project').home_sq;
+            vm.updatedProject.homeSq  = store.get('project').homeSq;
             $scope.editProjectForm.$setPristine();
             $('#edit-project-modal').modal('show');
         }

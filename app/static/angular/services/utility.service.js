@@ -32,7 +32,7 @@
             data.append('city', vm.city);
             data.append('state', vm.state);
             data.append('zipcode', vm.zipcode);
-            data.append('home_sq', vm.home_sq);
+            data.append('home_sq', vm.homeSq);
             data.append('project_type', vm.type);
             data.append('user_id', store.get('user').id);
 

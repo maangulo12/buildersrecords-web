@@ -348,27 +348,27 @@
                         </div>
                         <!-- Home Square Footage Field -->
                         <div class="form-group"
-                             ng-class="{ 'has-error': (newProjectForm.home_sq.$dirty ||
+                             ng-class="{ 'has-error': (newProjectForm.homeSq.$dirty ||
                                                        newProjectForm.$submitted) &&
-                                                       newProjectForm.home_sq.$invalid,
-                                         'has-feedback': (newProjectForm.home_sq.$dirty ||
+                                                       newProjectForm.homeSq.$invalid,
+                                         'has-feedback': (newProjectForm.homeSq.$dirty ||
                                                           newProjectForm.$submitted) &&
-                                                          newProjectForm.home_sq.$invalid }">
-                            <label class="control-label" for="home_sq"> Home Square Footage * </label>
+                                                          newProjectForm.homeSq.$invalid }">
+                            <label class="control-label" for="homeSq"> Home Square Footage * </label>
                             <div class="input-group">
                                 <input class="form-control"
-                                       name="home_sq"
+                                       name="homeSq"
                                        type="text"
                                        placeholder="Home Square Footage"
-                                       ng-model="vm.project.home_sq"
+                                       ng-model="vm.project.homeSq"
                                        required
                                        format="number">
                                 <div class="input-group-addon"> <b> ft<sup>2</sup> </b> </div>
                             </div>
-                            <div ng-messages="newProjectForm.home_sq.$error"
-                                 ng-if="(newProjectForm.home_sq.$dirty ||
+                            <div ng-messages="newProjectForm.homeSq.$error"
+                                 ng-if="(newProjectForm.homeSq.$dirty ||
                                          newProjectForm.$submitted) &&
-                                         newProjectForm.home_sq.$invalid">
+                                         newProjectForm.homeSq.$invalid">
                                 <div ng-message="required"
                                      class="help-block"> This field is required. </div>
                             </div>
@@ -713,32 +713,32 @@
                          </div>
                          <!-- Home Square Footage Field -->
                          <div class="form-group"
-                              ng-class="{ 'has-error': (editProjectForm.home_sq.$dirty ||
+                              ng-class="{ 'has-error': (editProjectForm.homeSq.$dirty ||
                                                         editProjectForm.$submitted) &&
-                                                        editProjectForm.home_sq.$invalid,
-                                          'has-feedback': (editProjectForm.home_sq.$dirty ||
+                                                        editProjectForm.homeSq.$invalid,
+                                          'has-feedback': (editProjectForm.homeSq.$dirty ||
                                                            editProjectForm.$submitted) &&
-                                                           editProjectForm.home_sq.$invalid }">
-                             <label class="control-label" for="home_sq"> Home Square Footage * </label>
+                                                           editProjectForm.homeSq.$invalid }">
+                             <label class="control-label" for="homeSq"> Home Square Footage * </label>
                              <div class="input-group">
                                  <input class="form-control"
-                                        name="home_sq"
+                                        name="homeSq"
                                         type="text"
                                         placeholder="Home Square Footage"
-                                        ng-model="vm.updatedProject.home_sq"
+                                        ng-model="vm.updatedProject.homeSq"
                                         required
                                         format="number">
                                  <div class="input-group-addon"> <b> ft<sup>2</sup> </b> </div>
                              </div>
                              <span class="glyphicon glyphicon-remove form-control-feedback"
-                                   ng-if="(editProjectForm.home_sq.$dirty ||
+                                   ng-if="(editProjectForm.homeSq.$dirty ||
                                            editProjectForm.$submitted) &&
-                                           editProjectForm.home_sq.$invalid">
+                                           editProjectForm.homeSq.$invalid">
                              </span>
-                             <div ng-messages="editProjectForm.home_sq.$error"
-                                  ng-if="(editProjectForm.home_sq.$dirty ||
+                             <div ng-messages="editProjectForm.homeSq.$error"
+                                  ng-if="(editProjectForm.homeSq.$dirty ||
                                           editProjectForm.$submitted) &&
-                                          editProjectForm.home_sq.$invalid">
+                                          editProjectForm.homeSq.$invalid">
                                  <div ng-message="required"
                                       class="help-block"> This field is required. </div>
                              </div>
