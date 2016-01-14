@@ -52,4 +52,7 @@ pip3 install -r /vagrant/requirements.txt
 # Install Heroku Toolbelt
 wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh
 
+# Install SASS
+sudo gem install sass
+
 CONTENTS
