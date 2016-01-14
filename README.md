@@ -10,6 +10,10 @@ BuildersRecords Web Application.
     * Create project upload file error msg
     * Update email / username
     * Change password
+    * Update credit card
+    * Update plan
+    * Cancel subscription
+    * Invoice history
 
     * Fix signUp error msg
     * Payment not processed
