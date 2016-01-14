@@ -62,3 +62,6 @@ target/
 ### Sass
 .sass-cache
 *.css.map
+
+# webassets
+.webassets-cache
