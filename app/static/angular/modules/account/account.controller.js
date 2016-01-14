@@ -9,13 +9,9 @@
 
     function AccountController($scope, User, userService) {
         var vm = this;
-		init();
-
-	    function init() {
-	        vm.account          = {};
-	        vm.account.email    = User.email;
-	        vm.account.username = User.username;
-	    }
+        vm.account = {};
+        vm.account.email = User.email;
+        vm.account.username = User.username;
 
         // Needs work
         // Change email in Stripe
