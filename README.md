@@ -6,9 +6,20 @@ BuildersRecords Web Application.
 
 + Priorities:
 ```
-    * Flask-Assets
+    * Bulk delete project
+    * Create project upload file error msg
+    * Update email / username
+    * Change password
+
+    * Fix signUp error msg
+    * Payment not processed
+
     * Forgot Password
-    * Tutorial video
+    * Send Feedback
+    * Tutorial Video
+    * Terms of Service and Privacy Policy
+
+    * Redesign Home Page
 ```
 
 ## Required Software

@@ -3,13 +3,13 @@
 
     /**
     * @desc checks if an email address already exists
-    * @example <input email-availability></input>
+    * @example <input ng-model="myModel" email-availability></input>
     */
     angular
         .module('app.directive.email-availability', [])
         .directive('emailAvailability', emailAvailability);
 
-    function emailAvailability($q, authService) {
+    function emailAvailability($q, utilityService) {
         var directive = {
             restrict: 'A',
             require:  'ngModel',
@@ -19,7 +19,7 @@
 
         function linkFunc(scope, el, attr, ctrl) {
             ctrl.$asyncValidators.emailAvailability = function(email) {
-                return authService.checkEmail(email)
+                return utilityService.verifyEmail(email)
                     .then(responseHandler)
                     .catch(errorHandler);
 

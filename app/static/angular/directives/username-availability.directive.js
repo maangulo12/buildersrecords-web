@@ -3,13 +3,13 @@
 
     /**
     * @desc checks if a username already exists
-    * @example <input username-availability></input>
+    * @example <input ng-model="myModel" username-availability></input>
     */
     angular
         .module('app.directive.username-availability', [])
         .directive('usernameAvailability', usernameAvailability);
 
-    function usernameAvailability($q, authService) {
+    function usernameAvailability($q, utilityService) {
         var directive = {
             restrict: 'A',
             require:  'ngModel',
@@ -19,7 +19,7 @@
 
         function linkFunc(scope, el, attr, ctrl) {
             ctrl.$asyncValidators.usernameAvailability = function(username) {
-                return authService.checkUsername(username)
+                return utilityService.verifyUsername(username)
                     .then(responseHandler)
                     .catch(errorHandler);
 

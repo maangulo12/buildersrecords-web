@@ -12,8 +12,8 @@
         -Flask-Assets : http://flask-assets.readthedocs.org/en/latest/
 """
 
-from flask import Flask, make_response, render_template
-from flask.ext.assets import Environment, Bundle
+from flask import Flask, render_template
+from flask.ext.assets import Environment
 
 
 # Create Flask application
@@ -23,13 +23,10 @@ app = Flask(__name__)
 app.config.from_pyfile('settings.py')
 
 # Extensions
-assets = Environment(app)
+env = Environment(app)
 
 # Assets
-css = Bundle('/css/main.scss', filters='scss', output='/css/main.min.css',
-              debug=app.config['DEBUG'])
-
-# assets.register(css)
+from app import assets
 
 # Views
 @app.route('/', defaults={'url': ''})

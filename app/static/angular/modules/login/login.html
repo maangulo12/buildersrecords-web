@@ -13,7 +13,7 @@
             <div class="well">
                 <!-- Alert -->
                 <div class="alert alert-danger alert-dismissible text-center" role="alert"
-                     ng-if="login_form.$invalid && login_form.$submitted">
+                     ng-if="loginForm.$invalid && loginForm.$submitted">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     <span class="sr-only"> Error: </span>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -21,15 +21,15 @@
                     </button> <b> Incorrect username/email and password combination. </b>
                 </div>
                 <!-- Form -->
-                <form name="login_form" novalidate>
+                <form name="loginForm" novalidate>
                     <!-- Username Field -->
                     <div class="form-group"
-                         ng-class="{ 'has-error': (login_form.username.$dirty ||
-                                                  login_form.$submitted) &&
-                                                  login_form.username.$invalid,
-                                     'has-feedback': (login_form.username.$dirty ||
-                                                     login_form.$submitted) &&
-                                                     login_form.username.$invalid }">
+                         ng-class="{ 'has-error': (loginForm.username.$dirty ||
+                                                   loginForm.$submitted) &&
+                                                   loginForm.username.$invalid,
+                                     'has-feedback': (loginForm.username.$dirty ||
+                                                      loginForm.$submitted) &&
+                                                      loginForm.username.$invalid }">
                         <label class="control-label" for="username"> Username or Email Address </label>
                         <input class="form-control"
                                name="username"
@@ -39,19 +39,19 @@
                                required
                                autofocus>
                         <span class="glyphicon glyphicon-remove form-control-feedback"
-                              ng-if="(login_form.username.$dirty ||
-                                     login_form.$submitted) &&
-                                     login_form.username.$invalid">
+                              ng-if="(loginForm.username.$dirty ||
+                                      loginForm.$submitted) &&
+                                      loginForm.username.$invalid">
                         </span>
                     </div>
                     <!-- Password Field -->
                     <div class="form-group"
-                         ng-class="{ 'has-error': (login_form.password.$dirty ||
-                                                  login_form.$submitted) &&
-                                                  login_form.password.$invalid,
-                                     'has-feedback': (login_form.password.$dirty ||
-                                                     login_form.$submitted) &&
-                                                     login_form.password.$invalid }">
+                         ng-class="{ 'has-error': (loginForm.password.$dirty ||
+                                                   loginForm.$submitted) &&
+                                                   loginForm.password.$invalid,
+                                     'has-feedback': (loginForm.password.$dirty ||
+                                                      loginForm.$submitted) &&
+                                                      loginForm.password.$invalid }">
                         <label class="control-label" for="password"> Password </label>
                         <input class="form-control"
                                name="password"
@@ -60,9 +60,9 @@
                                ng-model="vm.password"
                                required>
                         <span class="glyphicon glyphicon-remove form-control-feedback"
-                              ng-if="(login_form.password.$dirty ||
-                                     login_form.$submitted) &&
-                                     login_form.password.$invalid">
+                              ng-if="(loginForm.password.$dirty ||
+                                      loginForm.$submitted) &&
+                                      loginForm.password.$invalid">
                         </span>
                     </div>
                     <!-- Forgot Password -->
@@ -71,9 +71,9 @@
                     <br><br>
                     <!-- Submit -->
                     <div class="form-group text-right">
-                        <button id="login_button" type="submit" class="btn btn-success btn-block"
+                        <button id="login-button" type="submit" class="btn btn-success btn-block"
                                 data-loading-text="Logging In..."
-                                ng-click="login_form.$valid && logIn()"> <b> Log In </b>
+                                ng-click="loginForm.$valid && logIn()"> <b> Log In </b>
                         </button>
                     </div>
                 </form>

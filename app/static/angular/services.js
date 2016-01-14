@@ -28,46 +28,6 @@ app.service('User', function($http, store) {
     }
 });
 
-// Functions for /api/projects
-app.service('ProjectService', function($http, store) {
-    // API: Projects entry point
-    var api_entry = '/api/projects';
-    // GET list of Projects
-    this.getProjects = function() {
-        return $http.get(api_entry + query('user_id', 'equals', store.get('user').id));
-    }
-    // POST Project
-    this.addProject = function(form) {
-        return $http.post(api_entry, {
-            name:         form.name,
-            address:      form.address,
-            city:         form.city,
-            state:        form.state,
-            zipcode:      form.zipcode,
-            home_sq:      form.home_sq,
-            project_type: form.type,
-            user_id:      store.get('user').id
-        });
-    }
-    // PUT Project
-    this.updateProject = function(form) {
-        return $http.put(api_entry + '/' + store.get('project').id, {
-            name:         form.name,
-            address:      form.address,
-            city:         form.city,
-            state:        form.state,
-            zipcode:      form.zipcode,
-            home_sq:      form.home_sq,
-            project_type: form.type,
-            user_id:      store.get('user').id
-        });
-    }
-    // DELETE Project
-    this.deleteProject = function() {
-        return $http.delete(api_entry + '/' + store.get('project').id);
-    }
-});
-
 // Functions for /api/categories
 app.service('CategoryService', function($http, store) {
     // API: Categories entry point
@@ -279,19 +239,5 @@ app.service('SubcontractorService', function($http, store) {
     // DELETE Subcontractor
     this.deleteSubcontractor = function(subcontractor_id) {
         return $http.delete(api_entry + '/' + subcontractor_id);
-    }
-});
-// ******************** END ********************
-
-// Functions for /api/uploads
-app.service('UploadService', function($http) {
-    // API: Uploads entry point
-    var api_entry = '/api/uploads';
-    // UPLOAD UBuildIt File
-    this.uploadUbuildit = function(form) {
-        return $http.post(api_entry + '/ubuildit', form, {
-            transformRequest: angular.identity,
-            headers: { 'Content-Type': undefined }
-        });
     }
 });

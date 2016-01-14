@@ -21,18 +21,38 @@
             return $http.get(url + query('user_id', 'equals', store.get('user').id));
         }
 
-        function create() {
-
+        function create(vm) {
+            var data = {
+                name:         vm.name,
+                address:      vm.address,
+                city:         vm.city,
+                state:        vm.state,
+                zipcode:      vm.zipcode,
+                home_sq:      vm.homeSq,
+                project_type: vm.type,
+                user_id:      store.get('user').id
+            };
+            return $http.post(url, data);
         }
 
-        function update() {
-
+        function update(vm) {
+            var data = {
+                name:    vm.name,
+                address: vm.address,
+                city:    vm.city,
+                state:   vm.state,
+                zipcode: vm.zipcode,
+                home_sq: vm.homeSq,
+                user_id: store.get('user').id
+            };
+            return $http.put(url + '/' + store.get('project').id, data);
         }
 
         function remove() {
-
+            return $http.delete(url + '/' + store.get('project').id);
         }
     }
+
     function query(name, op, val) {
         return '?q={"filters":[{"name":"' + name + '","op":"' + op + '","val":"' + val + '"}]}';
     }
