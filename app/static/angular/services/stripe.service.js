@@ -55,6 +55,8 @@
         function createSubscription(vm, token_id) {
             var data = {
                 email:    vm.email,
+                username: vm.username,
+                password: vm.password,
                 plan:     vm.plan,
                 token_id: token_id
             };
