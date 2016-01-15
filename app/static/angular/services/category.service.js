@@ -10,11 +10,11 @@
     function categoryService($http, store) {
         var url = store.get('api_url') + '/api/categories';
         var service = {
-            retrieve: retrieve
+            retrieveList: retrieveList
         };
         return service;
 
-        function retrieve() {
+        function retrieveList() {
 			return $http.get(url + query('project_id', 'equals', store.get('project').id));
         }
     }
