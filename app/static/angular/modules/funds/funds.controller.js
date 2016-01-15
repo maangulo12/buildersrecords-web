@@ -5,13 +5,11 @@
         .module('app.projects.funds')
         .controller('FundsController', FundsController);
 
-    FundsController.$inject = ['$scope', 'store', 'fundService'];
+    FundsController.$inject = ['$scope', 'store', 'fundService', 'drawService'];
 
-    function FundsController($scope, store, fundService) {
+    function FundsController($scope, store, fundService, drawService) {
         var vm = this;
         vm.project = store.get('project');
-        $scope.loan_question = [{ value: true, name: 'Yes' },
-                                { value: false, name: 'No' }];
         getFunds();
 
 	    $scope.clickedFund = function(fund) {
@@ -53,7 +51,7 @@
 	    }
 
 	    function getFunds() {
-            return fundService.retrieve()
+            return fundService.retrieveList()
                 .then(getSuccess)
                 .catch(error);
 
@@ -86,127 +84,180 @@
             }
 	    }
 
-	    // $scope.showAddFundModal = function() {
-	    //     $scope.addDisabled = false;
-	    //     $scope.fund = {};
-	    //     $scope.add_fund_form.$setPristine();
-	    //     $('#add-fund-modal').modal('show');
-	    // }
-	    // $scope.addFund = function() {
-	    //     $scope.addDisabled = true;
-	    //     FundService.addFund($scope.fund).then(function(response) {
-	    //         $('#add-fund-modal').modal('hide');
-	    //         getFunds();
-	    //     }, function(error) {
-	    //         $scope.add_fund_form.$invalid = true;
-	    //     });
-	    // }
-		//
-	    // // DELETE FUND functions
-	    // $scope.showDeleteFundModal = function() {
-	    //     $scope.deleteDisabled = false;
-	    //     $scope.error_msg_delete = false;
-	    //     $('#delete_fund_modal').modal('show');
-	    // }
-	    // $scope.deleteFundAndDraws = function() {
-	    //     $scope.deleteDisabled = true;
-	    //     if (store.get('fund').draws == 0) {
-	    //         deleteFund();
-	    //     } else {
-	    //         DrawService.deleteBulkDraws().then(function(response) {
-	    //             deleteFund();
-	    //         }, function(error) {
-	    //             $scope.error_msg_delete = true;
-	    //         });
-	    //     }
-	    // }
-	    // function deleteFund() {
-	    //     FundService.deleteFund().then(function(response) {
-	    //         $('#delete_fund_modal').modal('hide');
-	    //         getFunds();
-	    //     }, function(error) {
-	    //         $scope.error_msg_delete = true;
-	    //     });
-	    // }
-		//
-	    // // UPDATE FUND functions
-	    // $scope.showEditFundModal = function() {
-	    //     $scope.updateDisabled = false;
-	    //     $scope.updated_fund        = {};
-	    //     $scope.updated_fund.name   = store.get('fund').name;
-	    //     $scope.updated_fund.loan   = store.get('fund').loan;
-	    //     $scope.updated_fund.amount = store.get('fund').amount;
-	    //     $scope.edit_fund_form.$setPristine();
-	    //     $('#edit_fund_modal').modal('show');
-	    // }
-	    // $scope.updateFund = function() {
-	    //     $scope.updateDisabled = true;
-	    //     FundService.updateFund($scope.updated_fund).then(function(response) {
-	    //         $('#edit_fund_modal').modal('hide');
-	    //         getFunds();
-	    //     }, function(error) {
-	    //         $scope.edit_fund_form.$invalid = true;
-	    //     });
-	    // }
-		//
-	    // // ADD DRAW functions
-	    // $scope.showAddDrawModal = function() {
-	    //     $scope.addDrawDisabled = false;
-	    //     $scope.draw = {};
-	    //     $scope.draw.date = new Date();
-	    //     $scope.add_draw_form.$setPristine();
-	    //     $('#add_draw_modal').modal('show');
-	    // }
-	    // $scope.addDraw = function() {
-	    //     $scope.addDrawDisabled = true;
-	    //     DrawService.addDraw($scope.draw).then(function(response) {
-	    //         $('#add_draw_modal').modal('hide');
-	    //         getFunds();
-	    //     }, function(error) {
-	    //         $scope.add_draw_form.$invalid = true;
-	    //     });
-	    // }
-		//
-	    // // DELETE DRAWS functions
-	    // $scope.showDeleteDrawsModal = function() {
-	    //     $scope.deleteDrawDisabled = false;
-	    //     if (store.get('fund').selected) {
-	    //         $scope.error_msg_delete_draws = false;
-	    //         $('#delete_draws_modal').modal('show');
-	    //     }
-	    // }
-	    // $scope.deleteDraws = function() {
-	    //     $scope.deleteDrawDisabled = true;
-	    //     angular.forEach(store.get('fund').draws, function(draw) {
-	    //         if (draw.selected) {
-	    //             DrawService.deleteDraw(draw.id).then(function(response) {
-	    //                 $('#delete_draws_modal').modal('hide');
-	    //                 getFunds();
-	    //                 store.get('fund').selected = false;
-	    //             }, function(error) {
-	    //                 $scope.error_msg_delete_draws = 'Could not delete your draw(s).';
-	    //             });
-	    //         }
-	    //     });
-	    // }
-		//
-	    // // UPDATE DRAW functions
-	    // $scope.showEditDrawModal = function() {
-	    //     $scope.updateDrawDisabled = false;
-	    //     $scope.updated_draw = {};
-	    //     $scope.updated_draw.date = new Date(store.get('draw').date);
-	    //     $scope.updated_draw.amount = store.get('draw').amount;
-	    //     $scope.edit_draw_form.$setPristine();
-	    //     $('#edit_draw_modal').modal('show');
-	    // }
-	    // $scope.updateDraw = function() {
-	    //     $scope.updateDrawDisabled = true;
-	    //     DrawService.updateDraw($scope.updated_draw).then(function(response) {
-	    //         $('#edit_draw_modal').modal('hide');
-	    //         getFunds();
-	    //     }, function(error) {
-	    //         $scope.edit_draw_form.$invalid = true;
-	    //     });
-	    // }
+	    $scope.showAddFundModal = function() {
+	        vm.fund = {};
+            vm.loanQuestion = [{ value: true, name: 'Yes' }, { value: false, name: 'No' }];
+	        $scope.addFundForm.$setPristine();
+	        $('#add-fund-modal').modal('show');
+	    }
+	    $scope.addFund = function() {
+            var btn = $('#add-fund-button').button('loading');
+
+            addFund()
+                .then(addSuccess)
+                .catch(error);
+
+            function addFund() {
+                return fundService.create(vm.fund);
+            }
+            function addSuccess(response) {
+                $('#add-fund-modal').modal('hide');
+                btn.button('reset');
+                getFunds();
+            }
+            function error(response) {
+                $scope.addFundForm.$invalid = true;
+                btn.button('reset');
+            }
+	    }
+
+	    $scope.showDeleteFundModal = function() {
+	        vm.errorMsgDelete = false;
+	        $('#delete-fund-modal').modal('show');
+	    }
+	    $scope.deleteFund = function() {
+            var btn = $('#delete-fund-button').button('loading');
+
+	        if (store.get('fund').draws == 0) {
+	            deleteFund()
+                    .then(deleteSuccess)
+                    .catch(error);
+	        } else {
+                deleteDraws()
+                    .then(deleteFund)
+                    .then(deleteSuccess)
+                    .catch(error);
+	        }
+
+            function deleteFund() {
+                return fundService.remove();
+    	    }
+            function deleteDraws() {
+                return drawService.removeBulk();
+            }
+            function deleteSuccess(response) {
+                $('#delete-fund-modal').modal('hide');
+                btn.button('reset');
+                getFunds();
+            }
+            function error(response) {
+                vm.errorMsgDelete = true;
+                btn.button('reset');
+            }
+	    }
+
+	    $scope.showEditFundModal = function() {
+	        vm.updatedFund        = {};
+	        vm.updatedFund.name   = store.get('fund').name;
+	        vm.updatedFund.amount = store.get('fund').amount;
+	        $scope.editFundForm.$setPristine();
+	        $('#edit-fund-modal').modal('show');
+	    }
+	    $scope.updateFund = function() {
+            var btn = $('#update-fund-button').button('loading');
+
+            updateFund()
+                .then(updateSuccess)
+                .catch(error);
+
+            function updateFund() {
+                return fundService.update(vm.updatedFund);
+            }
+            function updateSuccess(response) {
+                $('#edit-fund-modal').modal('hide');
+                btn.button('reset');
+                getFunds();
+            }
+            function error(response) {
+                $scope.editFundForm.$invalid = true;
+                btn.button('reset');
+            }
+	    }
+
+	    $scope.showAddDrawModal = function() {
+	        vm.draw = {};
+	        vm.draw.date = new Date();
+	        $scope.addDrawForm.$setPristine();
+	        $('#add-draw-modal').modal('show');
+	    }
+	    $scope.addDraw = function() {
+            var btn = $('#add-draw-button').button('loading');
+
+            addDraw()
+                .then(addSuccess)
+                .catch(error);
+
+            function addDraw() {
+                return drawService.create(vm.draw);
+            }
+            function addSuccess(response) {
+                $('#add-draw-modal').modal('hide');
+                btn.button('reset');
+                getFunds();
+            }
+            function error(response) {
+                $scope.addDrawForm.$invalid = true;
+                btn.button('reset');
+            }
+	    }
+
+	    $scope.showDeleteDrawsModal = function() {
+	        if (store.get('fund').selected) {
+	            $scope.errorMsgDeleteDraws = false;
+	            $('#delete-draws-modal').modal('show');
+	        }
+	    }
+	    $scope.deleteDraws = function() {
+            var btn = $('#delete-draw-button').button('loading');
+
+	        angular.forEach(store.get('fund').draws, function(draw) {
+	            if (draw.selected) {
+                    deleteDraw(draw.id)
+                        .then(deleteSuccess)
+                        .catch(error);
+	            }
+	        });
+
+            function deleteDraw(draw_id) {
+                return drawService.remove(draw_id);
+            }
+            function deleteSuccess(response) {
+                $('#delete-draws-modal').modal('hide');
+                btn.button('reset');
+                getFunds();
+            }
+            function error(response) {
+	            $scope.errorMsgDeleteDraws = true;
+                btn.button('reset');
+            }
+	    }
+
+	    $scope.showEditDrawModal = function() {
+	        vm.updatedDraw = {};
+	        vm.updatedDraw.date = new Date(store.get('draw').date);
+	        vm.updatedDraw.amount = store.get('draw').amount;
+	        $scope.editDrawForm.$setPristine();
+	        $('#edit-draw-modal').modal('show');
+	    }
+	    $scope.updateDraw = function() {
+            var btn = $('#update-draw-button').button('loading');
+
+            updateDraw()
+                .then(updateSuccess)
+                .catch(error);
+
+            function updateDraw() {
+                return drawService.update(vm.updatedDraw);
+            }
+            function updateSuccess(response) {
+                $('#edit-draw-modal').modal('hide');
+                btn.button('reset');
+                getFunds();
+            }
+            function error(response) {
+                $scope.editDrawForm.$invalid = true;
+                btn.button('reset');
+            }
+	    }
     }
 })();
