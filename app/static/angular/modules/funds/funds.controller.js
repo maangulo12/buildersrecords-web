@@ -86,18 +86,16 @@
             }
 	    }
 
-		//
-	    // // ADD FUND functions
 	    // $scope.showAddFundModal = function() {
 	    //     $scope.addDisabled = false;
 	    //     $scope.fund = {};
 	    //     $scope.add_fund_form.$setPristine();
-	    //     $('#add_fund_modal').modal('show');
+	    //     $('#add-fund-modal').modal('show');
 	    // }
 	    // $scope.addFund = function() {
 	    //     $scope.addDisabled = true;
 	    //     FundService.addFund($scope.fund).then(function(response) {
-	    //         $('#add_fund_modal').modal('hide');
+	    //         $('#add-fund-modal').modal('hide');
 	    //         getFunds();
 	    //     }, function(error) {
 	    //         $scope.add_fund_form.$invalid = true;
