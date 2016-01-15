@@ -11,7 +11,7 @@
         var vm = this;
         vm.project = store.get('project');
 
-		var options = {
+        var options = {
             chart: {
                 type: 'column'
             },
@@ -50,11 +50,11 @@
             }
         };
 
-	    var barchart = $('#barchart-container').highcharts(options);
+        var barchart = $('#barchart-container').highcharts(options);
         updateChart();
         showTable();
 
-	    function updateChart() {
+        function updateChart() {
             return categoryService.retrieve()
                 .then(getSuccess)
                 .catch(error);
@@ -94,9 +94,9 @@
             function error(response) {
                 vm.errorMsgGet = true;
             }
-	    }
+        }
 
-	    function showTable() {
+        function showTable() {
             return categoryService.retrieve()
                 .then(getSuccess)
                 .catch(error);
@@ -141,6 +141,6 @@
             function error(response) {
                 vm.errorMsgGet = true;
             }
-	    }
+        }
     }
 })();
