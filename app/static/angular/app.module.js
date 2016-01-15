@@ -13,6 +13,7 @@
         'app.directive.username-availability',
         'app.services',
         'app.service.auth',
+        'app.service.category',
         'app.service.projects',
         'app.service.stripe',
         'app.service.user',
