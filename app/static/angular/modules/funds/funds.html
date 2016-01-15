@@ -23,7 +23,7 @@
                 <b> Overview </b>
             </a>
         </li>
-        <!-- Funds & Loans -->
+        <!-- Funds -->
         <li role="presentation" class="active">
             <a ui-sref="funds">
                 <span class="glyphicon glyphicon-piggy-bank glyphicon-padding" aria-hidden="true"></span>
@@ -53,13 +53,17 @@
         </li>
     </ul>
     <!-- Error Alert -->
-    <div class="alert alert-danger alert-dismissible text-center" role="alert"
-         ng-if="vm.errorMsgGet">
-        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-        <span class="sr-only"> Error: </span>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true"> &times; </span>
-        </button> <b> Could not access your funds. Please refresh the page. </b>
+    <div ng-if="vm.errorMsgGet">
+        <!-- Line Break -->
+        <br>
+        <!-- Alert -->
+        <div class="alert alert-danger alert-dismissible text-center" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only"> Error: </span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true"> &times; </span>
+            </button> <b> Could not access your funds. Please refresh the page. </b>
+        </div>
     </div>
     <!-- Page Header -->
     <div class="page-header">
@@ -300,7 +304,7 @@
         </div>
     </div>
     <!-- Line Breaks -->
-    <br><br><br>
+    <br><br><br><br>
 </div>
 
 <!-- MODALS -->
