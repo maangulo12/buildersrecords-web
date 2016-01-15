@@ -5,86 +5,87 @@
         .module('app.projects.funds')
         .controller('FundsController', FundsController);
 
-    FundsController.$inject = ['$scope'];
+    FundsController.$inject = ['$scope', 'store', 'fundService'];
 
-    function FundsController($scope) {
+    function FundsController($scope, store, fundService) {
         var vm = this;
+        vm.project = store.get('project');
+        $scope.loan_question = [{ value: true, name: 'Yes' },
+                                { value: false, name: 'No' }];
+        getFunds();
 
-		// init();
-		//
-	    // function init() {
-	    //     $scope.username = store.get('user').username;
-	    //     getFunds();
-	    //     $scope.loan_question = [{ value: true, name: 'Yes' },
-	    //                             { value: false, name: 'No' }];
-	    // }
-		//
-	    // // CLICKED EVENT functions
-	    // $scope.clickedFund = function(fund) {
-	    //     var index = $scope.fund_list.indexOf(fund);
-	    //     if (index !== -1) {
-	    //         store.set('fund', fund);
-	    //         return true;
-	    //     }
-	    //     return false;
-	    // }
-	    // $scope.clickedDraw = function(draw) {
-	    //     var index = store.get('fund').draws.indexOf(draw);
-	    //     if (index !== -1) {
-	    //         store.set('draw', draw);
-	    //         return true;
-	    //     }
-	    //     return false;
-	    // }
-	    // $scope.clickedAllCheckbox = function() {
-	    //     angular.forEach(store.get('fund').draws, function(draw) {
-	    //         draw.selected = store.get('fund').checkboxAll;
-	    //         store.get('fund').selected = draw.selected;
-	    //     });
-	    // }
-	    // $scope.clickedSingleCheckbox = function(draw) {
-	    //     if (draw.selected) {
-	    //         store.get('fund').selected = true;
-	    //     } else {
-	    //         var is_selected = false;
-	    //         angular.forEach(store.get('fund').draws, function(d) {
-	    //             if (d.selected) {
-	    //                 is_selected = true;
-	    //             }
-	    //         });
-	    //         store.get('fund').selected = is_selected;
-	    //     }
-	    // }
-		//
-	    // // GET FUNDS function
-	    // function getFunds() {
-	    //     FundService.getFunds().then(function(response) {
-	    //         $scope.fund_list = response.data.objects;
-		//
-	    //         angular.forEach(response.data.objects, function(fund) {
-	    //             var total_expenditure = 0;
-		//
-	    //             angular.forEach(fund.expenditures, function(expenditure) {
-	    //                 total_expenditure += expenditure.cost;
-	    //             });
-	    //             fund.total_expenditure = total_expenditure;
-		//
-	    //             var total_draw = 0;
-	    //             angular.forEach(fund.draws, function(draw) {
-	    //                 total_draw += draw.amount;
-	    //             });
-	    //             fund.total_draw = total_draw;
-		//
-	    //             fund.spent = Math.round(total_expenditure / fund.amount * 100);
-	    //             fund.left  = Math.round((fund.amount - total_expenditure) / fund.amount * 100);
-		//
-	    //             fund.draw_received = Math.round(total_draw / fund.amount * 100);
-	    //             fund.draw_left     = Math.round((fund.amount - total_draw) / fund.amount * 100);
-	    //         });
-	    //     }, function(error) {
-	    //         $scope.error_msg_get = true;
-	    //     });
-	    // }
+	    $scope.clickedFund = function(fund) {
+	        var index = vm.fundList.indexOf(fund);
+	        if (index !== -1) {
+	            store.set('fund', fund);
+	            return true;
+	        }
+	        return false;
+	    }
+
+	    $scope.clickedDraw = function(draw) {
+	        var index = store.get('fund').draws.indexOf(draw);
+	        if (index !== -1) {
+	            store.set('draw', draw);
+	            return true;
+	        }
+	        return false;
+	    }
+
+	    $scope.clickedAllCheckbox = function() {
+	        angular.forEach(store.get('fund').draws, function(draw) {
+	            draw.selected = store.get('fund').checkboxAll;
+	            store.get('fund').selected = draw.selected;
+	        });
+	    }
+	    $scope.clickedSingleCheckbox = function(draw) {
+	        if (draw.selected) {
+	            store.get('fund').selected = true;
+	        } else {
+	            var is_selected = false;
+	            angular.forEach(store.get('fund').draws, function(d) {
+	                if (d.selected) {
+	                    is_selected = true;
+	                }
+	            });
+	            store.get('fund').selected = is_selected;
+	        }
+	    }
+
+	    function getFunds() {
+            return fundService.retrieve()
+                .then(getSuccess)
+                .catch(error);
+
+            function getSuccess(response) {
+                vm.fundList = response.data.objects;
+
+	            angular.forEach(response.data.objects, function(fund) {
+	                var totalExpenditure = 0;
+
+	                angular.forEach(fund.expenditures, function(expenditure) {
+	                    totalExpenditure += expenditure.cost;
+	                });
+	                fund.total_expenditure = totalExpenditure;
+
+	                var totalDraw = 0;
+	                angular.forEach(fund.draws, function(draw) {
+	                    totalDraw += draw.amount;
+	                });
+	                fund.total_draw = totalDraw;
+
+	                fund.spent = Math.round(totalExpenditure / fund.amount * 100);
+	                fund.left  = Math.round((fund.amount - totalExpenditure) / fund.amount * 100);
+
+	                fund.draw_received = Math.round(totalDraw / fund.amount * 100);
+	                fund.draw_left     = Math.round((fund.amount - totalDraw) / fund.amount * 100);
+	            });
+            }
+            function error(response) {
+	            $scope.errorMsgGet = true;
+            }
+	    }
+
 		//
 	    // // ADD FUND functions
 	    // $scope.showAddFundModal = function() {
