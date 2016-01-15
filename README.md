@@ -14,6 +14,8 @@ BuildersRecords Web Application.
     * Update plan
     * Cancel subscription
     * Invoice history
+    * Overview table missing values
+    * Edit Draw date is off
 
     * Fix signUp error msg
     * Payment not processed
