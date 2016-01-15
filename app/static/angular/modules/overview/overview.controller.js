@@ -10,52 +10,55 @@
     function OverviewController($scope, store, categoryService) {
         var vm = this;
         vm.project = store.get('project');
-
-        var options = {
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: ''
-            },
-            tooltip: {
-                headerFormat: '<span style="font-size:14px"> {point.key} </span><table>',
-                pointFormat:  '<tr><td style="color: {series.color}"> {series.name}: </td>' +
-                              '<td> <b> ${point.y:.2f} </b> </td></tr>',
-                footerFormat: '</table>',
-                shared:       true,
-                useHTML:      true
-            },
-            xAxis: {
-                categories: [],
-                crosshair: true
-            },
-            yAxis: {
-                title: {
-                    text: 'Dollars'
-                }
-            },
-            series: [{
-                name: 'Estimated Cost',
-                data: []
-            }, {
-                name: 'Actual Cost',
-                data: []
-            }, {
-                name: 'Paid',
-                data: []
-            }],
-            credits: {
-                enabled: false
-            }
-        };
-
+        var options = chartOptions();
         var barchart = $('#barchart-container').highcharts(options);
-        updateChart();
-        showTable();
+        displayChart();
+        displayTable();
 
-        function updateChart() {
-            return categoryService.retrieve()
+        function chartOptions() {
+            var opt = {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: ''
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:14px"> {point.key} </span><table>',
+                    pointFormat:  '<tr><td style="color: {series.color}"> {series.name}: </td>' +
+                                  '<td> <b> ${point.y:.2f} </b> </td></tr>',
+                    footerFormat: '</table>',
+                    shared:       true,
+                    useHTML:      true
+                },
+                xAxis: {
+                    categories: [],
+                    crosshair: true
+                },
+                yAxis: {
+                    title: {
+                        text: 'Dollars'
+                    }
+                },
+                series: [{
+                    name: 'Estimated Cost',
+                    data: []
+                }, {
+                    name: 'Actual Cost',
+                    data: []
+                }, {
+                    name: 'Paid',
+                    data: []
+                }],
+                credits: {
+                    enabled: false
+                }
+            };
+            return opt;
+        }
+
+        function displayChart() {
+            return categoryService.retrieveList()
                 .then(getSuccess)
                 .catch(error);
 
@@ -96,8 +99,8 @@
             }
         }
 
-        function showTable() {
-            return categoryService.retrieve()
+        function displayTable() {
+            return categoryService.retrieveList()
                 .then(getSuccess)
                 .catch(error);
 
