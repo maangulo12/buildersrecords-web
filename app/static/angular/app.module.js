@@ -14,6 +14,7 @@
         'app.services',
         'app.service.auth',
         'app.service.category',
+        'app.service.fund',
         'app.service.projects',
         'app.service.stripe',
         'app.service.user',
