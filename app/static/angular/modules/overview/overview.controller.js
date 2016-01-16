@@ -5,9 +5,9 @@
         .module('app.projects.overview')
         .controller('OverviewController', OverviewController);
 
-    OverviewController.$inject = ['$scope', 'store', 'categoryService'];
+    OverviewController.$inject = ['store', 'categoryService'];
 
-    function OverviewController($scope, store, categoryService) {
+    function OverviewController(store, categoryService) {
         var vm = this;
         vm.project = store.get('project');
 
@@ -33,7 +33,7 @@
             },
             xAxis: {
                 categories: [],
-                crosshair: true
+                crosshair:  true
             },
             yAxis: {
                 title: {
