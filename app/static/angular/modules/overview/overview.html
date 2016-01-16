@@ -179,15 +179,15 @@
                 <!-- Grand Total -->
                 <td> <b> Grand Total </b> </td>
                 <!-- Estimated -->
-                <td class="text-right"> <b> {{ grandTotalEstimated | currency }} </b> </td>
+                <td class="text-right"> <b> {{ vm.grandTotalEstimated | currency }} </b> </td>
                 <!-- Actual -->
-                <td class="text-right"> <b> {{ grandTotalActual | currency }} </b> </td>
+                <td class="text-right"> <b> {{ vm.grandTotalActual | currency }} </b> </td>
                 <!-- Over/Under -->
-                <td class="text-right" ng-class="{ 'text-danger': grandTotalActual > grandTotalEstimated }">
-                    <b> {{ grandTotalActual - grandTotalEstimated | currency }} </b>
+                <td class="text-right" ng-class="{ 'text-danger': vm.grandTotalActual > vm.grandTotalEstimated }">
+                    <b> {{ vm.grandTotalActual - vm.grandTotalEstimated | currency }} </b>
                 </td>
                 <!-- Paid -->
-                <td class="text-right"> <b> {{ grandTotalExpenditure | currency }} </b> </td>
+                <td class="text-right"> <b> {{ vm.grandTotalExpenditure | currency }} </b> </td>
                 <!-- Empty -->
                 <td colspan="3"> </td>
             </tr>
