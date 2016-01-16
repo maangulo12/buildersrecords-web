@@ -106,9 +106,9 @@
                 angular.forEach(category.expenditures, function(expenditure) {
                     totalExpenditure += expenditure.cost;
                 });
-                category.total_estimated   = totalEstimated;
-                category.total_actual      = totalActual;
-                category.total_expenditure = totalExpenditure;
+                category.totalEstimated   = totalEstimated;
+                category.totalActual      = totalActual;
+                category.totalExpenditure = totalExpenditure;
                 grandTotalEstimated   += totalEstimated;
                 grandTotalActual      += totalActual;
                 grandTotalExpenditure += totalExpenditure;
@@ -125,7 +125,7 @@
             vm.grandTotalActual      = grandTotalActual;
             vm.grandTotalExpenditure = grandTotalExpenditure;
         }
-        
+
         function error(response) {
             vm.errorMsgGet = true;
         }

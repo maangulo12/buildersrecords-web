@@ -107,15 +107,15 @@
                 <!-- Empty -->
                 <td> </td>
                 <!-- Estimated -->
-                <td class="text-right"> <b> {{ category.total_estimated | currency }} </b> </td>
+                <td class="text-right"> <b> {{ category.totalEstimated | currency }} </b> </td>
                 <!-- Actual -->
-                <td class="text-right"> <b> {{ category.total_actual | currency }} </b> </td>
+                <td class="text-right"> <b> {{ category.totalActual | currency }} </b> </td>
                 <!-- Over/Under -->
-                <td class="text-right" ng-class="{ 'text-danger': category.total_actual > category.total_estimated }">
-                    <b> {{ category.total_actual - category.total_estimated | currency }} </b>
+                <td class="text-right" ng-class="{ 'text-danger': category.totalActual > category.totalEstimated }">
+                    <b> {{ category.totalActual - category.totalEstimated | currency }} </b>
                 </td>
                 <!-- Paid -->
-                <td class="text-right"> <b> {{ category.total_expenditure | currency }} </b> </td>
+                <td class="text-right"> <b> {{ category.totalExpenditure | currency }} </b> </td>
                 <!-- Unpaid -->
                 <td class="text-right" ng-class="{ 'text-danger': category.unpaid !== 0 }">
                     <b ng-if="category.unpaid"> {{ category.unpaid | currency }} </b>
@@ -155,7 +155,7 @@
                     {{ item.actual - item.estimated | currency }}
                 </td>
                 <!-- Paid -->
-                <td class="text-right"> {{ item.total_expenditure | currency }} </td>
+                <td class="text-right"> {{ item.totalExpenditure | currency }} </td>
                 <!-- Unpaid -->
                 <td> </td>
                 <!-- Progress -->
