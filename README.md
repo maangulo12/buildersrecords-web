@@ -15,6 +15,7 @@ BuildersRecords Web Application.
     * Cancel subscription
     * Invoice history
     * Overview table missing values
+    * Overview chart colors
     * Edit Draw date is off
 
     * Fix signUp error msg

@@ -12,7 +12,37 @@
         vm.project = store.get('project');
         getFunds();
 
-	    $scope.clickedFund = function(fund) {
+	    function getFunds() {
+            return fundService.retrieveList()
+                .then(getSuccess)
+                .catch(error);
+
+            function getSuccess(response) {
+                vm.fundList = response.data.objects;
+
+	            angular.forEach(vm.fundList, function(fund) {
+                    var totalExpenditure = 0;
+                    var totalDraw        = 0;
+	                angular.forEach(fund.expenditures, function(expenditure) {
+	                    totalExpenditure += expenditure.cost;
+	                });
+	                angular.forEach(fund.draws, function(draw) {
+	                    totalDraw += draw.amount;
+	                });
+                    fund.totalExpenditure = totalExpenditure;
+                    fund.totalDraw        = totalDraw;
+                    fund.spent            = Math.round(totalExpenditure / fund.amount * 100);
+                    fund.left             = Math.round((fund.amount - totalExpenditure) / fund.amount * 100);
+                    fund.drawReceived     = Math.round(totalDraw / fund.amount * 100);
+                    fund.drawLeft         = Math.round((fund.amount - totalDraw) / fund.amount * 100);
+	            });
+            }
+            function error(response) {
+	            vm.errorMsgGet = true;
+            }
+	    }
+
+        $scope.clickedFund = function(fund) {
 	        var index = vm.fundList.indexOf(fund);
 	        if (index !== -1) {
 	            store.set('fund', fund);
@@ -36,56 +66,23 @@
 	            store.get('fund').selected = draw.selected;
 	        });
 	    }
+
 	    $scope.clickedSingleCheckbox = function(draw) {
 	        if (draw.selected) {
 	            store.get('fund').selected = true;
 	        } else {
-	            var is_selected = false;
+	            var isSelected = false;
 	            angular.forEach(store.get('fund').draws, function(d) {
 	                if (d.selected) {
-	                    is_selected = true;
+	                    isSelected = true;
 	                }
 	            });
-	            store.get('fund').selected = is_selected;
+	            store.get('fund').selected = isSelected;
 	        }
 	    }
 
-	    function getFunds() {
-            return fundService.retrieveList()
-                .then(getSuccess)
-                .catch(error);
-
-            function getSuccess(response) {
-                vm.fundList = response.data.objects;
-
-	            angular.forEach(response.data.objects, function(fund) {
-	                var totalExpenditure = 0;
-
-	                angular.forEach(fund.expenditures, function(expenditure) {
-	                    totalExpenditure += expenditure.cost;
-	                });
-	                fund.total_expenditure = totalExpenditure;
-
-	                var totalDraw = 0;
-	                angular.forEach(fund.draws, function(draw) {
-	                    totalDraw += draw.amount;
-	                });
-	                fund.total_draw = totalDraw;
-
-	                fund.spent = Math.round(totalExpenditure / fund.amount * 100);
-	                fund.left  = Math.round((fund.amount - totalExpenditure) / fund.amount * 100);
-
-	                fund.draw_received = Math.round(totalDraw / fund.amount * 100);
-	                fund.draw_left     = Math.round((fund.amount - totalDraw) / fund.amount * 100);
-	            });
-            }
-            function error(response) {
-	            $scope.errorMsgGet = true;
-            }
-	    }
-
 	    $scope.showAddFundModal = function() {
-	        vm.fund = {};
+            vm.fund         = {};
             vm.loanQuestion = [{ value: true, name: 'Yes' }, { value: false, name: 'No' }];
 	        $scope.addFundForm.$setPristine();
 	        $('#add-fund-modal').modal('show');
@@ -129,12 +126,12 @@
                     .catch(error);
 	        }
 
-            function deleteFund() {
-                return fundService.remove();
-    	    }
             function deleteDraws() {
                 return drawService.removeBulk();
             }
+            function deleteFund() {
+                return fundService.remove();
+    	    }
             function deleteSuccess(response) {
                 $('#delete-fund-modal').modal('hide');
                 btn.button('reset');
@@ -175,8 +172,8 @@
 	    }
 
 	    $scope.showAddDrawModal = function() {
-	        vm.draw = {};
-	        vm.draw.date = new Date();
+            vm.draw      = {};
+            vm.draw.date = new Date();
 	        $scope.addDrawForm.$setPristine();
 	        $('#add-draw-modal').modal('show');
 	    }
@@ -203,7 +200,7 @@
 
 	    $scope.showDeleteDrawsModal = function() {
 	        if (store.get('fund').selected) {
-	            $scope.errorMsgDeleteDraws = false;
+	            vm.errorMsgDeleteDraws = false;
 	            $('#delete-draws-modal').modal('show');
 	        }
 	    }
@@ -227,15 +224,15 @@
                 getFunds();
             }
             function error(response) {
-	            $scope.errorMsgDeleteDraws = true;
+	            vm.errorMsgDeleteDraws = true;
                 btn.button('reset');
             }
 	    }
 
 	    $scope.showEditDrawModal = function() {
-	        vm.updatedDraw = {};
-	        vm.updatedDraw.date = new Date(store.get('draw').date);
-	        vm.updatedDraw.amount = store.get('draw').amount;
+            vm.updatedDraw        = {};
+            vm.updatedDraw.date   = new Date(store.get('draw').date);
+            vm.updatedDraw.amount = store.get('draw').amount;
 	        $scope.editDrawForm.$setPristine();
 	        $('#edit-draw-modal').modal('show');
 	    }

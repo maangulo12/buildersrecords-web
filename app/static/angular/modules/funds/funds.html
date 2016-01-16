@@ -127,12 +127,12 @@
                         <p> <b> Spending </b>
                             <br>
                             <span class="text-danger">
-                                <b> {{ fund.total_expenditure | currency }} Spent </b>
+                                <b> {{ fund.totalExpenditure | currency }} Spent </b>
                             </span>
-                            <span ng-if="fund.amount > fund.total_expenditure">
+                            <span ng-if="fund.amount > fund.totalExpenditure">
                                 <b> / </b>
                                 <span class="text-right text-success">
-                                    <b> {{ fund.amount - fund.total_expenditure | currency }} Left </b>
+                                    <b> {{ fund.amount - fund.totalExpenditure | currency }} Left </b>
                                 </span>
                             </span>
                         </p>
@@ -165,12 +165,12 @@
                             <p> <b> Loan Draws </b>
                                 <br>
                                 <span class="text-warning">
-                                    <b> {{ fund.total_draw | currency }} Received </b>
+                                    <b> {{ fund.totalDraw | currency }} Received </b>
                                 </span>
-                                <span ng-if="fund.amount > fund.total_expenditure">
+                                <span ng-if="fund.amount > fund.totalExpenditure">
                                     <b> / </b>
                                     <span class="text-right text-success">
-                                        <b> {{ fund.amount - fund.total_draw | currency }} Left </b>
+                                        <b> {{ fund.amount - fund.totalDraw | currency }} Left </b>
                                     </span>
                                 </span>
                             </p>
@@ -187,12 +187,12 @@
                     <!-- Progress Bar -->
                     <div class="progress">
                         <div class="progress-bar progress-bar-warning progress-bar-striped"
-                             style="width: {{ fund.draw_received }}%;">
-                            <span class="sr-only"> {{ fund.draw_received }}% Complete </span>
+                             style="width: {{ fund.drawReceived }}%;">
+                            <span class="sr-only"> {{ fund.drawReceived }}% Complete </span>
                         </div>
                         <div class="progress-bar progress-bar-success progress-bar-striped"
-                             style="width: {{ fund.draw_left }}%;">
-                            <span class="sr-only"> {{ fund.draw_left }}% Complete </span>
+                             style="width: {{ fund.drawLeft }}%;">
+                            <span class="sr-only"> {{ fund.drawLeft }}% Complete </span>
                         </div>
                     </div>
                     <!-- Line Break -->
@@ -263,8 +263,8 @@
                                 <td class="text-right">
                                     <b> Total Draw Amount </b>
                                 </td>
-                                <td class="text-right text-warning" ng-model="fund.total_draw">
-                                    <b> {{ fund.total_draw | currency }} </b>
+                                <td class="text-right text-warning" ng-model="fund.totalDraw">
+                                    <b> {{ fund.totalDraw | currency }} </b>
                                 </td>
                                 <td></td>
                             </tr>
@@ -286,7 +286,7 @@
                                     <b> Amount Left </b>
                                 </td>
                                 <td class="text-right text-success">
-                                    <b> {{ fund.amount - fund.total_draw | currency }} </b>
+                                    <b> {{ fund.amount - fund.totalDraw | currency }} </b>
                                 </td>
                                 <td></td>
                             </tr>
@@ -333,7 +333,7 @@
                             <span class="sr-only"> Error: </span>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true"> &times; </span>
-                            </button> <b> There were problems adding your fund. </b>
+                            </button> <b> There were problems creating your fund. </b>
                         </div>
                         <!-- Loan Field -->
                         <div class="form-group"
@@ -343,7 +343,7 @@
                                          'has-feedback': (addFundForm.loan.$dirty ||
                                                           addFundForm.$submitted) &&
                                                           addFundForm.loan.$invalid }">
-                            <label class="control-label" for="loan"> Is this a loan? * </label>
+                            <label class="control-label" for="loan"> Is this a loan? </label>
                             <p class="text-warning"> <b> For out of pocket money or savings funds, select "No" </b> </p>
                             <select class="form-control"
                                     name="loan"
@@ -373,7 +373,7 @@
                                          'has-feedback': (addFundForm.name.$dirty ||
                                                           addFundForm.$submitted) &&
                                                           addFundForm.name.$invalid }">
-                            <label class="control-label" for="name"> Fund Name * </label>
+                            <label class="control-label" for="name"> Fund Name </label>
                             <input class="form-control"
                                    name="name"
                                    type="text"
@@ -404,7 +404,7 @@
                                          'has-feedback': (addFundForm.name.$dirty ||
                                                           addFundForm.$submitted) &&
                                                           addFundForm.name.$invalid }">
-                            <label class="control-label" for="name"> Loan Name * </label>
+                            <label class="control-label" for="name"> Loan Name </label>
                             <input class="form-control"
                                    name="name"
                                    type="text"
@@ -435,7 +435,7 @@
                                          'has-feedback': (addFundForm.amount.$dirty ||
                                                           addFundForm.$submitted) &&
                                                           addFundForm.amount.$invalid }">
-                            <label class="control-label" for="amount"> Total Amount of Fund * </label>
+                            <label class="control-label" for="amount"> Total Amount of Fund </label>
                             <div class="input-group">
                                 <span class="input-group-addon"> $ </span>
                                 <input class="form-control"
@@ -470,7 +470,7 @@
                                          'has-feedback': (addFundForm.amount.$dirty ||
                                                           addFundForm.$submitted) &&
                                                           addFundForm.amount.$invalid }">
-                            <label class="control-label" for="amount"> Total Amount of Loan * </label>
+                            <label class="control-label" for="amount"> Total Amount of Loan </label>
                             <div class="input-group">
                                 <span class="input-group-addon"> $ </span>
                                 <input class="form-control"
@@ -497,8 +497,6 @@
                                      class="help-block"> This field cannot be longer than 12 digits. </div>
                             </div>
                         </div>
-                        <!-- Required fields -->
-                        <p class="text-danger"> * Required fields </p>
                     </div>
                     <!-- Modal Footer -->
                     <div class="modal-footer">
@@ -542,7 +540,7 @@
                         <span class="sr-only"> Error: </span>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true"> &times; </span>
-                        </button> <b> Could not delete your fund/loan. </b>
+                        </button> <b> Could not delete your fund. </b>
                     </div>
                     <p class="text-center">
                         Are you sure you would like to <b>delete</b>?
@@ -589,7 +587,7 @@
                             <span class="sr-only"> Error: </span>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true"> &times; </span>
-                            </button> <b> There were problems updating your fund/loan. </b>
+                            </button> <b> There were problems updating your fund. </b>
                         </div>
                         <!-- Name Field -->
                         <div class="form-group"
@@ -599,7 +597,7 @@
                                          'has-feedback': (editFundForm.name.$dirty ||
                                                           editFundForm.$submitted) &&
                                                           editFundForm.name.$invalid }">
-                            <label class="control-label" for="name"> Fund Name * </label>
+                            <label class="control-label" for="name"> Fund Name </label>
                             <input class="form-control"
                                    name="name"
                                    type="text"
@@ -630,7 +628,7 @@
                                          'has-feedback': (editFundForm.amount.$dirty ||
                                                           editFundForm.$submitted) &&
                                                           editFundForm.amount.$invalid }">
-                            <label class="control-label" for="amount"> Total Amount of Fund * </label>
+                            <label class="control-label" for="amount"> Total Amount of Fund </label>
                             <div class="input-group">
                                 <span class="input-group-addon"> $ </span>
                                 <input class="form-control"
@@ -657,8 +655,6 @@
                                      class="help-block"> This field cannot be longer than 12 digits. </div>
                             </div>
                         </div>
-                        <!-- Required fields -->
-                        <p class="text-danger"> * Required fields </p>
                     </div>
                     <!-- Modal Footer -->
                     <div class="modal-footer">
@@ -704,7 +700,7 @@
                             <span class="sr-only"> Error: </span>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true"> &times; </span>
-                            </button> <b> There were problems adding your loan draw. </b>
+                            </button> <b> There were problems creating your loan draw. </b>
                         </div>
                         <!-- Date Field -->
                         <div class="form-group"
@@ -716,7 +712,7 @@
                                                           addDrawForm.date.$invalid }">
                             <label class="control-label" for="date">
                                 <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-                                Date of Draw *
+                                Date of Draw
                             </label>
                             <input class="form-control"
                                    name="date"
@@ -745,7 +741,7 @@
                                          'has-feedback': (addDrawForm.amount.$dirty ||
                                                           addDrawForm.$submitted) &&
                                                           addDrawForm.amount.$invalid }">
-                            <label class="control-label" for="amount"> Amount * </label>
+                            <label class="control-label" for="amount"> Amount </label>
                             <div class="input-group">
                                 <span class="input-group-addon"> $ </span>
                                 <input class="form-control"
@@ -772,8 +768,6 @@
                                      class="help-block"> This field cannot be longer than 12 digits. </div>
                             </div>
                         </div>
-                        <!-- Required fields -->
-                        <p class="text-danger"> * Required fields </p>
                     </div>
                     <!-- Modal Footer -->
                     <div class="modal-footer">
@@ -876,7 +870,7 @@
                                                           editDrawForm.date.$invalid }">
                             <label class="control-label" for="date">
                                 <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-                                Date of Draw *
+                                Date of Draw
                             </label>
                             <input class="form-control"
                                    name="date"
@@ -905,7 +899,7 @@
                                          'has-feedback': (editDrawForm.amount.$dirty ||
                                                           editDrawForm.$submitted) &&
                                                           editDrawForm.amount.$invalid }">
-                            <label class="control-label" for="amount"> Amount * </label>
+                            <label class="control-label" for="amount"> Amount </label>
                             <div class="input-group">
                                 <span class="input-group-addon"> $ </span>
                                 <input class="form-control"
@@ -932,8 +926,6 @@
                                      class="help-block"> This field cannot be longer than 12 digits. </div>
                             </div>
                         </div>
-                        <!-- Required fields -->
-                        <p class="text-danger"> * Required fields </p>
                     </div>
                     <!-- Modal Footer -->
                     <div class="modal-footer">
@@ -943,7 +935,7 @@
                         </button>
                         <!-- Submit -->
                         <button id="edit-draw-button" type="submit" class="btn btn-primary"
-                                data-loading-text="Deleting..."
+                                data-loading-text="Saving..."
                                 ng-click="editDrawForm.$valid && updateDraw()">
                             <b> Save Changes </b>
                         </button>
