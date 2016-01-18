@@ -10,6 +10,13 @@ BuildersRecords Web Application.
     * Create project upload file error msg
     * Update email / username
     * Change password
+    * Update credit card
+    * Update plan
+    * Cancel subscription
+    * Invoice history
+    * Overview table missing values
+    * Overview chart colors
+    * Edit Draw date is off
 
     * Fix signUp error msg
     * Payment not processed
