@@ -14,7 +14,7 @@
     function format($filter) {
         var directive = {
             restrict: 'A',
-            require:  'ngModel'
+            require:  'ngModel',
             link:     linkFunc,
         };
         return directive;
