@@ -19,7 +19,7 @@
         <!-- Overview -->
         <li role="presentation" class="active">
             <a ui-sref="overview">
-                <span class="glyphicon glyphicon-stats glyphicon-padding" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-tasks glyphicon-padding" aria-hidden="true"></span>
                 <b> Overview </b>
             </a>
         </li>
@@ -27,7 +27,7 @@
         <li role="presentation">
             <a ui-sref="funds">
                 <span class="glyphicon glyphicon-piggy-bank glyphicon-padding" aria-hidden="true"></span>
-                <b> Funds </b>
+                <b> Funds & Loans </b>
             </a>
         </li>
         <!-- Budget -->
@@ -40,7 +40,7 @@
         <!-- Expenditures -->
         <li role="presentation">
             <a ui-sref="expenditures">
-                <span class="glyphicon glyphicon-tasks glyphicon-padding" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-list glyphicon-padding" aria-hidden="true"></span>
                 <b> Expenditures </b>
             </a>
         </li>
@@ -63,18 +63,267 @@
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true"> &times; </span>
             </button>
-            <b> Could not access your project's information. Please refresh the page. </b>
+            <b> Could not access your project's data. Please refresh the page. </b>
         </div>
     </div>
     <!-- Page Header -->
     <div class="page-header">
-        <!-- Header -->
         <h1> Overview </h1>
     </div>
-    <!-- Barchart -->
-    <div id="barchart-container" class="chart-size"></div>
-    <!-- Line Break -->
-    <br>
+    <!-- Grid -->
+    <div class="row">
+        <!-- Left Side -->
+        <div class="col-md-6">
+            <!-- Heading -->
+            <h3> Your Expenditures </h3>
+            <!-- Horizontal Rule -->
+            <hr>
+            <!-- Panel -->
+            <div class="panel panel-primary">
+                <!-- Panel Header -->
+                <div class="panel-heading">
+                    <b> Project Overall </b>
+                </div>
+                <!-- Panel Body -->
+                <div class="panel-body">
+                    <!-- Project Overall -->
+                    <div class="row">
+                        <!-- Left Side -->
+                        <div class="col-xs-6">
+                            <b> Spending </b>
+                        </div>
+                        <!-- Right Side -->
+                        <div class="col-xs-6">
+                            <p class="text-right">
+                                <b> Project Cost {{ vm.grandTotalActual | currency }} </b>
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Progress Bar -->
+                    <div class="progress progress-bar-padding">
+                        <div class="progress-bar progress-bar-danger progress-bar-striped"
+                             style="width: {{ vm.grandTotalSpent }}%;">
+                            <span class="sr-only"> {{ vm.grandTotalSpent }}% Complete </span>
+                        </div>
+                        <div class="progress-bar progress-bar-success progress-bar-striped"
+                             style="width: {{ vm.grandTotalLeft }}%;">
+                            <span class="sr-only"> {{ vm.grandTotalLeft }}% Complete </span>
+                        </div>
+                    </div>
+                    <!-- Category -->
+                    <div class="row">
+                        <!-- Left Side -->
+                        <div class="col-xs-6">
+                            <b> {{ vm.grandTotalExpenditure | currency }} Spent </b>
+                        </div>
+                        <!-- Right Side -->
+                        <div class="col-xs-6">
+                            <p class="text-right">
+                                <span ng-if="vm.grandTotalActual > vm.grandTotalExpenditure">
+                                    <b> {{ vm.grandTotalActual - vm.grandTotalExpenditure | currency }} Left </b>
+                                </span>
+                                <span ng-if="vm.grandTotalActual < vm.grandTotalExpenditure">
+                                    <b class="text-danger">
+                                        {{ vm.grandTotalExpenditure - vm.grandTotalActual | currency }} Over
+                                    </b>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Panel -->
+            <div class="panel panel-primary">
+                <!-- Panel Header -->
+                <div class="panel-heading">
+                    <b> By Categories </b>
+                </div>
+                <!-- Panel Body -->
+                <div class="panel-body">
+                    <p ng-if="vm.categoryList.length == 0">
+                        <b> No data to show. </b>
+                    </p>
+                    <!-- Progress Bars -->
+                    <div class="margin-around" ng-repeat="category in vm.categoryList">
+                        <!-- Category -->
+                        <div class="row">
+                            <!-- Left Side -->
+                            <div class="col-xs-6">
+                                <b> {{ category.name }} </b>
+                            </div>
+                            <!-- Right Side -->
+                            <div class="col-xs-6">
+                                <p class="text-right">
+                                    <b> {{ category.totalBudget | currency }} </b>
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Progress Bar -->
+                        <div class="progress progress-bar-padding">
+                            <div class="progress-bar progress-bar-danger progress-bar-striped"
+                                 style="width: {{ category.spent }}%;">
+                                <span class="sr-only"> {{ category.spent }}% Complete </span>
+                            </div>
+                            <div class="progress-bar progress-bar-success progress-bar-striped"
+                                 style="width: {{ category.left }}%;">
+                                <span class="sr-only"> {{ category.left }}% Complete </span>
+                            </div>
+                        </div>
+                        <!-- Category -->
+                        <div class="row">
+                            <!-- Left Side -->
+                            <div class="col-xs-6">
+                                <b> {{ category.totalExpenditure | currency }} Spent </b>
+                            </div>
+                            <!-- Right Side -->
+                            <div class="col-xs-6">
+                                <p class="text-right">
+                                    <span ng-if="category.totalBudget > category.totalExpenditure">
+                                        <b> {{ category.totalBudget - category.totalExpenditure | currency }} Left </b>
+                                    </span>
+                                    <span ng-if="category.totalBudget < category.totalExpenditure">
+                                        <b class="text-danger">
+                                            {{ category.totalExpenditure - category.totalBudget | currency }} Over
+                                        </b>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Right Side -->
+        <div class="col-md-6">
+            <!-- Heading -->
+            <h3> Your Budget </h3>
+            <!-- Horizontal Rule -->
+            <hr>
+            <!-- Piechart -->
+            <div id="piechart-container" class="chart-size"></div>
+            <!-- Heading -->
+            <h3> Your Funds & Loans </h3>
+            <!-- Horizontal Rule -->
+            <hr>
+            <!-- Panel - Empty Project -->
+            <div ng-if="vm.fundList.length == 0" class="panel panel-primary">
+                <div class="panel-heading"> <b> Funds & Loans </b> </div>
+                <div class="panel-body">
+                    <p> <b> No data to show. </b> </p>
+                </div>
+            </div>
+            <!-- Panels -->
+            <div ng-repeat="fund in vm.fundList">
+                <!-- Panel -->
+                <div class="panel panel-primary">
+                    <!-- Panel Heading -->
+                    <div class="panel-heading">
+                        <!-- Panel Title -->
+                        <h4 class="panel-title">
+                            <b> {{ fund.name }} </b>
+                        </h4>
+                    </div>
+                    <!-- Panel Body -->
+                    <div class="panel-body">
+                        <!-- Title -->
+                        <div class="row">
+                            <!-- Left Side -->
+                            <div class="col-xs-6">
+                                <b> Spending </b>
+                            </div>
+                            <!-- Right Side -->
+                            <div class="col-xs-6">
+                                <p class="text-right">
+                                    <b> {{ fund.amount | currency }} </b>
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Progress Bar -->
+                        <div class="progress progress-bar-padding">
+                            <div class="progress-bar progress-bar-danger progress-bar-striped"
+                                 style="width: {{ fund.spent }}%;">
+                                <span class="sr-only"> {{ fund.spent }}% Complete </span>
+                            </div>
+                            <div class="progress-bar progress-bar-success progress-bar-striped"
+                                 style="width: {{ fund.left }}%;">
+                                <span class="sr-only"> {{ fund.left }}% Complete </span>
+                            </div>
+                        </div>
+                        <!-- Amounts -->
+                        <div class="row">
+                            <!-- Left Side -->
+                            <div class="col-xs-6">
+                                <b> {{ fund.totalExpenditure | currency }} Spent </b>
+                            </div>
+                            <!-- Right Side -->
+                            <div class="col-xs-6">
+                                <p class="text-right">
+                                    <span ng-if="fund.amount > fund.totalExpenditure">
+                                        <b> {{ fund.amount - fund.totalExpenditure | currency }} Left </b>
+                                    </span>
+                                    <span ng-if="fund.amount < fund.totalExpenditure">
+                                        <b class="text-danger">
+                                            {{ fund.totalExpenditure - fund.amount | currency }} Over
+                                        </b>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Loan Draws -->
+                        <div class="margin-around" ng-show="fund.loan">
+                            <!-- Title -->
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <b> Loan Draws </b>
+                                </div>
+                                <!-- Right Side -->
+                                <div class="col-xs-6">
+                                    <p class="text-right">
+                                        <b> {{ fund.amount | currency }} </b>
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- Progress Bar -->
+                            <div class="progress progress-bar-padding">
+                                <div class="progress-bar progress-bar-warning progress-bar-striped"
+                                     style="width: {{ fund.drawReceived }}%;">
+                                    <span class="sr-only"> {{ fund.drawReceived }}% Complete </span>
+                                </div>
+                                <div class="progress-bar progress-bar-success progress-bar-striped"
+                                     style="width: {{ fund.drawLeft }}%;">
+                                    <span class="sr-only"> {{ fund.drawLeft }}% Complete </span>
+                                </div>
+                            </div>
+                            <!-- Amounts -->
+                            <div class="row">
+                                <!-- Left Side -->
+                                <div class="col-xs-6">
+                                    <b> {{ fund.totalDraw | currency }} Received </b>
+                                </div>
+                                <!-- Right Side -->
+                                <div class="col-xs-6">
+                                    <p class="text-right">
+                                        <span ng-if="fund.amount > fund.totalDraw">
+                                            <b> {{ fund.amount - fund.totalDraw | currency }} Left </b>
+                                        </span>
+                                        <span ng-if="fund.amount < fund.totalDraw">
+                                            <b class="text-danger">
+                                                {{ fund.totalDraw - fund.amount | currency }} Over
+                                            </b>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Heading -->
+    <h3> Cost Category Detail </h3>
+    <!-- Horizontal Rule -->
+    <hr>
     <!-- Table -->
     <table st-table="vm.categoryList"
            class="table table-condensed table-bordered table-striped table-hover table-responsive">
@@ -84,8 +333,8 @@
                 <th> </th>
                 <th class="text-center"> Cost Category / Detail </th>
                 <th class="text-center"> </th>
-                <th class="text-center"> Estimated </th>
-                <th class="text-center"> Actual </th>
+                <th class="text-center"> Estimated Cost </th>
+                <th class="text-center"> Actual Cost </th>
                 <th class="text-center"> Over/Under </th>
                 <th class="text-center"> Paid </th>
                 <th class="text-center"> Unpaid </th>
@@ -168,7 +417,7 @@
         <tbody>
             <tr ng-if="vm.categoryList.length == 0" class="active">
                 <td> </td>
-                <td colspan="9"> <b> No categories to show. </b> </td>
+                <td colspan="9"> <b> No data to show. </b> </td>
             </tr>
         </tbody>
         <!-- Table Footer -->
