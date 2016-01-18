@@ -8,7 +8,6 @@
         'angular-jwt',
         'angular-storage',
         'smart-table',
-        'app.directives',
         'app.directive.email-availability',
         'app.directive.format',
         'app.directive.page-select',
