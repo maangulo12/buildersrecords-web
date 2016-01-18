@@ -5,10 +5,11 @@
         .module('app.projects.expenditures')
         .controller('ExpendituresController', ExpendituresController);
 
-    ExpendituresController.$inject = ['$scope'];
+    ExpendituresController.$inject = ['$scope', 'store'];
 
-    function ExpendituresController($scope) {
+    function ExpendituresController($scope, store) {
         var vm = this;
+        vm.project = store.get('project');
 
 		// init();
 		//

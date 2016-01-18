@@ -1,124 +1,125 @@
 <!-- Container -->
 <div class="container">
-    <div class="row">
-        <!-- Left Side -->
-        <div class="col-md-3">
-            <!-- Breadcrumb -->
-            <ol class="breadcrumb">
-                <!-- Projects -->
-                <li>
-                    <a ui-sref="projects">
-                        <span class="glyphicon glyphicon-folder-open glyphicon-padding" aria-hidden="true"></span>
-                        <b> Projects </b>
-                    </a>
-                </li>
-                <!-- Slash -->
-                <li></li>
-            </ol>
-            <!-- List Group -->
-            <ul class="list-group">
-                <!-- Overview -->
-                <a ui-sref="overview" class="list-group-item">
-                    <span class="glyphicon glyphicon-stats glyphicon-padding" aria-hidden="true"></span>
-                    <b> Overview </b>
-                </a>
-                <!-- Funds & Loans -->
-                <a ui-sref="funds" class="list-group-item">
-                    <span class="glyphicon glyphicon-piggy-bank glyphicon-padding" aria-hidden="true"></span>
-                    <b> Funds </b>
-                </a>
-                <!-- Budget -->
-                <a ui-sref="budget" class="list-group-item">
-                    <span class="glyphicon glyphicon-usd glyphicon-padding" aria-hidden="true"></span>
-                    <b> Budget </b>
-                </a>
-                <!-- Expenditures -->
-                <a ui-sref="expenditures" class="list-group-item active">
-                    <span class="glyphicon glyphicon-tasks glyphicon-padding" aria-hidden="true"></span>
-                    <b> Expenditures </b>
-                </a>
-                <!-- Subcontractors -->
-                <a ui-sref="subcontractors" class="list-group-item">
-                    <span class="glyphicon glyphicon-link glyphicon-padding" aria-hidden="true"></span>
-                    <b> Subcontractors </b>
-                </a>
-            </ul>
+    <!-- Breadcrumb -->
+    <ol class="breadcrumb">
+        <!-- Projects -->
+        <li>
+            <a ui-sref="projects">
+                <span class="glyphicon glyphicon-folder-open glyphicon-padding" aria-hidden="true"></span>
+                <b> Projects </b>
+            </a>
+        </li>
+        <!-- Project Name -->
+        <li class="active"> {{ vm.project.name }} </li>
+    </ol>
+    <!--Line Break -->
+    <br>
+    <!-- Tabs -->
+    <ul class="nav nav-tabs">
+        <!-- Overview -->
+        <li role="presentation">
+            <a ui-sref="overview">
+                <span class="glyphicon glyphicon-stats glyphicon-padding" aria-hidden="true"></span>
+                <b> Overview </b>
+            </a>
+        </li>
+        <!-- Funds -->
+        <li role="presentation">
+            <a ui-sref="funds">
+                <span class="glyphicon glyphicon-piggy-bank glyphicon-padding" aria-hidden="true"></span>
+                <b> Funds </b>
+            </a>
+        </li>
+        <!-- Budget -->
+        <li role="presentation">
+            <a ui-sref="budget">
+                <span class="glyphicon glyphicon-usd glyphicon-padding" aria-hidden="true"></span>
+                <b> Budget </b>
+            </a>
+        </li>
+        <!-- Expenditures -->
+        <li role="presentation" class="active">
+            <a ui-sref="expenditures">
+                <span class="glyphicon glyphicon-tasks glyphicon-padding" aria-hidden="true"></span>
+                <b> Expenditures </b>
+            </a>
+        </li>
+        <!-- Subcontractors -->
+        <li role="presentation">
+            <a ui-sref="subcontractors">
+                <span class="glyphicon glyphicon-link glyphicon-padding" aria-hidden="true"></span>
+                <b> Subcontractors </b>
+            </a>
+        </li>
+    </ul>
+    <!-- Error Alert -->
+    <div class="alert alert-danger alert-dismissible text-center" role="alert"
+         ng-if="error_msg_get">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only"> Error: </span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true"> &times; </span>
+        </button> <b> Could not access your expenditures. Please refresh the page. </b>
+    </div>
+    <!-- Page Header -->
+    <div class="page-header">
+        <!-- Header -->
+        <h1> Expenditures </h1>
+        <!-- Sub Header -->
+        <h4 class="text-muted">
+            Here's how your spending looks so far
+        </h4>
+    </div>
+    <!-- Panel -->
+    <div class="panel panel-primary">
+        <!-- Panel Header -->
+        <div class="panel-heading">
+            <b> Categories </b>
         </div>
-        <!-- Right Side -->
-        <div class="col-md-9">
-            <!-- Error Alert -->
-            <div class="alert alert-danger alert-dismissible text-center" role="alert"
-                 ng-if="error_msg_get">
-                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                <span class="sr-only"> Error: </span>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true"> &times; </span>
-                </button> <b> Could not access your expenditures. Please refresh the page. </b>
-            </div>
-            <!-- Page Header -->
-            <div class="page-header">
-                <!-- Header -->
-                <h1> Expenditures </h1>
-                <!-- Sub Header -->
-                <h4 class="text-muted">
-                    Here's how your spending looks so far
-                </h4>
-            </div>
-            <!-- Panel -->
-            <div class="panel panel-primary">
-                <!-- Panel Header -->
-                <div class="panel-heading">
-                    <b> Categories </b>
+        <!-- Panel Body -->
+        <div class="panel-body">
+            <p ng-if="category_list.length == 0">
+                <b> No categories to show. </b>
+            </p>
+            <!-- Progress Bars -->
+            <div ng-repeat="category in category_list">
+                <!-- Category -->
+                <div class="row">
+                    <!-- Left Side -->
+                    <div class="col-xs-6">
+                        <p>
+                            <b> {{ category.name }} </b>
+                            <br>
+                            <b class="text-danger"> {{ category.total_expenditure | currency }} Spent </b>
+                            <span ng-if="category.left">
+                                <b> / </b>
+                                <b class="text-success"> {{ category.left | currency }} Left </b>
+                            </span>
+                            <span ng-if="category.over">
+                                <b> / </b>
+                                <b class="text-warning"> {{ category.over | currency }} Over </b>
+                            </span>
+                        </p>
+                    </div>
+                    <!-- Right Side -->
+                    <div class="col-xs-6">
+                        <p class="text-right">
+                            <b> Budget </b>
+                            <br>
+                            <b> {{ category.total_actual | currency }} </b>
+                        </p>
+                    </div>
                 </div>
-                <!-- Panel Body -->
-                <div class="panel-body">
-                    <p ng-if="category_list.length == 0">
-                        <b> No categories to show. </b>
-                    </p>
-                    <!-- Progress Bars -->
-                    <div ng-repeat="category in category_list">
-                        <!-- Category -->
-                        <div class="row">
-                            <!-- Left Side -->
-                            <div class="col-xs-6">
-                                <p>
-                                    <b> {{ category.name }} </b>
-                                    <br>
-                                    <b class="text-danger"> {{ category.total_expenditure | currency }} Spent </b>
-                                    <span ng-if="category.left">
-                                        <b> / </b>
-                                        <b class="text-success"> {{ category.left | currency }} Left </b>
-                                    </span>
-                                    <span ng-if="category.over">
-                                        <b> / </b>
-                                        <b class="text-warning"> {{ category.over | currency }} Over </b>
-                                    </span>
-                                </p>
-                            </div>
-                            <!-- Right Side -->
-                            <div class="col-xs-6">
-                                <p class="text-right">
-                                    <b> Budget </b>
-                                    <br>
-                                    <b> {{ category.total_actual | currency }} </b>
-                                </p>
-                            </div>
-                        </div>
-                        <!-- Progress Bar -->
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-danger progress-bar-striped"
-                                 style="width: {{ category.spent }}%;">
-                                <span class="sr-only"> {{ category.spent }}% Complete </span>
-                            </div>
-                        </div>
+                <!-- Progress Bar -->
+                <div class="progress">
+                    <div class="progress-bar progress-bar-danger progress-bar-striped"
+                         style="width: {{ category.spent }}%;">
+                        <span class="sr-only"> {{ category.spent }}% Complete </span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<!--  Container -->
-<div class="container">
     <!-- Button - Add Expenditure -->
     <button type="button" class="btn btn-success" title="Add Expenditure"
             ng-click="showAddExpenditureModal()">
@@ -237,7 +238,7 @@
 			<tr>
 				<td colspan="10" class="text-right">
 					<div st-pagination="" st-items-by-page="10"
-                         st-template="static/angular/components/pagination/pagination.html"></div>
+                         st-template="static/angular/partials/pagination/pagination.html"></div>
 				</td>
 			</tr>
 		</tfoot>
