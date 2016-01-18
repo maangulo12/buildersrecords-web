@@ -19,7 +19,7 @@
         <!-- Overview -->
         <li role="presentation">
             <a ui-sref="overview">
-                <span class="glyphicon glyphicon-stats glyphicon-padding" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-tasks glyphicon-padding" aria-hidden="true"></span>
                 <b> Overview </b>
             </a>
         </li>
@@ -27,7 +27,7 @@
         <li role="presentation" class="active">
             <a ui-sref="funds">
                 <span class="glyphicon glyphicon-piggy-bank glyphicon-padding" aria-hidden="true"></span>
-                <b> Funds </b>
+                <b> Funds & Loans </b>
             </a>
         </li>
         <!-- Budget -->
@@ -40,7 +40,7 @@
         <!-- Expenditures -->
         <li role="presentation">
             <a ui-sref="expenditures">
-                <span class="glyphicon glyphicon-tasks glyphicon-padding" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-list glyphicon-padding" aria-hidden="true"></span>
                 <b> Expenditures </b>
             </a>
         </li>
@@ -67,15 +67,13 @@
     </div>
     <!-- Page Header -->
     <div class="page-header">
-        <!-- Header -->
-        <h1> Funds </h1>
-        <hr>
+        <h1> Funds & Loans </h1>
     </div>
     <!-- Button - Add Fund -->
     <button type="button" class="btn btn-success" title="Add Fund"
             ng-click="showAddFundModal()">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-        <b> Add Fund </b>
+        <b> Add Fund or Loan </b>
     </button>
     <!-- Line Breaks -->
     <br><br>
@@ -334,7 +332,7 @@
                         <span aria-hidden="true"> &times; </span>
                     </button>
                     <h4 class="modal-title">
-                        <b> Add a Fund </b>
+                        <b> Add a Fund or Loan </b>
                     </h4>
                 </div>
                 <!-- Form -->
@@ -523,7 +521,7 @@
                         <button id="add-fund-button" type="submit" class="btn btn-success"
                                 data-loading-text="Creating..."
                                 ng-click="addFundForm.$valid && addFund()">
-                            <b> Add Fund </b>
+                            <b> Add </b>
                         </button>
                     </div>
                 </form>
