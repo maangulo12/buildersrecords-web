@@ -9,6 +9,8 @@
         .module('app.directive.email-availability', [])
         .directive('emailAvailability', emailAvailability);
 
+    emailAvailability.$inject = ['$q', 'utilityService'];
+
     function emailAvailability($q, utilityService) {
         var directive = {
             restrict: 'A',

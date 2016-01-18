@@ -9,6 +9,8 @@
         .module('app.directive.username-availability', [])
         .directive('usernameAvailability', usernameAvailability);
 
+    usernameAvailability.$inject = ['$q', 'utilityService'];
+
     function usernameAvailability($q, utilityService) {
         var directive = {
             restrict: 'A',
