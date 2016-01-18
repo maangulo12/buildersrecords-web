@@ -5,69 +5,41 @@
         .module('app.projects.expenditures')
         .controller('ExpendituresController', ExpendituresController);
 
-    ExpendituresController.$inject = ['$scope', 'store'];
+    ExpendituresController.$inject = ['$scope', 'store', 'categoryService', 'expenditureService'];
 
-    function ExpendituresController($scope, store) {
+    function ExpendituresController($scope, store, categoryService, expenditureService) {
         var vm = this;
         vm.project = store.get('project');
+        updateTable();
+        // updateProgressBars();
+        // updateTable();
+        // populateSubcontractorsDropdown();
+        // populateItemsDropdown();
+        // populateFundsDropdown();
 
-		// init();
-		//
-	    // function init() {
-	    //     $scope.username = store.get('user').username;
-	    //     updateProgressBars();
-	    //     updateTable();
-	    //     populateSubcontractorsDropdown();
-	    //     populateItemsDropdown();
-	    //     populateFundsDropdown();
-	    // }
-		//
-	    // // UPDATE PROGRESS BARS function
-	    // function updateProgressBars() {
-	    //     CategoryService.getCategories().then(function(response) {
-	    //         $scope.category_list = response.data.objects;
-		//
-	    //         angular.forEach(response.data.objects, function(category) {
-	    //             var total_expenditure = 0;
-	    //             var total_actual = 0;
-		//
-	    //             angular.forEach(category.expenditures, function(expenditure) {
-	    //                 total_expenditure += expenditure.cost;
-	    //             });
-	    //             angular.forEach(category.items, function(item) {
-	    //                 total_actual += item.actual;
-	    //             });
-	    //             category.total_expenditure = total_expenditure;
-	    //             category.total_actual = total_actual;
-		//
-	    //             if (total_expenditure > total_actual) {
-	    //                 category.over = total_expenditure - total_actual;
-	    //                 category.spent = 100;
-	    //             } else {
-	    //                 category.spent = Math.round(total_expenditure / total_actual * 100);
-	    //                 category.left  = total_actual - total_expenditure;
-	    //             }
-	    //         });
-	    //     }, function(error) {
-	    //         $scope.error_msg_get = true;
-	    //     });
-	    // }
-		//
-	    // // UPDATE TABLE function
-	    // function updateTable() {
-	    //     ExpenditureService.getExpenditures().then(function(response) {
-	    //         $scope.expenditure_list = response.data.objects;
-		//
-	    //         var total = 0;
-	    //         angular.forEach(response.data.objects, function(expenditure) {
-	    //             total += expenditure.cost;
-	    //         });
-	    //         $scope.total_cost = total;
-		//
-	    //     }, function(error) {
-	    //         $scope.error_msg_get = true;
-	    //     });
-	    // }
+        function updateTable() {
+            getExpenditures()
+                .then(populateTable)
+                .catch(error);
+
+            function getExpenditures() {
+                return expenditureService.retrieveList();
+            }
+            function populateTable(response) {
+                vm.expenditureList = response.data.objects;
+                var total = 0;
+
+                angular.forEach(vm.expenditureList, function(expenditure) {
+                    total += expenditure.cost;
+                });
+                vm.totalCost = total;
+            }
+            function error(response) {
+                vm.errorMsgGet = true;
+            }
+        }
+
+
 		//
 	    // // CLICKED EVENTS functions
 	    // $scope.clickedExpenditure = function(expenditure) {
