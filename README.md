@@ -28,8 +28,6 @@ BuildersRecords Web Application.
     * Expenditures Add, Delete, update
     * Expenditure Table resizing
 
-    *
-
     * Edit Draw date is off
 
     * Fix signUp error msg
