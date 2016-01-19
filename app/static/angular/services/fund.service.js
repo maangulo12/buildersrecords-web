@@ -11,14 +11,16 @@
         var url = store.get('api_url') + '/api/funds';
         var service = {
             retrieveList: retrieveList,
-            create:   create,
-            update:   update,
-            remove:   remove
+            create:       create,
+            update:       update,
+            remove:       remove
         };
         return service;
 
         function retrieveList() {
-			return $http.get(url + query('project_id', 'equals', store.get('project').id));
+			return $http.get(url + query('project_id', 'equals', store.get('project').id))
+                .then(successHandler)
+                .catch(errorHandler);
         }
 
         function create(vm) {
@@ -28,7 +30,9 @@
                 amount:     vm.amount,
                 project_id: store.get('project').id
             };
-            return $http.post(url, data);
+            return $http.post(url, data)
+                .then(successHandler)
+                .catch(errorHandler);
         }
 
         function update(vm) {
@@ -37,12 +41,24 @@
                 amount:     vm.amount,
                 project_id: store.get('project').id
             };
-            return $http.put(url + '/' + store.get('fund').id, data);
+            return $http.put(url + '/' + store.get('fund').id, data)
+                .then(successHandler)
+                .catch(errorHandler);
         }
 
         function remove() {
-            return $http.delete(url + '/' + store.get('fund').id);
+            return $http.delete(url + '/' + store.get('fund').id)
+                .then(successHandler)
+                .catch(errorHandler);
         }
+    }
+
+    function successHandler(response) {
+        return response.data;
+    }
+
+    function errorHandler(response) {
+        return response;
     }
 
     function query(name, op, val) {
