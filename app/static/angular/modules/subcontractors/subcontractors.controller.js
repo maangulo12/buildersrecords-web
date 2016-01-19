@@ -5,30 +5,40 @@
         .module('app.projects.budget')
         .controller('SubcontractorsController', SubcontractorsController);
 
-    SubcontractorsController.$inject = ['$scope'];
+    SubcontractorsController.$inject = ['$scope', 'store', 'subcontractorService'];
 
-    function SubcontractorsController($scope) {
+    function SubcontractorsController($scope, store, subcontractorService) {
         var vm = this;
+        vm.project = store.get('project');
+        updateSubcontractors();
 
-		// init();
-		//
-	    // function init() {
-	    //     $scope.username = store.get('user').username;
-	    //     updateTable();
-	    // }
-		//
-	    // // UPDATE TABLE function
-	    // function updateTable() {
-	    //     SubcontractorService.getSubcontractors().then(function(response) {
-	    //         $scope.subcontractor_list = response.data.objects;
-	    //     }, function(error) {
-	    //         $scope.error_msg_get = true;
-	    //     });
-	    // }
-		//
+	    function updateSubcontractors() {
+            return getSubcontractors();
+
+            function getSubcontractors() {
+                return subcontractorService.retrieveList()
+                    .then(getSuccess);
+
+                function getSuccess(data) {
+                    vm.subcontractorList = data.objects;
+                    return vm.subcontractorList;
+                }
+            }
+	    }
+
+        // function getCategories() {
+        //     return categoryService.retrieveList()
+        //         .then(getSuccess);
+        //
+        //     function getSuccess(data) {
+        //         vm.categoryList = data.objects;
+        //         return vm.categoryList;
+        //     }
+        // }
+        //
 	    // // CLICKED EVENTS functions
 	    // $scope.clickedSubcontractor = function(subcontractor) {
-	    //     var index = $scope.subcontractor_list.indexOf(subcontractor);
+	    //     var index = vm.subcontractorList.indexOf(subcontractor);
 	    //     if (index !== -1) {
 	    //         store.set('subcontractor', subcontractor);
 	    //         return true;
@@ -40,7 +50,7 @@
 	    //         $scope.selected = true;
 	    //     } else {
 	    //         var is_selected = false;
-	    //         angular.forEach($scope.subcontractor_list, function(e) {
+	    //         angular.forEach(vm.subcontractorList, function(e) {
 	    //             if (e.selected) {
 	    //                 is_selected = true;
 	    //             }
@@ -48,7 +58,7 @@
 	    //         $scope.selected = is_selected;
 	    //     }
 	    // }
-		//
+        //
 	    // // ADD SUBCONTRACTOR functions
 	    // $scope.showAddSubcontractorModal = function() {
 	    //     $scope.addDisabled = false;
@@ -67,7 +77,7 @@
 	    //         $scope.add_subcontractor_form.$invalid = true;
 	    //     });
 	    // }
-		//
+        //
 	    // // DELETE SUBCONTRACTOR functions
 	    // $scope.showDeleteSubcontractorsModal = function() {
 	    //     if (!$('#delete_button').hasClass('disabled')) {
@@ -78,15 +88,15 @@
 	    // }
 	    // $scope.deleteSubcontractors = function() {
 	    //     $scope.deleteDisabled = true;
-	    //     angular.forEach($scope.subcontractor_list, function(subcontractor) {
+	    //     angular.forEach(vm.subcontractorList, function(subcontractor) {
 	    //         if (subcontractor.selected) {
 	    //             SubcontractorService.deleteSubcontractor(subcontractor.id).then(function(response) {
 	    //                 $('#delete_subcontractors_modal').modal('hide');
 	    //                 $scope.selected = false;
-		//
-	    //                 var index = $scope.subcontractor_list.indexOf(subcontractor);
+        //
+	    //                 var index = vm.subcontractorList.indexOf(subcontractor);
 	    //                 if (index !== -1) {
-	    //                     $scope.subcontractor_list.splice(index, 1);
+	    //                     vm.subcontractorList.splice(index, 1);
 	    //                 }
 	    //             }, function(error) {
 	    //                 $scope.error_msg_delete = true;
@@ -94,7 +104,7 @@
 	    //         }
 	    //     });
 	    // }
-		//
+        //
 	    // // DELETE SINGLE SUBCONTRACTOR functions
 	    // $scope.showSingleDeleteSubcontractorModal = function() {
 	    //     $scope.deleteSingleDisabled = false;
@@ -105,16 +115,16 @@
 	    //     $scope.deleteSingleDisabled = true;
 	    //     SubcontractorService.deleteSubcontractor(store.get('subcontractor').id).then(function(response) {
 	    //         $('#delete_single_subcontractor_modal').modal('hide');
-		//
-	    //         var index = $scope.subcontractor_list.indexOf(store.get('subcontractor'));
+        //
+	    //         var index = vm.subcontractorList.indexOf(store.get('subcontractor'));
 	    //         if (index !== -1) {
-	    //             $scope.subcontractor_list.splice(index, 1);
+	    //             vm.subcontractorList.splice(index, 1);
 	    //         }
 	    //     }, function(error) {
 	    //         $scope.error_msg_delete_single = true;
 	    //     });
 	    // }
-		//
+        //
 	    // // UPDATE SUBCONTRACTOR functions
 	    // $scope.showEditSubcontractorModal = function() {
 	    //     $scope.updateDisabled = false;
