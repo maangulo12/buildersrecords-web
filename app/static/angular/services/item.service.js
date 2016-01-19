@@ -27,7 +27,9 @@
                 category_id: vm.category,
                 project_id:  store.get('project').id
             };
-            return $http.post(url, data);
+            return $http.post(url, data)
+                .then(successHandler)
+                .catch(errorHandler);
         }
 
         function update(vm) {
@@ -39,20 +41,36 @@
                 category_id: vm.category.id,
                 project_id:  store.get('project').id
             };
-            return $http.put(url + '/' + store.get('item').id, data);
+            return $http.put(url + '/' + store.get('item').id, data)
+                .then(successHandler)
+                .catch(errorHandler);
         }
 
         function remove(itemId) {
-            return $http.delete(url + '/' + itemId);
+            return $http.delete(url + '/' + itemId)
+                .then(successHandler)
+                .catch(errorHandler);
         }
 
         function retrieveByCategory() {
-            return $http.get(url + query('category_id', 'equals', store.get('category').id));
+            return $http.get(url + query('category_id', 'equals', store.get('category').id))
+                .then(successHandler)
+                .catch(errorHandler);
         }
 
         function removeByCategory() {
-            return $http.delete(url + query('category_id', 'equals', store.get('category').id));
+            return $http.delete(url + query('category_id', 'equals', store.get('category').id))
+                .then(successHandler)
+                .catch(errorHandler);
         }
+    }
+
+    function successHandler(response) {
+        return response.data;
+    }
+
+    function errorHandler(response) {
+        return response;
     }
 
     function query(name, op, val) {
