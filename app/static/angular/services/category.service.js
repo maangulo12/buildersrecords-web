@@ -18,7 +18,9 @@
         return service;
 
         function retrieveList() {
-			return $http.get(url + query('project_id', 'equals', store.get('project').id));
+			return $http.get(url + query('project_id', 'equals', store.get('project').id))
+                .then(successHandler)
+                .catch(errorHandler);
         }
 
         function create(name) {
@@ -26,7 +28,9 @@
                 name:       name,
                 project_id: store.get('project').id
             };
-            return $http.post(url, data);
+            return $http.post(url, data)
+                .then(successHandler)
+                .catch(errorHandler);
         }
 
         function update(name) {
@@ -34,12 +38,24 @@
                 name:       name,
                 project_id: store.get('project').id
             };
-            return $http.put(url + '/' + store.get('category').id, data);
+            return $http.put(url + '/' + store.get('category').id, data)
+                .then(successHandler)
+                .catch(errorHandler);
         }
 
         function remove() {
-            return $http.delete(url + '/' + store.get('category').id);
+            return $http.delete(url + '/' + store.get('category').id)
+                .then(successHandler)
+                .catch(errorHandler);
         }
+    }
+
+    function successHandler(response) {
+        return response.data;
+    }
+
+    function errorHandler(response) {
+        return response;
     }
 
     function query(name, op, val) {
