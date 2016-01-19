@@ -11,10 +11,10 @@
         var vm = this;
         vm.project = store.get('project');
         var options = chartService.setPieChartOptions();
-        updateContent();
+        updateCategories();
         updateFunds();
 
-        function updateContent() {
+        function updateCategories() {
             return getCategories()
                 .then(populateProgressBars)
                 .then(populatePieChart)
