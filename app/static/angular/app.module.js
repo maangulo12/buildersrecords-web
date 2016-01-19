@@ -15,6 +15,7 @@
         'app.services',
         'app.service.auth',
         'app.service.category',
+        'app.service.chart',
         'app.service.draw',
         'app.service.expenditure',
         'app.service.fund',
