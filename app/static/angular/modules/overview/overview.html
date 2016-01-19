@@ -437,8 +437,12 @@
                 </td>
                 <!-- Paid -->
                 <td class="text-right"> <b> {{ vm.grandTotalExpenditure | currency }} </b> </td>
+                <!-- Unpaid -->
+                <td class="text-right" ng-class="{ 'text-danger': vm.grandTotalActual > vm.grandTotalExpenditure }">
+                    <b> {{ vm.grandTotalActual - vm.grandTotalExpenditure | currency }} </b>
+                </td>
                 <!-- Empty -->
-                <td colspan="3"> </td>
+                <td colspan="2"> </td>
             </tr>
         </tfoot>
     </table>
