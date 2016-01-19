@@ -26,15 +26,6 @@
             }
 	    }
 
-        // function getCategories() {
-        //     return categoryService.retrieveList()
-        //         .then(getSuccess);
-        //
-        //     function getSuccess(data) {
-        //         vm.categoryList = data.objects;
-        //         return vm.categoryList;
-        //     }
-        // }
         //
 	    // // CLICKED EVENTS functions
 	    // $scope.clickedSubcontractor = function(subcontractor) {
