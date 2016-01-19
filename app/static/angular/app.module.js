@@ -22,6 +22,7 @@
         'app.service.item',
         'app.service.projects',
         'app.service.stripe',
+        'app.service.subcontractor',
         'app.service.user',
         'app.service.utility',
         'app.home',
