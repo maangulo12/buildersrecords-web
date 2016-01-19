@@ -5,57 +5,23 @@
         .module('app.projects.overview')
         .controller('OverviewController', OverviewController);
 
-    OverviewController.$inject = ['store', 'categoryService', 'fundService'];
+    OverviewController.$inject = ['store', 'chartService', 'categoryService', 'fundService'];
 
-    function OverviewController(store, categoryService, fundService) {
+    function OverviewController(store, chartService, categoryService, fundService) {
         var vm = this;
         vm.project = store.get('project');
-        updateContent();
-        updateFunds();
+        var options = chartService.setPieChartOptions();
+        getCategories();
+        getFunds();
 
-        var options = {
-            chart: {
-                type: 'pie',
-                style: {
-                    fontFamily: "Montserrat, 'Helvetica Neue', Helvetica, Arial, sans-serif"
-                }
-            },
-            title: {
-                text: ''
-            },
-            tooltip: {
-                headerFormat: '<span style="font-size: 14px"> {point.key} </span><br>',
-                pointFormat:  '<span style="font-size: 14px"> <b> ${point.y:.2f} </b> </span><br>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        format: '<span style="font-size: 11px"> {point.name} </span><br> {point.percentage:.2f}%'
-                    }
-                }
-            },
-            series: [{
-                name: 'Categories',
-                data: []
-            }],
-            credits: {
-                enabled: false
-            }
-        };
-
-        function updateContent() {
-            return categoryService.retrieveList()
+        function getCategories() {
+            return retrieveList()
                 .then(populateProgressBars)
                 .then(populatePieChart)
                 .then(populateTable)
                 .catch(error);
 
-            function populateProgressBars(response) {
-                vm.categoryList = response.data.objects;
-
+            function populateProgressBars() {
                 angular.forEach(vm.categoryList, function(category) {
 	                var totalExpenditure = 0;
 	                var totalBudget = 0;
@@ -73,19 +39,17 @@
                         category.left  = 0;
                     } else {
                         category.spent = Math.round(totalExpenditure / totalBudget * 100);
-                        category.left = Math.round((totalBudget - totalExpenditure) / totalBudget * 100);
+                        category.left  = Math.round((totalBudget - totalExpenditure) / totalBudget * 100);
                     }
 	            });
-                return response;
             }
-            function populatePieChart(response) {
-                var categoryList = response.data.objects;
+            function populatePieChart() {
                 options.series[0].data = [];
 
-	            if (categoryList.length == 0) {
+	            if (vm.categoryList.length == 0) {
 	                options.series[0].data.push({ name: 'No Data', y: 0.01 });
 	            } else {
-	                angular.forEach(categoryList, function(category) {
+	                angular.forEach(vm.categoryList, function(category) {
 	                    if (category.items.length != 0) {
 	                        var categoryTotal = 0;
 	                        angular.forEach(category.items, function(item) {
@@ -96,10 +60,8 @@
 	                });
 	            }
                 $('#piechart-container').highcharts(options);
-                return response;
             }
-            function populateTable(response) {
-                vm.categoryList = response.data.objects;
+            function populateTable() {
                 var grandTotalEstimated   = 0;
                 var grandTotalActual      = 0;
                 var grandTotalExpenditure = 0;
@@ -137,15 +99,31 @@
                 vm.grandTotalLeft  = Math.round((grandTotalActual - grandTotalExpenditure) / grandTotalActual * 100);
             }
 	    }
+        function retrieveList() {
+            return categoryService.retrieveList()
+                .then(getSuccess);
 
-	    function updateFunds() {
-            return fundService.retrieveList()
+                function getSuccess(data) {
+                    vm.categoryList = data.objects;
+                    return vm.categoryList;
+                }
+        }
+
+	    function getFunds() {
+            return retrieveList()
                 .then(populateProgressBars)
                 .catch(error);
 
-            function populateProgressBars(response) {
-                vm.fundList = response.data.objects;
+            function retrieveList() {
+                return fundService.retrieveList()
+                    .then(getSuccess);
 
+                    function getSuccess(data) {
+                        vm.fundList = data.objects;
+                        return vm.fundList;
+                    }
+            }
+            function populateProgressBars() {
 	            angular.forEach(vm.fundList, function(fund) {
                     var totalExpenditure = 0;
                     var totalDraw        = 0;
@@ -165,7 +143,7 @@
             }
 	    }
 
-        function error(response) {
+        function error() {
             vm.errorMsgGet = true;
         }
     }
