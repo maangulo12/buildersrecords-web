@@ -10,23 +10,28 @@
     function ExpendituresController($scope, store, categoryService, expenditureService) {
         var vm = this;
         vm.project = store.get('project');
-        updateTable();
+        updateExpenditures();
         // updateProgressBars();
         // updateTable();
         // populateSubcontractorsDropdown();
         // populateItemsDropdown();
         // populateFundsDropdown();
 
-        function updateTable() {
+        function updateExpenditures() {
             getExpenditures()
                 .then(populateTable)
                 .catch(error);
 
             function getExpenditures() {
-                return expenditureService.retrieveList();
+                return expenditureService.retrieveList()
+                    .then(getSuccess);
+
+                function getSuccess(data) {
+                    vm.expenditureList = data.objects;
+                    return vm.expenditureList;
+                }
             }
             function populateTable(response) {
-                vm.expenditureList = response.data.objects;
                 var total = 0;
 
                 angular.forEach(vm.expenditureList, function(expenditure) {
@@ -38,7 +43,6 @@
                 vm.errorMsgGet = true;
             }
         }
-
 
 		//
 	    // // CLICKED EVENTS functions
