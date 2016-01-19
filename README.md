@@ -18,10 +18,17 @@ BuildersRecords Web Application.
     * Overview
     * Overview table missing values
     * Overview chart number commas
+    * Overview table check values
 
     * Budget
     * Budget Table resizing
     * Budget Delete Items & Categories
+
+    * Expenditures
+    * Expenditures Add, Delete, update
+    * Expenditure Table resizing
+
+    *
 
     * Edit Draw date is off
 
