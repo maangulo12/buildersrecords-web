@@ -123,35 +123,3 @@ app.service('ExpenditureService', function($http, store, $filter) {
         return $http.delete(api_entry + query('category_id', 'equals', store.get('category').id));
     }
 });
-
-// Functions for /api/subcontractors
-app.service('SubcontractorService', function($http, store) {
-    // API: Subcontractors entry point
-    var api_entry = '/api/subcontractors';
-    // GET list of Subcontractors
-    this.getSubcontractors = function() {
-        return $http.get(api_entry + query('project_id', 'equals', store.get('project').id));
-    }
-    // POST Subcontractor
-    this.addSubcontractor = function(form) {
-        return $http.post(api_entry, {
-            name:           form.name,
-            company:        form.company,
-            contact_number: form.contact_number,
-            project_id:     store.get('project').id
-        });
-    }
-    // PUT Subcontractor
-    this.updateSubcontractor = function(form) {
-        return $http.put(api_entry + '/' + store.get('subcontractor').id, {
-            name:           form.name,
-            company:        form.company,
-            contact_number: form.contact_number,
-            project_id:     store.get('project').id
-        });
-    }
-    // DELETE Subcontractor
-    this.deleteSubcontractor = function(subcontractor_id) {
-        return $http.delete(api_entry + '/' + subcontractor_id);
-    }
-});
