@@ -15,8 +15,8 @@
 
         // Needs work
         // Change email in Stripe
-	    $scope.updateAccount = function() {
-	        var btn = $('#update-account-button').button('loading');
+        $scope.updateAccount = function() {
+            var btn = $('#update-account-button').button('loading');
 
             updateAccount()
                 .then(updateSuccess)
@@ -27,20 +27,20 @@
             }
             function updateSuccess(response) {
                 vm.updateAccountSuccess = true;
-	            btn.button('reset');
+                btn.button('reset');
             }
             function error() {
                 $scope.accountForm.$invalid = true;
-	            vm.updateAccountError = true;
-	            btn.button('reset');
+                vm.updateAccountError = true;
+                btn.button('reset');
             }
-	    }
+        }
 
 	    // Needs work
         // Check if current password matches
         // Hash new password in the backend
-	    $scope.updatePassword = function() {
-	        var btn = $('#update-password-button').button('loading');
+        $scope.updatePassword = function() {
+            var btn = $('#update-password-button').button('loading');
 
             updatePassword()
                 .then(updateSuccess)
@@ -49,15 +49,15 @@
             function updatePassword() {
                 return userService.updatePassword(vm.account.newPassword);
             }
-	        function updateSuccess(response) {
-	            vm.updatePasswordSuccess = true;
-	            btn.button('reset');
-	        }
-	        function error(response) {
-	            $scope.passwordForm.$invalid = true;
-	            vm.updatePasswordError = true;
-	            btn.button('reset');
-	        }
-	    }
+            function updateSuccess(response) {
+                vm.updatePasswordSuccess = true;
+                btn.button('reset');
+            }
+            function error(response) {
+                $scope.passwordForm.$invalid = true;
+                vm.updatePasswordError = true;
+                btn.button('reset');
+            }
+        }
     }
 })();
