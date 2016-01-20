@@ -46,8 +46,8 @@
         }
 
         // GET Subcontractors
-	    function updateSubcontractors() {
-	        return getSubcontractors();
+        function updateSubcontractors() {
+            return getSubcontractors();
 
             function getSubcontractors() {
                 return subcontractorService.retrieveList()
@@ -62,10 +62,10 @@
                     vm.getError = true;
                 }
             }
-	    }
+        }
 
         // GET Items
-	    function updateItems() {
+        function updateItems() {
             return getItems()
                 .then(populateList)
                 .catch(error);
@@ -81,47 +81,47 @@
             }
             function populateList() {
                 var list = [];
-	            angular.forEach(vm.itemList, function(item) {
-	                list.push({
-	                    id  : item.id,
-	                    name: item.name,
-	                    category: {
-	                        id  : item.categories.id,
-	                        name: item.categories.name,
-	                    }
-	                });
-	            });
-	            vm.itemList = list;
+                angular.forEach(vm.itemList, function(item) {
+                    list.push({
+                        id  : item.id,
+                        name: item.name,
+                        category: {
+                            id  : item.categories.id,
+                            name: item.categories.name,
+                        }
+                    });
+                });
+                vm.itemList = list;
             }
             function error() {
                 vm.getError = true;
             }
-	    }
+        }
 
-	    // CLICKED Expenditure
-	    $scope.clicked = function(expenditure) {
-	        var index = vm.expenditureList.indexOf(expenditure);
-	        if (index !== -1) {
-	            store.set('expenditure', expenditure);
-	            return true;
-	        }
-	        return false;
-	    }
+        // CLICKED Expenditure
+        $scope.clicked = function(expenditure) {
+            var index = vm.expenditureList.indexOf(expenditure);
+            if (index !== -1) {
+                store.set('expenditure', expenditure);
+                return true;
+            }
+            return false;
+        }
 
         // CLICKED Checkbox
-	    $scope.clickedCheckbox = function(expenditure) {
-	        if (expenditure.selected) {
-	            vm.selected = true;
-	        } else {
-	            var isSelected = false;
-	            angular.forEach(vm.expenditureList, function(e) {
-	                if (e.selected) {
-	                    isSelected = true;
-	                }
-	            });
-	            vm.selected = isSelected;
-	        }
-	    }
+        $scope.clickedCheckbox = function(expenditure) {
+            if (expenditure.selected) {
+                vm.selected = true;
+            } else {
+                var isSelected = false;
+                angular.forEach(vm.expenditureList, function(e) {
+                    if (e.selected) {
+                        isSelected = true;
+                    }
+                });
+                vm.selected = isSelected;
+            }
+        }
 
 	    // // POPULATE FUNDS DROPDOWN function
 	    // function populateFundsDropdown() {
