@@ -19,29 +19,15 @@
         <!-- Overview -->
         <li role="presentation">
             <a ui-sref="overview">
-                <span class="glyphicon glyphicon-stats glyphicon-padding" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-dashboard glyphicon-padding" aria-hidden="true"></span>
                 <b> Overview </b>
-            </a>
-        </li>
-        <!-- Funds -->
-        <li role="presentation">
-            <a ui-sref="funds">
-                <span class="glyphicon glyphicon-piggy-bank glyphicon-padding" aria-hidden="true"></span>
-                <b> Funds </b>
             </a>
         </li>
         <!-- Budget -->
         <li role="presentation" class="active">
             <a ui-sref="budget">
-                <span class="glyphicon glyphicon-usd glyphicon-padding" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-list-alt glyphicon-padding" aria-hidden="true"></span>
                 <b> Budget </b>
-            </a>
-        </li>
-        <!-- Expenditures -->
-        <li role="presentation">
-            <a ui-sref="expenditures">
-                <span class="glyphicon glyphicon-tasks glyphicon-padding" aria-hidden="true"></span>
-                <b> Expenditures </b>
             </a>
         </li>
         <!-- Subcontractors -->
@@ -51,8 +37,22 @@
                 <b> Subcontractors </b>
             </a>
         </li>
+        <!-- Funds -->
+        <li role="presentation">
+            <a ui-sref="funds">
+                <span class="glyphicon glyphicon-piggy-bank glyphicon-padding" aria-hidden="true"></span>
+                <b> Funds & Loans </b>
+            </a>
+        </li>
+        <!-- Expenditures -->
+        <li role="presentation">
+            <a ui-sref="expenditures">
+                <span class="glyphicon glyphicon-usd glyphicon-padding" aria-hidden="true"></span>
+                <b> Expenditures </b>
+            </a>
+        </li>
     </ul>
-    <!-- Alert -->
+    <!-- Error Alert -->
     <div ng-if="vm.errorMsgGet">
         <!-- Line Break -->
         <br>
@@ -68,22 +68,15 @@
     </div>
     <!-- Page Header -->
     <div class="page-header">
-        <!-- Header -->
-        <h1> Budget </h1>
-        <!-- Sub Header -->
-        <h4 class="text-muted">
-            Here's how your actual budget looks like
-        </h4>
+        <h1> Your Budget </h1>
     </div>
-    <!-- Piechart -->
-    <div id="piechart-container" class="chart-size"></div>
-    <!-- Button - Add Item -->
+    <!-- Button - Add -->
     <button type="button" class="btn btn-success" title="Add Item"
             ng-click="showAddItemModal()">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-        <b> Add Item </b>
+        <b> Add </b>
     </button>
-    <!-- Button - Delete Expenditure -->
+    <!-- Button - Delete -->
     <button id="delete-button" type="button" class="btn btn-danger" title="Delete Selected"
             ng-class="{ 'disabled': !vm.selected }" ng-click="showDeleteItemsModal()">
         <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
@@ -100,10 +93,10 @@
             <tr>
                 <th style="width: 4%"> </th>
                 <th colspan="2" class="text-center"> Cost Category / Detail </th>
-                <th class="text-center"> Estimated </th>
-                <th class="text-center"> Actual </th>
+                <th class="text-center"> Estimated Cost </th>
+                <th class="text-center"> Actual Cost </th>
                 <th class="text-center"> Over / Under </th>
-                <th colspan="2" style="width: 6%"> Action </th>
+                <th colspan="2" class="text-center" style="width: 7%"> Action </th>
             </tr>
         </thead>
         <!-- Table Body -->
@@ -131,15 +124,15 @@
                     <b> {{ category.totalActual - category.totalEstimated | currency }} </b>
                 </td>
                 <!-- Edit -->
-                <td>
+                <td class="text-center">
                     <a href title="Edit" class="text-primary"
                        ng-click="clickedCategory(category) && showEditCategoryModal()">
                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                     </a>
                 </td>
                 <!-- Delete -->
-                <td>
-                    <a href title="Delete" class="text-danger"
+                <td class="text-center">
+                    <a href title="Delete" class="text-danger text-center"
                        ng-click="clickedCategory(category) && showDeleteCategoryModal()">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                     </a>
@@ -171,14 +164,14 @@
                     {{ item.actual - item.estimated | currency }}
                 </td>
                 <!-- Edit -->
-                <td style="width: 2%">
+                <td class="text-center">
                     <a href title="Edit" class="text-primary"
                        ng-click="clickedCategory(category) && clickedItem(item) && showEditItemModal()">
                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                     </a>
                 </td>
                 <!-- Delete -->
-                <td style="width: 2%">
+                <td class="text-center">
                     <a href title="Delete" class="text-danger"
                        ng-click="clickedCategory(category) && clickedItem(item) && showDeleteItemModal()">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
@@ -190,7 +183,7 @@
         <tbody ng-if="vm.categoryList.length == 0">
             <tr class="active">
                 <td> </td>
-                <td colspan="7"> <b> No categories to show. </b> </td>
+                <td colspan="7"> <b> You do not have any budget items yet. </b> </td>
             </tr>
         </tbody>
         <!-- Table Footer -->
@@ -258,7 +251,7 @@
                                 <option ng-repeat="category in vm.categoryList" value="{{ category.id }}">
                                     {{ category.name }}
                                 </option>
-                                <option value="new"> *Create New Category </option>
+                                <option value="new"> * Create New Category </option>
                             </select>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
                                   ng-if="(addItemForm.category.$dirty ||
@@ -349,7 +342,7 @@
                             <input class="form-control"
                                    name="description"
                                    type="text"
-                                   placeholder="Description"
+                                   placeholder="Description (Optional)"
                                    ng-model="vm.item.description"
                                    ng-maxlength=80>
                             <span class="glyphicon glyphicon-remove form-control-feedback"

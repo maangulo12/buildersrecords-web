@@ -10,69 +10,23 @@
     function BudgetController($scope, store, categoryService, itemService, expenditureService) {
         var vm = this;
         vm.project = store.get('project');
-        updateContent();
+        updateCategories();
 
-        var options = {
-            chart: {
-                type: 'pie',
-                style: {
-                    fontFamily: "Montserrat, 'Helvetica Neue', Helvetica, Arial, sans-serif"
-                }
-            },
-            title: {
-                text: ''
-            },
-            tooltip: {
-                headerFormat: '<span style="font-size: 14px"> {point.key} </span><br>',
-                pointFormat:  '<span style="font-size: 14px"> <b> ${point.y:.2f} </b> </span><br>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        format: '<span style="font-size: 14px"> {point.name} </span><br> {point.percentage:.2f}%'
-                    }
-                }
-            },
-            series: [{
-                name: 'Categories',
-                data: []
-            }],
-            credits: {
-                enabled: false
-            }
-        };
-
-	    function updateContent() {
-            return categoryService.retrieveList()
-                .then(updateChart)
-                .then(updateTable)
+	    function updateCategories() {
+            return getCategories()
+                .then(populateTable)
                 .catch(error);
 
-            function updateChart(response) {
-                var categoryList = response.data.objects;
-                options.series[0].data = [];
+            function getCategories() {
+                return categoryService.retrieveList()
+                    .then(getSuccess);
 
-	            if (categoryList.length == 0) {
-	                options.series[0].data.push({ name: 'No Categories', y: 0.01 });
-	            } else {
-	                angular.forEach(categoryList, function(category) {
-	                    if (category.items.length != 0) {
-	                        var categoryTotal = 0;
-	                        angular.forEach(category.items, function(item) {
-	                            categoryTotal += item.actual;
-	                        });
-	                        options.series[0].data.push({ name: category.name, y: categoryTotal });
-	                    }
-	                });
-	            }
-                $('#piechart-container').highcharts(options);
-                return response;
+                function getSuccess(data) {
+                    vm.categoryList = data.objects;
+                    return vm.categoryList;
+                }
             }
-            function updateTable(response) {
-                vm.categoryList = response.data.objects;
+            function populateTable() {
 	            var grandTotalEstimated = 0;
 	            var grandTotalActual    = 0;
 
@@ -129,7 +83,9 @@
 	    }
 
 	    $scope.showAddItemModal = function() {
-	        vm.item = {};
+            vm.item           = {};
+            vm.item.estimated = 0;
+            vm.item.actual    = 0;
 	        $scope.addItemForm.$setPristine();
 	        $('#add-item-modal').modal('show');
 	    }
@@ -151,18 +107,18 @@
             function addCategory() {
                 return categoryService.create(vm.item.newCategory);
             }
-            function setNewCategory(response) {
-                vm.item.category = response.data.id;
+            function setNewCategory(data) {
+                vm.item.category = data.id;
             }
             function addItem() {
                 return itemService.create(vm.item);
             }
-            function addSuccess(response) {
+            function addSuccess() {
                 $('#add-item-modal').modal('hide');
                 btn.button('reset');
-                updateContent();
+                updateCategories();
             }
-            function error(response) {
+            function error() {
                 $scope.addItemForm.$invalid = true;
                 btn.button('reset');
             }
@@ -190,13 +146,13 @@
             function deleteItem(itemId) {
                 return itemService.remove(itemId);
             }
-            function deleteSuccess(response) {
+            function deleteSuccess() {
                 $('#delete-items-modal').modal('hide');
                 btn.button('reset');
                 vm.selected = false;
-                updateContent();
+                updateCategories();
             }
-            function error(response) {
+            function error() {
                 vm.errorMsgDeleteItems = true;
                 btn.button('reset');
             }
@@ -216,12 +172,12 @@
             function deleteItem() {
                 return itemService.remove(store.get('item').id);
             }
-            function deleteSuccess(response) {
+            function deleteSuccess() {
                 $('#delete-item-modal').modal('hide');
                 btn.button('reset');
-                updateContent();
+                updateCategories();
             }
-            function error(response) {
+            function error() {
                 vm.errorMsgDeleteItem = true;
                 btn.button('reset');
             }
@@ -250,12 +206,12 @@
             function updateItem() {
                 return itemService.update(vm.updatedItem);
             }
-            function updateSuccess(response) {
+            function updateSuccess() {
                 $('#edit-item-modal').modal('hide');
                 btn.button('reset');
-                updateContent();
+                updateCategories();
             }
-            function error(response) {
+            function error() {
 	            $scope.editItemForm.$invalid = true;
                 btn.button('reset');
             }
@@ -281,14 +237,16 @@
             function getExpenditures() {
                 return expenditureService.retrieveByCategory();
             }
-            function setExpenditures(response) {
-                expenditures = response.data.num_results;
+            function setExpenditures(data) {
+                console.log(data.num_results);
+                expenditures = data.num_results;
             }
             function getItems() {
                 return itemService.retrieveByCategory();
             }
-            function setItems(response) {
-                items = response.data.num_results;
+            function setItems(data) {
+                console.log(data.num_results);
+                items = data.num_results;
             }
             function checkCategory() {
                 if (expenditures == 0 && items == 0) {
@@ -304,6 +262,7 @@
                         .then(deleteCategory);
                 }
                 else {
+                    console.log('MADE IT');
                     return deleteItems()
                         .then(deleteCategory);
                 }
@@ -320,7 +279,7 @@
             function deleteSuccess() {
                 $('#delete-category-modal').modal('hide');
                 btn.button('reset');
-                updateContent();
+                updateCategories();
             }
             function error() {
                 vm.errorMsgDeleteCategory = true;
@@ -344,12 +303,12 @@
             function updateCategory() {
                 return categoryService.update(vm.category.name);
             }
-            function updateSuccess(response) {
+            function updateSuccess() {
                 $('#edit-category-modal').modal('hide');
                 btn.button('reset');
-                updateContent();
+                updateCategories();
             }
-            function error(response) {
+            function error() {
 	            $scope.editCategoryForm.$invalid = true;
                 btn.button('reset');
             }

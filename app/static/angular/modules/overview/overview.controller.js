@@ -5,70 +5,77 @@
         .module('app.projects.overview')
         .controller('OverviewController', OverviewController);
 
-    OverviewController.$inject = ['store', 'categoryService'];
+    OverviewController.$inject = ['store', 'chartService', 'categoryService', 'fundService'];
 
-    function OverviewController(store, categoryService) {
+    function OverviewController(store, chartService, categoryService, fundService) {
         var vm = this;
         vm.project = store.get('project');
+        var options = chartService.setPieChartOptions();
+        updateCategories();
+        updateFunds();
 
-        getCategories()
-            .then(updateChart)
-            .then(updateTable)
-            .catch(error);
+        function updateCategories() {
+            return getCategories()
+                .then(populateProgressBars)
+                .then(populatePieChart)
+                .then(populateTable)
+                .catch(error);
 
-        var options = {
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: ''
-            },
-            tooltip: {
-                headerFormat: '<span style="font-size:14px"> {point.key} </span><table>',
-                pointFormat:  '<tr><td style="color: {series.color}"> {series.name}: </td>' +
-                              '<td> <b> ${point.y:.2f} </b> </td></tr>',
-                footerFormat: '</table>',
-                shared:       true,
-                useHTML:      true
-            },
-            xAxis: {
-                categories: [],
-                crosshair:  true
-            },
-            yAxis: {
-                title: {
-                    text: 'Dollars'
-                }
-            },
-            series: [{
-                name: 'Estimated Cost',
-                data: []
-            }, {
-                name: 'Actual Cost',
-                data: []
-            }, {
-                name: 'Paid',
-                data: []
-            }],
-            credits: {
-                enabled: false
+            function getCategories() {
+                return categoryService.retrieveList()
+                    .then(getSuccess);
+
+                    function getSuccess(data) {
+                        vm.categoryList = data.objects;
+                        return vm.categoryList;
+                    }
             }
-        };
+            function populateProgressBars() {
+                angular.forEach(vm.categoryList, function(category) {
+	                var totalExpenditure = 0;
+	                var totalBudget = 0;
+	                angular.forEach(category.expenditures, function(expenditure) {
+	                    totalExpenditure += expenditure.cost;
+	                });
+	                angular.forEach(category.items, function(item) {
+	                    totalBudget += item.actual;
+	                });
+	                category.totalExpenditure = totalExpenditure;
+	                category.totalBudget = totalBudget;
 
-        function getCategories() {
-            return categoryService.retrieveList();
-        }
+                    if (totalBudget == 0 && totalBudget < totalExpenditure) {
+                        category.spent = 100;
+                        category.left  = 0;
+                    } else {
+                        category.spent = Math.round(totalExpenditure / totalBudget * 100);
+                        category.left  = Math.round((totalBudget - totalExpenditure) / totalBudget * 100);
+                    }
+	            });
+            }
+            function populatePieChart() {
+                options.series[0].data = [];
 
-        function updateChart(response) {
-            var categoryList = response.data.objects;
+	            if (vm.categoryList.length == 0) {
+	                options.series[0].data.push({ name: 'No Data', y: 0.01 });
+	            } else {
+	                angular.forEach(vm.categoryList, function(category) {
+	                    if (category.items.length != 0) {
+	                        var categoryTotal = 0;
+	                        angular.forEach(category.items, function(item) {
+	                            categoryTotal += item.actual;
+	                        });
+	                        options.series[0].data.push({ name: category.name, y: categoryTotal });
+	                    }
+	                });
+	            }
+                $('#piechart-container').highcharts(options);
+            }
+            function populateTable() {
+                var grandTotalEstimated   = 0;
+                var grandTotalActual      = 0;
+                var grandTotalExpenditure = 0;
 
-            if (categoryList.length == 0) {
-                options.xAxis.categories.push('No categories');
-                options.series[0].data.push(0.00);
-                options.series[1].data.push(0.00);
-                options.series[2].data.push(0.00);
-            } else {
-                angular.forEach(categoryList, function(category) {
+                angular.forEach(vm.categoryList, function(category) {
                     var totalEstimated   = 0;
                     var totalActual      = 0;
                     var totalExpenditure = 0;
@@ -79,54 +86,64 @@
                     angular.forEach(category.expenditures, function(expenditure) {
                         totalExpenditure += expenditure.cost;
                     });
-                    options.xAxis.categories.push(category.name);
-                    options.series[0].data.push(totalEstimated);
-                    options.series[1].data.push(totalActual);
-                    options.series[2].data.push(totalExpenditure);
+                    category.totalEstimated   = totalEstimated;
+                    category.totalActual      = totalActual;
+                    category.totalExpenditure = totalExpenditure;
+                    grandTotalEstimated   += totalEstimated;
+                    grandTotalActual      += totalActual;
+                    grandTotalExpenditure += totalExpenditure;
+
+                    if (totalExpenditure >= totalActual) {
+                        category.paid   = 100;
+                        category.unpaid = 0;
+                    } else {
+                        category.paid   = Math.round(totalExpenditure / totalActual * 100);
+                        category.unpaid = totalActual - totalExpenditure;
+                    }
                 });
+                vm.grandTotalEstimated   = grandTotalEstimated;
+                vm.grandTotalActual      = grandTotalActual;
+                vm.grandTotalExpenditure = grandTotalExpenditure;
+                vm.grandTotalSpent = Math.round(grandTotalExpenditure / grandTotalActual * 100);
+                vm.grandTotalLeft  = Math.round((grandTotalActual - grandTotalExpenditure) / grandTotalActual * 100);
             }
-            $('#barchart-container').highcharts(options);
-            return response;
-        }
+	    }
 
-        function updateTable(response) {
-            vm.categoryList = response.data.objects;
-            var grandTotalEstimated   = 0;
-            var grandTotalActual      = 0;
-            var grandTotalExpenditure = 0;
+	    function updateFunds() {
+            return getFunds()
+                .then(populateProgressBars)
+                .catch(error);
 
-            angular.forEach(vm.categoryList, function(category) {
-                var totalEstimated   = 0;
-                var totalActual      = 0;
-                var totalExpenditure = 0;
-                angular.forEach(category.items, function(item) {
-                    totalEstimated += item.estimated;
-                    totalActual    += item.actual;
-                });
-                angular.forEach(category.expenditures, function(expenditure) {
-                    totalExpenditure += expenditure.cost;
-                });
-                category.totalEstimated   = totalEstimated;
-                category.totalActual      = totalActual;
-                category.totalExpenditure = totalExpenditure;
-                grandTotalEstimated   += totalEstimated;
-                grandTotalActual      += totalActual;
-                grandTotalExpenditure += totalExpenditure;
+            function getFunds() {
+                return fundService.retrieveList()
+                    .then(getSuccess);
 
-                if (totalExpenditure >= totalActual) {
-                    category.paid   = 100;
-                    category.unpaid = 0;
-                } else {
-                    category.paid   = Math.round(totalExpenditure / totalActual * 100);
-                    category.unpaid = totalActual - totalExpenditure;
-                }
-            });
-            vm.grandTotalEstimated   = grandTotalEstimated;
-            vm.grandTotalActual      = grandTotalActual;
-            vm.grandTotalExpenditure = grandTotalExpenditure;
-        }
+                    function getSuccess(data) {
+                        vm.fundList = data.objects;
+                        return vm.fundList;
+                    }
+            }
+            function populateProgressBars() {
+	            angular.forEach(vm.fundList, function(fund) {
+                    var totalExpenditure = 0;
+                    var totalDraw        = 0;
+	                angular.forEach(fund.expenditures, function(expenditure) {
+	                    totalExpenditure += expenditure.cost;
+	                });
+	                angular.forEach(fund.draws, function(draw) {
+	                    totalDraw += draw.amount;
+	                });
+                    fund.totalExpenditure = totalExpenditure;
+                    fund.totalDraw        = totalDraw;
+                    fund.spent            = Math.round(totalExpenditure / fund.amount * 100);
+                    fund.left             = Math.round((fund.amount - totalExpenditure) / fund.amount * 100);
+                    fund.drawReceived     = Math.round(totalDraw / fund.amount * 100);
+                    fund.drawLeft         = Math.round((fund.amount - totalDraw) / fund.amount * 100);
+	            });
+            }
+	    }
 
-        function error(response) {
+        function error() {
             vm.errorMsgGet = true;
         }
     }

@@ -10,16 +10,23 @@
     function FundsController($scope, store, fundService, drawService) {
         var vm = this;
         vm.project = store.get('project');
-        getFunds();
+        updateFunds();
 
-	    function getFunds() {
-            return fundService.retrieveList()
-                .then(getSuccess)
+	    function updateFunds() {
+            return getFunds()
+                .then(updateTable)
                 .catch(error);
 
-            function getSuccess(response) {
-                vm.fundList = response.data.objects;
+            function getFunds() {
+                return fundService.retrieveList()
+                    .then(getSuccess);
 
+                function getSuccess(data) {
+                    vm.fundList = data.objects;
+                    return vm.fundList;
+                }
+            }
+            function updateTable() {
 	            angular.forEach(vm.fundList, function(fund) {
                     var totalExpenditure = 0;
                     var totalDraw        = 0;
@@ -100,7 +107,7 @@
             function addSuccess(response) {
                 $('#add-fund-modal').modal('hide');
                 btn.button('reset');
-                getFunds();
+                updateFunds();
             }
             function error(response) {
                 $scope.addFundForm.$invalid = true;
@@ -135,7 +142,7 @@
             function deleteSuccess(response) {
                 $('#delete-fund-modal').modal('hide');
                 btn.button('reset');
-                getFunds();
+                updateFunds();
             }
             function error(response) {
                 vm.errorMsgDelete = true;
@@ -163,7 +170,7 @@
             function updateSuccess(response) {
                 $('#edit-fund-modal').modal('hide');
                 btn.button('reset');
-                getFunds();
+                updateFunds();
             }
             function error(response) {
                 $scope.editFundForm.$invalid = true;
@@ -190,7 +197,7 @@
             function addSuccess(response) {
                 $('#add-draw-modal').modal('hide');
                 btn.button('reset');
-                getFunds();
+                updateFunds();
             }
             function error(response) {
                 $scope.addDrawForm.$invalid = true;
@@ -221,7 +228,7 @@
             function deleteSuccess(response) {
                 $('#delete-draws-modal').modal('hide');
                 btn.button('reset');
-                getFunds();
+                updateFunds();
             }
             function error(response) {
 	            vm.errorMsgDeleteDraws = true;
@@ -249,7 +256,7 @@
             function updateSuccess(response) {
                 $('#edit-draw-modal').modal('hide');
                 btn.button('reset');
-                getFunds();
+                updateFunds();
             }
             function error(response) {
                 $scope.editDrawForm.$invalid = true;

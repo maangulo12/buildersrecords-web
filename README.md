@@ -14,8 +14,20 @@ BuildersRecords Web Application.
     * Update plan
     * Cancel subscription
     * Invoice history
+
+    * Overview
     * Overview table missing values
-    * Overview chart colors
+    * Overview chart number commas
+    * Overview table check values
+
+    * Budget
+    * Budget Table resizing
+    * Budget Delete Items & Categories
+
+    * Expenditures
+    * Expenditures Add, Delete, update
+    * Expenditure Table resizing
+
     * Edit Draw date is off
 
     * Fix signUp error msg

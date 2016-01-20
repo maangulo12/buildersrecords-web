@@ -1,168 +1,118 @@
 <!-- Container -->
 <div class="container">
-    <div class="row">
-        <!-- Left Side -->
-        <div class="col-md-3">
-            <!-- Breadcrumb -->
-            <ol class="breadcrumb">
-                <!-- Projects -->
-                <li>
-                    <a ui-sref="projects">
-                        <span class="glyphicon glyphicon-folder-open glyphicon-padding" aria-hidden="true"></span>
-                        <b> Projects </b>
-                    </a>
-                </li>
-                <!-- Slash -->
-                <li></li>
-            </ol>
-            <!-- List Group -->
-            <ul class="list-group">
-                <!-- Overview -->
-                <a ui-sref="overview" class="list-group-item">
-                    <span class="glyphicon glyphicon-stats glyphicon-padding" aria-hidden="true"></span>
-                    <b> Overview </b>
-                </a>
-                <!-- Funds & Loans -->
-                <a ui-sref="funds" class="list-group-item">
-                    <span class="glyphicon glyphicon-piggy-bank glyphicon-padding" aria-hidden="true"></span>
-                    <b> Funds </b>
-                </a>
-                <!-- Budget -->
-                <a ui-sref="budget" class="list-group-item">
-                    <span class="glyphicon glyphicon-usd glyphicon-padding" aria-hidden="true"></span>
-                    <b> Budget </b>
-                </a>
-                <!-- Expenditures -->
-                <a ui-sref="expenditures" class="list-group-item active">
-                    <span class="glyphicon glyphicon-tasks glyphicon-padding" aria-hidden="true"></span>
-                    <b> Expenditures </b>
-                </a>
-                <!-- Subcontractors -->
-                <a ui-sref="subcontractors" class="list-group-item">
-                    <span class="glyphicon glyphicon-link glyphicon-padding" aria-hidden="true"></span>
-                    <b> Subcontractors </b>
-                </a>
-            </ul>
-        </div>
-        <!-- Right Side -->
-        <div class="col-md-9">
-            <!-- Error Alert -->
-            <div class="alert alert-danger alert-dismissible text-center" role="alert"
-                 ng-if="error_msg_get">
-                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                <span class="sr-only"> Error: </span>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true"> &times; </span>
-                </button> <b> Could not access your expenditures. Please refresh the page. </b>
-            </div>
-            <!-- Page Header -->
-            <div class="page-header">
-                <!-- Header -->
-                <h1> Expenditures </h1>
-                <!-- Sub Header -->
-                <h4 class="text-muted">
-                    Here's how your spending looks so far
-                </h4>
-            </div>
-            <!-- Panel -->
-            <div class="panel panel-primary">
-                <!-- Panel Header -->
-                <div class="panel-heading">
-                    <b> Categories </b>
-                </div>
-                <!-- Panel Body -->
-                <div class="panel-body">
-                    <p ng-if="category_list.length == 0">
-                        <b> No categories to show. </b>
-                    </p>
-                    <!-- Progress Bars -->
-                    <div ng-repeat="category in category_list">
-                        <!-- Category -->
-                        <div class="row">
-                            <!-- Left Side -->
-                            <div class="col-xs-6">
-                                <p>
-                                    <b> {{ category.name }} </b>
-                                    <br>
-                                    <b class="text-danger"> {{ category.total_expenditure | currency }} Spent </b>
-                                    <span ng-if="category.left">
-                                        <b> / </b>
-                                        <b class="text-success"> {{ category.left | currency }} Left </b>
-                                    </span>
-                                    <span ng-if="category.over">
-                                        <b> / </b>
-                                        <b class="text-warning"> {{ category.over | currency }} Over </b>
-                                    </span>
-                                </p>
-                            </div>
-                            <!-- Right Side -->
-                            <div class="col-xs-6">
-                                <p class="text-right">
-                                    <b> Budget </b>
-                                    <br>
-                                    <b> {{ category.total_actual | currency }} </b>
-                                </p>
-                            </div>
-                        </div>
-                        <!-- Progress Bar -->
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-danger progress-bar-striped"
-                                 style="width: {{ category.spent }}%;">
-                                <span class="sr-only"> {{ category.spent }}% Complete </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- Breadcrumb -->
+    <ol class="breadcrumb">
+        <!-- Projects -->
+        <li>
+            <a ui-sref="projects">
+                <span class="glyphicon glyphicon-folder-open glyphicon-padding" aria-hidden="true"></span>
+                <b> Projects </b>
+            </a>
+        </li>
+        <!-- Project Name -->
+        <li class="active"> {{ vm.project.name }} </li>
+    </ol>
+    <!--Line Break -->
+    <br>
+    <!-- Tabs -->
+    <ul class="nav nav-tabs">
+        <!-- Overview -->
+        <li role="presentation">
+            <a ui-sref="overview">
+                <span class="glyphicon glyphicon-dashboard glyphicon-padding" aria-hidden="true"></span>
+                <b> Overview </b>
+            </a>
+        </li>
+        <!-- Budget -->
+        <li role="presentation">
+            <a ui-sref="budget">
+                <span class="glyphicon glyphicon-list-alt glyphicon-padding" aria-hidden="true"></span>
+                <b> Budget </b>
+            </a>
+        </li>
+        <!-- Subcontractors -->
+        <li role="presentation">
+            <a ui-sref="subcontractors">
+                <span class="glyphicon glyphicon-link glyphicon-padding" aria-hidden="true"></span>
+                <b> Subcontractors </b>
+            </a>
+        </li>
+        <!-- Funds -->
+        <li role="presentation">
+            <a ui-sref="funds">
+                <span class="glyphicon glyphicon-piggy-bank glyphicon-padding" aria-hidden="true"></span>
+                <b> Funds & Loans </b>
+            </a>
+        </li>
+        <!-- Expenditures -->
+        <li role="presentation" class="active">
+            <a ui-sref="expenditures">
+                <span class="glyphicon glyphicon-usd glyphicon-padding" aria-hidden="true"></span>
+                <b> Expenditures </b>
+            </a>
+        </li>
+    </ul>
+    <!-- Error Alert -->
+    <div ng-if="vm.getError">
+        <!-- Line Break -->
+        <br>
+        <!-- Alert -->
+        <div class="alert alert-danger alert-dismissible text-center" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only"> Error: </span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true"> &times; </span>
+            </button> <b> Could not access your expenditures. Please refresh the page. </b>
         </div>
     </div>
-</div>
-<!--  Container -->
-<div class="container">
-    <!-- Button - Add Expenditure -->
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1> Your Expenditures </h1>
+    </div>
+    <!-- Button - Add -->
     <button type="button" class="btn btn-success" title="Add Expenditure"
             ng-click="showAddExpenditureModal()">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-        <b> Add Expenditure </b>
+        <b> Add </b>
     </button>
-    <!-- Button - Delete Expenditure -->
+    <!-- Button - Delete -->
     <button id="delete_button" type="button" class="btn btn-danger" title="Delete Selected"
-            ng-class="{ 'disabled': !selected }" ng-click="showDeleteExpendituresModal()">
+            ng-class="{ 'disabled': !vm.selected }" ng-click="showDeleteExpendituresModal()">
         <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
         <b> Delete </b>
     </button>
-    <!-- Line Break -->
+    <!-- Line Breaks -->
     <br>
     <br>
     <!-- Table -->
-    <table st-table="collection" st-safe-src="expenditure_list"
+    <table st-table="collection" st-safe-src="vm.expenditureList"
            class="table table-condensed table-bordered table-striped table-hover table-responsive">
         <!-- Table Header -->
         <thead>
             <tr>
                 <th style="width: 2%"></th>
-                <th st-sort="date" style="width: 5%">
+                <th st-sort="date" style="width: 5%" class="text-center">
                     <a href style="text-decoration: none; color: #fff;"> Date </a>
                 </th>
-                <th st-sort="vendor" style="width: 12%">
+                <th st-sort="vendor" style="width: 12%" class="text-center">
                     <a href style="text-decoration: none; color: #fff;"> Vendor </a>
                 </th>
-                <th st-sort="categories.name" style="width: 15%">
+                <th st-sort="categories.name" style="width: 15%" class="text-center">
                     <a href style="text-decoration: none; color: #fff;"> Category </a>
                 </th>
-                <th st-sort="items.name" style="width: 20%">
+                <th st-sort="items.name" style="width: 20%" class="text-center">
                     <a href style="text-decoration: none; color: #fff;"> Item / Job </a>
                 </th>
-                <th st-sort="notes" style="width: 25%">
+                <th st-sort="notes" style="width: 23%" class="text-center">
                     <a href style="text-decoration: none; color: #fff;"> Notes </a>
                 </th>
-                <th st-sort="cost" style="width: 5%">
+                <th st-sort="cost" style="width: 5%" class="text-center">
                     <a href style="text-decoration: none; color: #fff;"> Cost </a>
                 </th>
-                <th st-sort="funds.name" style="width: 7%">
+                <th st-sort="funds.name" style="width: 7%" class="text-center">
                     <a href style="text-decoration: none; color: #fff;"> Fund </a>
                 </th>
-                <th colspan="2" style="width: 4%">
+                <th colspan="2" style="width: 6%" class="text-center">
                     Action
                 </th>
             <tr>
@@ -174,7 +124,7 @@
                 <!-- Checkbox -->
                 <td style="width: 2%">
                     <input type="checkbox" class="checkbox" ng-model="expenditure.selected"
-                           ng-click="clickedSingleCheckbox(expenditure)">
+                           ng-click="clickedCheckbox(expenditure)">
                 </td>
                 <!-- Date -->
                 <td style="width: 5%">
@@ -193,7 +143,7 @@
                     {{ expenditure.items.name }}
                 </td>
                 <!-- Notes -->
-                <td style="width: 25%">
+                <td style="width: 23%">
                     {{ expenditure.notes }}
                 </td>
                 <!-- Cost -->
@@ -205,29 +155,29 @@
                     <b> {{ expenditure.funds.name }} </b>
                 </td>
                 <!-- Edit -->
-                <td style="width: 2%">
+                <td style="width: 3%" class="text-center">
                     <a href class="text-primary" title="Edit"
-                       ng-click="clickedExpenditure(expenditure) && showEditExpenditureModal()">
+                       ng-click="clicked(expenditure) && showEditExpenditureModal()">
                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                     </a>
                 </td>
                 <!-- Delete -->
-                <td style="width: 2%">
+                <td style="width: 3%" class="text-center">
                     <a href class="text-danger" title="Delete"
-                       ng-click="clickedExpenditure(expenditure) && showSingleDeleteExpenditureModal()">
+                       ng-click="clicked(expenditure) && showSingleDeleteExpenditureModal()">
                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                    </a>
                 </td>
             </tr>
             <!-- Total -->
-            <tr ng-if="expenditure_list.length != 0" class="active">
+            <tr ng-if="vm.expenditureList.length != 0" class="active">
                 <td colspan="5"></td>
                 <td class="text-right"> <b> Total Amount Spent </b> </td>
-                <td class="text-right"> <b> {{ total_cost | currency }} </b> </td>
+                <td class="text-right"> <b> {{ vm.totalCost | currency }} </b> </td>
                 <td colspan="4"></td>
             </tr>
             <!-- Empty -->
-            <tr ng-if="expenditure_list.length == 0" class="active">
+            <tr ng-if="vm.expenditureList.length == 0" class="active">
                 <td colspan="1"></td>
                 <td colspan="9"> <b> You have not made any expenditures yet. </b> </td>
             </tr>
@@ -237,7 +187,7 @@
 			<tr>
 				<td colspan="10" class="text-right">
 					<div st-pagination="" st-items-by-page="10"
-                         st-template="static/angular/components/pagination/pagination.html"></div>
+                         st-template="static/angular/partials/pagination/pagination.html"></div>
 				</td>
 			</tr>
 		</tfoot>
@@ -359,7 +309,7 @@
                             <select class="form-control"
                                     name="subcontractor"
                                     ng-model="expenditure.subcontractor"
-                                    ng-options="subcontractor.name for subcontractor in subcontractor_list track by subcontractor.id"
+                                    ng-options="subcontractor.name for subcontractor in vm.subcontractorList track by subcontractor.id"
                                     required>
                                 <option value="" disabled selected> Select a subcontractor </option>
                             </select>
@@ -428,7 +378,7 @@
                             <select class="form-control"
                                     name="item"
                                     ng-model="expenditure.item"
-                                    ng-options="item.name group by item.category.name for item in item_list track by item.id"
+                                    ng-options="item.name group by item.category.name for item in vm.itemList track by item.id"
                                     required>
                                 <option value="" disabled selected> Select an item </option>
                             </select>
@@ -785,7 +735,7 @@
                             <select class="form-control"
                                     name="item"
                                     ng-model="updated_expenditure.item"
-                                    ng-options="item.name group by item.category.name for item in item_list track by item.id"
+                                    ng-options="item.name group by item.category.name for item in vm.itemList track by item.id"
                                     required>
                             </select>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
