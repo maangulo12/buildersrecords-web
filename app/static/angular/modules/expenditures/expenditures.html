@@ -53,7 +53,7 @@
         </li>
     </ul>
     <!-- Error Alert -->
-    <div ng-if="vm.errorMsgGet">
+    <div ng-if="vm.getError">
         <!-- Line Break -->
         <br>
         <!-- Alert -->
@@ -77,7 +77,7 @@
     </button>
     <!-- Button - Delete -->
     <button id="delete_button" type="button" class="btn btn-danger" title="Delete Selected"
-            ng-class="{ 'disabled': !selected }" ng-click="showDeleteExpendituresModal()">
+            ng-class="{ 'disabled': !vm.selected }" ng-click="showDeleteExpendituresModal()">
         <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
         <b> Delete </b>
     </button>
@@ -124,7 +124,7 @@
                 <!-- Checkbox -->
                 <td style="width: 2%">
                     <input type="checkbox" class="checkbox" ng-model="expenditure.selected"
-                           ng-click="clickedSingleCheckbox(expenditure)">
+                           ng-click="clickedCheckbox(expenditure)">
                 </td>
                 <!-- Date -->
                 <td style="width: 5%">
@@ -157,14 +157,14 @@
                 <!-- Edit -->
                 <td style="width: 3%" class="text-center">
                     <a href class="text-primary" title="Edit"
-                       ng-click="clickedExpenditure(expenditure) && showEditExpenditureModal()">
+                       ng-click="clicked(expenditure) && showEditExpenditureModal()">
                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                     </a>
                 </td>
                 <!-- Delete -->
                 <td style="width: 3%" class="text-center">
                     <a href class="text-danger" title="Delete"
-                       ng-click="clickedExpenditure(expenditure) && showSingleDeleteExpenditureModal()">
+                       ng-click="clicked(expenditure) && showSingleDeleteExpenditureModal()">
                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                    </a>
                 </td>
@@ -309,7 +309,7 @@
                             <select class="form-control"
                                     name="subcontractor"
                                     ng-model="expenditure.subcontractor"
-                                    ng-options="subcontractor.name for subcontractor in subcontractor_list track by subcontractor.id"
+                                    ng-options="subcontractor.name for subcontractor in vm.subcontractorList track by subcontractor.id"
                                     required>
                                 <option value="" disabled selected> Select a subcontractor </option>
                             </select>
@@ -378,7 +378,7 @@
                             <select class="form-control"
                                     name="item"
                                     ng-model="expenditure.item"
-                                    ng-options="item.name group by item.category.name for item in item_list track by item.id"
+                                    ng-options="item.name group by item.category.name for item in vm.itemList track by item.id"
                                     required>
                                 <option value="" disabled selected> Select an item </option>
                             </select>
@@ -735,7 +735,7 @@
                             <select class="form-control"
                                     name="item"
                                     ng-model="updated_expenditure.item"
-                                    ng-options="item.name group by item.category.name for item in item_list track by item.id"
+                                    ng-options="item.name group by item.category.name for item in vm.itemList track by item.id"
                                     required>
                             </select>
                             <span class="glyphicon glyphicon-remove form-control-feedback"

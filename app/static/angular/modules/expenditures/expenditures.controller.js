@@ -5,18 +5,19 @@
         .module('app.projects.expenditures')
         .controller('ExpendituresController', ExpendituresController);
 
-    ExpendituresController.$inject = ['$scope', 'store', 'categoryService', 'expenditureService'];
+    ExpendituresController.$inject = ['$scope', 'store', 'expenditureService', 'itemService', 'fundService'];
 
-    function ExpendituresController($scope, store, categoryService, expenditureService) {
+    function ExpendituresController($scope, store, expenditureService, itemService, fundService) {
         var vm = this;
         vm.project = store.get('project');
         updateExpenditures();
-        // updateProgressBars();
-        // updateTable();
+        updateSubcontractors();
+        updateItems();
         // populateSubcontractorsDropdown();
         // populateItemsDropdown();
         // populateFundsDropdown();
 
+        // GET Expenditures
         function updateExpenditures() {
             getExpenditures()
                 .then(populateTable)
@@ -24,14 +25,14 @@
 
             function getExpenditures() {
                 return expenditureService.retrieveList()
-                    .then(getSuccess);
+                    .then(success);
 
-                function getSuccess(data) {
+                function success(data) {
                     vm.expenditureList = data.objects;
                     return vm.expenditureList;
                 }
             }
-            function populateTable(response) {
+            function populateTable() {
                 var total = 0;
 
                 angular.forEach(vm.expenditureList, function(expenditure) {
@@ -39,65 +40,89 @@
                 });
                 vm.totalCost = total;
             }
-            function error(response) {
-                vm.errorMsgGet = true;
+            function error() {
+                vm.getError = true;
             }
         }
 
-		//
-	    // // CLICKED EVENTS functions
-	    // $scope.clickedExpenditure = function(expenditure) {
-	    //     var index = $scope.expenditure_list.indexOf(expenditure);
-	    //     if (index !== -1) {
-	    //         store.set('expenditure', expenditure);
-	    //         return true;
-	    //     }
-	    //     return false;
-	    // }
-	    // $scope.clickedSingleCheckbox = function(expenditure) {
-	    //     if (expenditure.selected) {
-	    //         $scope.selected = true;
-	    //     } else {
-	    //         var is_selected = false;
-	    //         angular.forEach($scope.expenditure_list, function(e) {
-	    //             if (e.selected) {
-	    //                 is_selected = true;
-	    //             }
-	    //         });
-	    //         $scope.selected = is_selected;
-	    //     }
-	    // }
-		//
-	    // // POPULATE SUBCONTRACTORS DROPDOWN function
-	    // function populateSubcontractorsDropdown() {
-	    //     SubcontractorService.getSubcontractors().then(function(response) {
-	    //         $scope.subcontractor_list = response.data.objects;
-	    //     }, function(error) {
-	    //         $scope.error_msg_get = true;
-	    //     });
-	    // }
-		//
-	    // // POPULATE ITEMS DROPDOWN function
-	    // function populateItemsDropdown() {
-	    //     ItemService.getItems().then(function(response) {
-	    //         var list = [];
-	    //         angular.forEach(response.data.objects, function(item) {
-	    //             list.push({
-	    //                 id  : item.id,
-	    //                 name: item.name,
-	    //                 category: {
-	    //                     id  : item.categories.id,
-	    //                     name: item.categories.name,
-	    //                 }
-	    //             });
-	    //         });
-	    //         $scope.item_list = list;
-		//
-	    //     }, function(error) {
-	    //         $scope.error_msg_get = true;
-	    //     });
-	    // }
-		//
+        // GET Subcontractors
+	    function updateSubcontractors() {
+	        return getSubcontractors();
+
+            function getSubcontractors() {
+                return subcontractorService.retrieveList()
+                    .then(success)
+                    .catch(error);
+
+                function success(data) {
+                    vm.subcontractorList = data.objects;
+                    return vm.subcontractorList;
+                }
+                function error() {
+                    vm.getError = true;
+                }
+            }
+	    }
+
+        // GET Items
+	    function updateItems() {
+            return getItems()
+                .then(populateList)
+                .catch(error);
+
+            function getItems() {
+                return itemService.retrieveList()
+                    .then(success);
+
+                function success(data) {
+                    vm.itemList = data.objects;
+                    return vm.itemList;
+                }
+            }
+            function populateList() {
+                var list = [];
+	            angular.forEach(vm.itemList, function(item) {
+	                list.push({
+	                    id  : item.id,
+	                    name: item.name,
+	                    category: {
+	                        id  : item.categories.id,
+	                        name: item.categories.name,
+	                    }
+	                });
+	            });
+	            vm.itemList = list;
+            }
+            function error() {
+                vm.getError = true;
+            }
+	    }
+
+	    // CLICKED Expenditure
+	    $scope.clicked = function(expenditure) {
+	        var index = vm.expenditureList.indexOf(expenditure);
+	        if (index !== -1) {
+	            store.set('expenditure', expenditure);
+	            return true;
+	        }
+	        return false;
+	    }
+
+        // CLICKED Checkbox
+	    $scope.clickedCheckbox = function(expenditure) {
+	        if (expenditure.selected) {
+	            vm.selected = true;
+	        } else {
+	            var isSelected = false;
+	            angular.forEach(vm.expenditureList, function(e) {
+	                if (e.selected) {
+	                    isSelected = true;
+	                }
+	            });
+	            vm.selected = isSelected;
+	        }
+	    }
+
 	    // // POPULATE FUNDS DROPDOWN function
 	    // function populateFundsDropdown() {
 	    //     FundService.getFunds().then(function(response) {
