@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app.projects.budget')
+        .module('app.projects.subcontractors')
         .controller('SubcontractorsController', SubcontractorsController);
 
     SubcontractorsController.$inject = ['$scope', 'store', 'subcontractorService'];
@@ -12,25 +12,27 @@
         vm.project = store.get('project');
         updateSubcontractors();
 
+        // GET Subcontractors
 	    function updateSubcontractors() {
             return getSubcontractors();
 
             function getSubcontractors() {
                 return subcontractorService.retrieveList()
-                    .then(getSuccess)
+                    .then(success)
                     .catch(error);
 
-                function getSuccess(data) {
+                function success(data) {
                     vm.subcontractorList = data.objects;
                     return vm.subcontractorList;
                 }
                 function error() {
-                    vm.errorMsgGet = true;
+                    vm.getError = true;
                 }
             }
 	    }
 
-	    $scope.clickedSubcontractor = function(subcontractor) {
+        // CLICKED Subcontractor
+	    $scope.clicked = function(subcontractor) {
 	        var index = vm.subcontractorList.indexOf(subcontractor);
 	        if (index !== -1) {
 	            store.set('subcontractor', subcontractor);
@@ -39,7 +41,8 @@
 	        return false;
 	    }
 
-	    $scope.clickedSingleCheckbox = function(subcontractor) {
+        // CLICKED Checkbox
+	    $scope.clickedCheckbox = function(subcontractor) {
 	        if (subcontractor.selected) {
 	            vm.selected = true;
 	        } else {
@@ -75,7 +78,7 @@
                 updateSubcontractors();
             }
             function error() {
-                vm.addForm.$invalid = true;
+                $scope.addForm.$invalid = true;
                 btn.button('reset');
             }
 	    }
@@ -145,7 +148,7 @@
             vm.updated.name          = store.get('subcontractor').name;
             vm.updated.company       = store.get('subcontractor').company;
             vm.updated.contactNumber = store.get('subcontractor').contact_number;
-	        vm.updateForm.$setPristine();
+	        $scope.updateForm.$setPristine();
 	        $('#update-modal').modal('show');
 	    }
 	    $scope.update = function() {
