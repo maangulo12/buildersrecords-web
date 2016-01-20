@@ -5,9 +5,9 @@
         .module('app.projects.expenditures')
         .controller('ExpendituresController', ExpendituresController);
 
-    ExpendituresController.$inject = ['$scope', 'store', 'expenditureService', 'itemService', 'fundService'];
+    ExpendituresController.$inject = ['$scope', 'store', 'expenditureService', 'subcontractorService', 'itemService', 'fundService'];
 
-    function ExpendituresController($scope, store, expenditureService, itemService, fundService) {
+    function ExpendituresController($scope, store, expenditureService, subcontractorService, itemService, fundService) {
         var vm = this;
         vm.project = store.get('project');
         updateExpenditures();
