@@ -19,8 +19,8 @@
 
         function retrieveList() {
             return $http.get(url + query('project_id', 'equals', store.get('project').id))
-                .then(successHandler)
-                .catch(errorHandler);
+                .then(success)
+                .catch(error);
         }
 
         function create(vm) {
@@ -31,8 +31,8 @@
                 project_id:     store.get('project').id
             };
             return $http.post(url, data)
-                .then(successHandler)
-                .catch(errorHandler);
+                .then(success)
+                .catch(error);
         }
 
         function update(vm) {
@@ -42,23 +42,23 @@
                 contact_number: vm.contactNumber,
                 project_id:     store.get('project').id
             };
-            return $http.put(url, data)
-                .then(successHandler)
-                .catch(errorHandler);
+            return $http.put(url + '/' + store.get('subcontractor').id, data)
+                .then(success)
+                .catch(error);
         }
 
         function remove(subcontractorId) {
             return $http.delete(url + '/' + subcontractorId)
-                .then(successHandler)
-                .catch(errorHandler);
+                .then(success)
+                .catch(error);
         }
     }
 
-    function successHandler(response) {
+    function success(response) {
         return response.data;
     }
 
-    function errorHandler(response) {
+    function error(response) {
         return response;
     }
 
