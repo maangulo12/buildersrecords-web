@@ -18,28 +18,28 @@
 
         function retrieveList() {
             return $http.get(url + query('project_id', 'equals', store.get('project').id))
-                .then(successHandler)
-                .catch(errorHandler);
+                .then(success)
+                .catch(error);
         }
 
         function retrieveByCategory() {
 			return $http.get(url + query('category_id', 'equals', store.get('category').id))
-                .then(successHandler)
-                .catch(errorHandler);
+                .then(success)
+                .catch(error);
         }
 
         function removeByCategory() {
             return $http.delete(url + query('category_id', 'equals', store.get('category').id))
-                .then(successHandler)
-                .catch(errorHandler);
+                .then(success)
+                .catch(error);
         }
     }
 
-    function successHandler(response) {
+    function success(response) {
         return response.data;
     }
 
-    function errorHandler(response) {
+    function error(response) {
         return response;
     }
 
