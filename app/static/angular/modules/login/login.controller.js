@@ -21,12 +21,11 @@
             function authenticateUser() {
                 return authService.authenticate(vm.username, vm.password);
             }
-            function goProjects(response) {
+            function goProjects() {
                 $state.go('projects');
             }
             function error(response) {
                 $scope.loginForm.$invalid = true;
-                $scope.loginForm.$submitted = true;
                 vm.password = '';
                 btn.button('reset');
             }
