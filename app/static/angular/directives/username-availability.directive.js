@@ -21,15 +21,18 @@
 
         function linkFunc(scope, el, attr, ctrl) {
             ctrl.$asyncValidators.usernameAvailability = function(username) {
-                return utilityService.verifyUsername(username)
-                    .then(responseHandler)
-                    .catch(errorHandler);
+                return verifyUsername(username)
+                    .then(success)
+                    .catch(error);
 
-                function responseHandler(response) {
-                    ctrl.$setValidity('usernameAvailability', true);
-                    return response;
+                function verifyUsername(username) {
+                    return utilityService.verifyUsername(username);
                 }
-                function errorHandler(response) {
+                function success(response) {
+                    ctrl.$setValidity('usernameAvailability', true);
+                    return $q.resolve(response);
+                }
+                function error(response) {
                     ctrl.$setValidity('usernameAvailability', false);
                     return $q.reject(response);
                 }

@@ -21,15 +21,18 @@
 
         function linkFunc(scope, el, attr, ctrl) {
             ctrl.$asyncValidators.emailAvailability = function(email) {
-                return utilityService.verifyEmail(email)
-                    .then(responseHandler)
-                    .catch(errorHandler);
+                return verifyEmail(email)
+                    .then(success)
+                    .catch(error);
 
-                function responseHandler(response) {
-                    ctrl.$setValidity('emailAvailability', true);
-                    return response;
+                function verifyEmail(email) {
+                    return utilityService.verifyEmail(email);
                 }
-                function errorHandler(response) {
+                function success(response) {
+                    ctrl.$setValidity('emailAvailability', true);
+                    return $q.resolve(response);
+                }
+                function error(response) {
                     ctrl.$setValidity('emailAvailability', false);
                     return $q.reject(response);
                 }
