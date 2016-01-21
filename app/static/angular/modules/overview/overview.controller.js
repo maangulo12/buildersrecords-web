@@ -116,9 +116,9 @@
 
             function getFunds() {
                 return fundService.retrieveList()
-                    .then(getSuccess);
+                    .then(success);
 
-                    function getSuccess(response) {
+                    function success(response) {
                         vm.fundList = response.data.objects;
                         return vm.fundList;
                     }
