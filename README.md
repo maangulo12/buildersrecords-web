@@ -6,6 +6,13 @@ BuildersRecords Web Application.
 
 + Priorities:
 ```
+    * Home Module - Update Home Page
+    * Login Module - Forgot Password
+    * Signup Module - Update Signup Page
+    * Signup Module - Sign Up Error Messages
+    * Signup Module - Terms of Service & Privacy Policy
+    * Tutorial Module - Tutorial Write-up and Video
+
     * Bulk delete project
     * Create project upload file error msg
     * Update email / username
@@ -30,15 +37,9 @@ BuildersRecords Web Application.
 
     * Edit Draw date is off
 
-    * Fix signUp error msg
     * Payment not processed
 
-    * Forgot Password
     * Send Feedback
-    * Tutorial Video
-    * Terms of Service and Privacy Policy
-
-    * Redesign Home Page
 ```
 
 ## Required Software
