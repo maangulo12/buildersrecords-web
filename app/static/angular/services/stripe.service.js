@@ -81,7 +81,7 @@
                 .catch(error);
         }
 
-        // Handlers
+        // Helpers
         function success(response) {
             return $q.resolve(response);
         }

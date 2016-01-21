@@ -5,9 +5,9 @@
         .module('app.service.subcontractor', [])
         .factory('subcontractorService', subcontractorService);
 
-    subcontractorService.$inject = ['$http', 'store'];
+    subcontractorService.$inject = ['$http', 'store', '$q'];
 
-    function subcontractorService($http, store) {
+    function subcontractorService($http, store, $q) {
         var url = store.get('url') + '/api/subcontractors';
         var service = {
             retrieveList: retrieveList,
@@ -23,11 +23,11 @@
                 .catch(error);
         }
 
-        function create(vm) {
+        function create(subcontractor) {
             var data = {
-                name:           vm.name,
-                company:        vm.company,
-                contact_number: vm.contactNumber,
+                name:           subcontractor.name,
+                company:        subcontractor.company,
+                contact_number: subcontractor.contactNumber,
                 project_id:     store.get('project').id
             };
             return $http.post(url, data)
@@ -35,11 +35,11 @@
                 .catch(error);
         }
 
-        function update(vm) {
+        function update(subcontractor) {
             var data = {
-                name:           vm.name,
-                company:        vm.company,
-                contact_number: vm.contactNumber,
+                name:           subcontractor.name,
+                company:        subcontractor.company,
+                contact_number: subcontractor.contactNumber,
                 project_id:     store.get('project').id
             };
             return $http.put(url + '/' + store.get('subcontractor').id, data)
@@ -52,17 +52,16 @@
                 .then(success)
                 .catch(error);
         }
-    }
 
-    function success(response) {
-        return response.data;
-    }
-
-    function error(response) {
-        return response;
-    }
-
-    function query(name, op, val) {
-        return '?q={"filters":[{"name":"' + name + '","op":"' + op + '","val":"' + val + '"}]}';
+        // Helpers
+        function success(response) {
+            return $q.resolve(response);
+        }
+        function error(response) {
+            return $q.reject(response);
+        }
+        function query(name, op, val) {
+            return '?q={"filters":[{"name":"' + name + '","op":"' + op + '","val":"' + val + '"}]}';
+        }
     }
 })();

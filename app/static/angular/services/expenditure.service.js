@@ -5,9 +5,9 @@
         .module('app.service.expenditure', [])
         .factory('expenditureService', expenditureService);
 
-    expenditureService.$inject = ['$http', 'store', '$filter'];
+    expenditureService.$inject = ['$http', 'store', '$q', '$filter'];
 
-    function expenditureService($http, store, $filter) {
+    function expenditureService($http, store, $q, $filter) {
         var url = store.get('url') + '/api/expenditures';
         var service = {
             retrieveList:       retrieveList,
@@ -25,15 +25,15 @@
                 .catch(error);
         }
 
-        function create(vm) {
+        function create(expenditure) {
             var data = {
-                date:        $filter('date')(vm.date,'yyyy-MM-dd'),
-                vendor:      vm.vendor,
-                notes:       vm.notes,
-                cost:        vm.cost,
-                fund_id:     vm.fund.id,
-                category_id: vm.item.category.id,
-                item_id:     vm.item.id,
+                date:        $filter('date')(expenditure.date,'yyyy-MM-dd'),
+                vendor:      expenditure.vendor,
+                notes:       expenditure.notes,
+                cost:        expenditure.cost,
+                fund_id:     expenditure.fund.id,
+                category_id: expenditure.item.category.id,
+                item_id:     expenditure.item.id,
                 project_id:  store.get('project').id
             };
             return $http.post(url, data)
@@ -41,15 +41,15 @@
                 .catch(error);
         }
 
-        function update(vm) {
+        function update(expenditure) {
             var data = {
-                date:        $filter('date')(vm.date,'yyyy-MM-dd'),
-                vendor:      vm.vendor,
-                notes:       vm.notes,
-                cost:        vm.cost,
-                fund_id:     vm.fund.id,
-                category_id: vm.item.category.id,
-                item_id:     vm.item.id,
+                date:        $filter('date')(expenditure.date,'yyyy-MM-dd'),
+                vendor:      expenditure.vendor,
+                notes:       expenditure.notes,
+                cost:        expenditure.cost,
+                fund_id:     expenditure.fund.id,
+                category_id: expenditure.item.category.id,
+                item_id:     expenditure.item.id,
                 project_id:  store.get('project').id
             };
             return $http.put(url + '/' + store.get('expenditure').id, data)
@@ -74,17 +74,16 @@
                 .then(success)
                 .catch(error);
         }
-    }
 
-    function success(response) {
-        return response.data;
-    }
-
-    function error(response) {
-        return response;
-    }
-
-    function query(name, op, val) {
-        return '?q={"filters":[{"name":"' + name + '","op":"' + op + '","val":"' + val + '"}]}';
+        // Helpers
+        function success(response) {
+            return $q.resolve(response);
+        }
+        function error(response) {
+            return $q.reject(response);
+        }
+        function query(name, op, val) {
+            return '?q={"filters":[{"name":"' + name + '","op":"' + op + '","val":"' + val + '"}]}';
+        }
     }
 })();

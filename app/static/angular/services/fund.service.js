@@ -5,9 +5,9 @@
         .module('app.service.fund', [])
         .factory('fundService', fundService);
 
-    fundService.$inject = ['$http', 'store'];
+    fundService.$inject = ['$http', 'store', '$q'];
 
-    function fundService($http, store) {
+    function fundService($http, store, $q) {
         var url = store.get('url') + '/api/funds';
         var service = {
             retrieveList: retrieveList,
@@ -23,11 +23,11 @@
                 .catch(error);
         }
 
-        function create(vm) {
+        function create(fund) {
             var data = {
-                name:       vm.name,
-                loan:       vm.loan,
-                amount:     vm.amount,
+                name:       fund.name,
+                loan:       fund.loan,
+                amount:     fund.amount,
                 project_id: store.get('project').id
             };
             return $http.post(url, data)
@@ -35,10 +35,10 @@
                 .catch(error);
         }
 
-        function update(vm) {
+        function update(fund) {
             var data = {
-                name:       vm.name,
-                amount:     vm.amount,
+                name:       fund.name,
+                amount:     fund.amount,
                 project_id: store.get('project').id
             };
             return $http.put(url + '/' + store.get('fund').id, data)
@@ -51,17 +51,16 @@
                 .then(success)
                 .catch(error);
         }
-    }
 
-    function success(response) {
-        return response.data;
-    }
-
-    function error(response) {
-        return response;
-    }
-
-    function query(name, op, val) {
-        return '?q={"filters":[{"name":"' + name + '","op":"' + op + '","val":"' + val + '"}]}';
+        // Helpers
+        function success(response) {
+            return $q.resolve(response);
+        }
+        function error(response) {
+            return $q.reject(response);
+        }
+        function query(name, op, val) {
+            return '?q={"filters":[{"name":"' + name + '","op":"' + op + '","val":"' + val + '"}]}';
+        }
     }
 })();

@@ -5,9 +5,9 @@
         .module('app.service.user', [])
         .factory('userService', userService);
 
-    userService.$inject = ['$http', 'store'];
+    userService.$inject = ['$http', 'store', '$q'];
 
-    function userService($http, store) {
+    function userService($http, store, $q) {
         var url = store.get('url') + '/api/users';
         var service = {
             retrieve:       retrieve,
@@ -22,10 +22,10 @@
                 .catch(error);
         }
 
-        function updateUser(vm) {
+        function updateUser(user) {
             var data = {
-                email:    vm.email,
-                username: vm.username
+                email:    user.email,
+                username: user.username
             };
             return $http.put(url + '/' + store.get('user').id, data)
                 .then(success)
@@ -37,13 +37,13 @@
                 .then(success)
                 .catch(error);
         }
-    }
 
-    function success(response) {
-        return response.data;
-    }
-
-    function error(response) {
-        return response;
+        // Helpers
+        function success(response) {
+            return $q.resolve(response);
+        }
+        function error(response) {
+            return $q.reject(response);
+        }
     }
 })();

@@ -5,9 +5,9 @@
         .module('app.service.draw', [])
         .factory('drawService', drawService);
 
-    drawService.$inject = ['$http', 'store'];
+    drawService.$inject = ['$http', 'store', '$q'];
 
-    function drawService($http, store) {
+    function drawService($http, store, $q) {
         var url = store.get('url') + '/api/draws';
         var service = {
             create:       create,
@@ -17,10 +17,10 @@
         };
         return service;
 
-        function create(vm) {
+        function create(draw) {
             var data = {
-                date:    vm.date,
-                amount:  vm.amount,
+                date:    draw.date,
+                amount:  draw.amount,
                 fund_id: store.get('fund').id
             };
             return $http.post(url, data)
@@ -28,10 +28,10 @@
                 .catch(error);
         }
 
-        function update(vm) {
+        function update(draw) {
             var data = {
-                date:    vm.date,
-                amount:  vm.amount,
+                date:    draw.date,
+                amount:  draw.amount,
                 fund_id: store.get('fund').id
             };
             return $http.put(url + '/' + store.get('draw').id, data)
@@ -50,17 +50,16 @@
                 .then(success)
                 .catch(error);
         }
-    }
 
-    function success(response) {
-        return response.data;
-    }
-
-    function error(response) {
-        return response;
-    }
-
-    function query(name, op, val) {
-        return '?q={"filters":[{"name":"' + name + '","op":"' + op + '","val":"' + val + '"}]}';
+        // Helpers
+        function success(response) {
+            return $q.resolve(response);
+        }
+        function error(response) {
+            return $q.reject(response);
+        }
+        function query(name, op, val) {
+            return '?q={"filters":[{"name":"' + name + '","op":"' + op + '","val":"' + val + '"}]}';
+        }
     }
 })();
