@@ -24,7 +24,7 @@
             function goProjects() {
                 $state.go('projects');
             }
-            function error(response) {
+            function error() {
                 $scope.loginForm.$invalid = true;
                 vm.password = '';
                 btn.button('reset');
