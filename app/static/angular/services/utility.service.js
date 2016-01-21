@@ -8,7 +8,7 @@
     utilityService.$inject = ['$http', 'store'];
 
     function utilityService($http, store) {
-        var url = store.get('api_url') + '/api/utility';
+        var url = store.get('url') + '/api/utility';
         var service = {
             verifyEmail:       verifyEmail,
             verifyUsername:    verifyUsername,
@@ -17,11 +17,15 @@
         return service;
 
         function verifyEmail(email) {
-            return $http.post(url + '/email', { email : email });
+            return $http.post(url + '/email', { email : email })
+                .then(success)
+                .catch(error);
         }
 
         function verifyUsername(username) {
-            return $http.post(url + '/username', { username : username });
+            return $http.post(url + '/username', { username : username })
+                .then(success)
+                .catch(error);
         }
 
         function parseUbuilditFile(vm, file) {
@@ -40,7 +44,17 @@
                 transformRequest: angular.identity,
                 headers: { 'Content-Type': undefined }
             };
-            return $http.post(url + '/ubuildit', data, config);
+            return $http.post(url + '/ubuildit', data, config)
+                .then(success)
+                .catch(error);
         }
+    }
+
+    function success(response) {
+        return response.data;
+    }
+
+    function error(response) {
+        return response;
     }
 })();

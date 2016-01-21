@@ -8,7 +8,7 @@
     expenditureService.$inject = ['$http', 'store', '$filter'];
 
     function expenditureService($http, store, $filter) {
-        var url = store.get('api_url') + '/api/expenditures';
+        var url = store.get('url') + '/api/expenditures';
         var service = {
             retrieveList:       retrieveList,
             create:             create,

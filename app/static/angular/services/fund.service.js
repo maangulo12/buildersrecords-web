@@ -8,7 +8,7 @@
     fundService.$inject = ['$http', 'store'];
 
     function fundService($http, store) {
-        var url = store.get('api_url') + '/api/funds';
+        var url = store.get('url') + '/api/funds';
         var service = {
             retrieveList: retrieveList,
             create:       create,
@@ -19,8 +19,8 @@
 
         function retrieveList() {
 			return $http.get(url + query('project_id', 'equals', store.get('project').id))
-                .then(successHandler)
-                .catch(errorHandler);
+                .then(success)
+                .catch(error);
         }
 
         function create(vm) {
@@ -31,8 +31,8 @@
                 project_id: store.get('project').id
             };
             return $http.post(url, data)
-                .then(successHandler)
-                .catch(errorHandler);
+                .then(success)
+                .catch(error);
         }
 
         function update(vm) {
@@ -42,22 +42,22 @@
                 project_id: store.get('project').id
             };
             return $http.put(url + '/' + store.get('fund').id, data)
-                .then(successHandler)
-                .catch(errorHandler);
+                .then(success)
+                .catch(error);
         }
 
         function remove() {
             return $http.delete(url + '/' + store.get('fund').id)
-                .then(successHandler)
-                .catch(errorHandler);
+                .then(success)
+                .catch(error);
         }
     }
 
-    function successHandler(response) {
+    function success(response) {
         return response.data;
     }
 
-    function errorHandler(response) {
+    function error(response) {
         return response;
     }
 

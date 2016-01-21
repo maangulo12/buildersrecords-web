@@ -8,7 +8,7 @@
     itemService.$inject = ['$http', 'store'];
 
     function itemService($http, store) {
-        var url = store.get('api_url') + '/api/items';
+        var url = store.get('url') + '/api/items';
         var service = {
             retrieveList:       retrieveList,
             create:             create,

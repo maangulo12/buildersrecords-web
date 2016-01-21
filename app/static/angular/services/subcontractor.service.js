@@ -8,7 +8,7 @@
     subcontractorService.$inject = ['$http', 'store'];
 
     function subcontractorService($http, store) {
-        var url = store.get('api_url') + '/api/subcontractors';
+        var url = store.get('url') + '/api/subcontractors';
         var service = {
             retrieveList: retrieveList,
             create:       create,

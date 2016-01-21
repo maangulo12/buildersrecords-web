@@ -8,12 +8,12 @@
     drawService.$inject = ['$http', 'store'];
 
     function drawService($http, store) {
-        var url = store.get('api_url') + '/api/draws';
+        var url = store.get('url') + '/api/draws';
         var service = {
-            create:     create,
-            update:     update,
-            remove:     remove,
-            removeBulk: removeBulk
+            create:       create,
+            update:       update,
+            remove:       remove,
+            removeByFund: removeByFund
         };
         return service;
 
@@ -24,8 +24,8 @@
                 fund_id: store.get('fund').id
             };
             return $http.post(url, data)
-                .then(successHandler)
-                .catch(errorHandler);
+                .then(success)
+                .catch(error);
         }
 
         function update(vm) {
@@ -35,28 +35,28 @@
                 fund_id: store.get('fund').id
             };
             return $http.put(url + '/' + store.get('draw').id, data)
-                .then(successHandler)
-                .catch(errorHandler);
+                .then(success)
+                .catch(error);
         }
 
-        function remove(draw_id) {
-            return $http.delete(url + '/' + draw_id)
-                .then(successHandler)
-                .catch(errorHandler);
+        function remove(drawId) {
+            return $http.delete(url + '/' + drawId)
+                .then(success)
+                .catch(error);
         }
 
-        function removeBulk() {
+        function removeByFund() {
             return $http.delete(url + query('fund_id', 'equals', store.get('fund').id))
-                .then(successHandler)
-                .catch(errorHandler);
+                .then(success)
+                .catch(error);
         }
     }
 
-    function successHandler(response) {
+    function success(response) {
         return response.data;
     }
 
-    function errorHandler(response) {
+    function error(response) {
         return response;
     }
 

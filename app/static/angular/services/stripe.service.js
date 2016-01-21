@@ -8,7 +8,7 @@
     stripeService.$inject = ['$http', 'store', '$q'];
 
     function stripeService($http, store, $q) {
-        var url = store.get('api_url') + '/api/stripe';
+        var url = store.get('url') + '/api/stripe';
         var service = {
             validateCard:         validateCard,
             createCardToken:      createCardToken,
@@ -52,27 +52,41 @@
             });
         }
 
-        function createSubscription(vm, token_id) {
+        function createSubscription(vm, tokenId) {
             var data = {
                 email:    vm.email,
                 username: vm.username,
                 password: vm.password,
                 plan:     vm.plan,
-                token_id: token_id
+                token_id: tokenId
             };
-            return $http.post(url, data);
+            return $http.post(url, data)
+                .then(success)
+                .catch(error);
         }
 
         function retrieveSubscription() {
-            return $http.get(url + '/' + store.get('user').stripe_id);
+            return $http.get(url + '/' + store.get('user').stripe)
+                .then(success)
+                .catch(error);
         }
 
-        function updateSubscription(token_id) {
+        function updateSubscription(tokenId) {
             var data = {
-                stripe_id: store.get('user').stripe_id,
-                token_id:  token_id
+                stripe_id: store.get('user').stripe,
+                token_id:  tokenId
             };
-            return $http.put(url + '/' + store.get('user').stripe_id, data);
+            return $http.put(url + '/' + store.get('user').stripe, data)
+                .then(success)
+                .catch(error);
         }
+    }
+
+    function success(response) {
+        return response.data;
+    }
+
+    function error(response) {
+        return response;
     }
 })();
