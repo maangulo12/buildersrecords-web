@@ -16,7 +16,7 @@
                 .then(showProjectList)
                 .catch(error);
 
-            function showProjectList(response) {
+            function showProjectList(data) {
                 vm.projectList = data.objects;
                 return vm.projectList;
             }
