@@ -20,17 +20,17 @@
         return directive;
 
         function linkFunc(scope, el, attr, ctrl) {
-            if (!ctrl) {
-                return;
+            ctrl.$formatters.unshift(formatter);
+            ctrl.$parsers.unshift(parser);
+
+            function formatter(a) {
+                return $filter(attr.format)(ctrl.$modelValue);
             }
-            ctrl.$formatters.unshift(function (a) {
-                return $filter(attr.format)(ctrl.$modelValue)
-            });
-            ctrl.$parsers.unshift(function (viewValue) {
+            function parser(viewValue) {
                 var plainNumber = viewValue.replace(/[^\d|\-+|\.+]/g, '');
                 el.val($filter(attr.format)(plainNumber));
                 return plainNumber;
-            });
+            }
         }
     }
 })();
