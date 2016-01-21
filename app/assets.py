@@ -37,7 +37,7 @@ js_vendor = Bundle('vendor/jquery/jquery-1.11.3.min.js',
                    'vendor/highcharts/highcharts.min.js',
                    output='gen/vendor.js')
 
-js_ang = Bundle('angular/app.module.js',
+js_app = Bundle('angular/app.module.js',
                 'angular/app.config.js',
                 'angular/app.run.js',
                 'angular/directives/email-availability.directive.js',
@@ -95,6 +95,6 @@ js_ang = Bundle('angular/app.module.js',
                 filters='jsmin',
                 output='gen/all.js')
 
-js_all = Bundle(js_vendor, js_ang, output='gen/all.js')
+js_all = Bundle(js_vendor, js_app, output='gen/all.js')
 
 env.register('js_all', js_all)
