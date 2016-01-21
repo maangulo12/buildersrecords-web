@@ -42,13 +42,14 @@
                 contact_number: subcontractor.contactNumber,
                 project_id:     store.get('project').id
             };
-            return $http.put(url + '/' + store.get('subcontractor').id, data)
+            return $http.put(url + '/' + subcontractor.id, data)
                 .then(success)
                 .catch(error);
         }
 
-        function remove(subcontractorId) {
-            return $http.delete(url + '/' + subcontractorId)
+        function remove(subcontractor) {
+            console.log(subcontractor.id);
+            return $http.delete(url + '/' + subcontractor.id)
                 .then(success)
                 .catch(error);
         }
