@@ -5,9 +5,9 @@
         .module('app.service.project', [])
         .factory('projectService', projectService);
 
-    projectService.$inject = ['$http', 'store'];
+    projectService.$inject = ['$http', 'store', '$q'];
 
-    function projectService($http, store) {
+    function projectService($http, store, $q) {
         var url = store.get('url') + '/api/projects';
         var service = {
             retrieveList: retrieveList,
@@ -23,15 +23,15 @@
                 .catch(error);
         }
 
-        function create(vm) {
+        function create(project) {
             var data = {
-                name:         vm.name,
-                address:      vm.address,
-                city:         vm.city,
-                state:        vm.state,
-                zipcode:      vm.zipcode,
-                home_sq:      vm.homeSq,
-                project_type: vm.type,
+                name:         project.name,
+                address:      project.address,
+                city:         project.city,
+                state:        project.state,
+                zipcode:      project.zipcode,
+                home_sq:      project.homeSq,
+                project_type: project.type,
                 user_id:      store.get('user').id
             };
             return $http.post(url, data)
@@ -39,37 +39,36 @@
                 .catch(error);
         }
 
-        function update(vm) {
+        function update(project) {
             var data = {
-                name:    vm.name,
-                address: vm.address,
-                city:    vm.city,
-                state:   vm.state,
-                zipcode: vm.zipcode,
-                home_sq: vm.homeSq,
+                name:    project.name,
+                address: project.address,
+                city:    project.city,
+                state:   project.state,
+                zipcode: project.zipcode,
+                home_sq: project.homeSq,
                 user_id: store.get('user').id
             };
-            return $http.put(url + '/' + store.get('project').id, data)
+            return $http.put(url + '/' + project.id, data)
                 .then(success)
                 .catch(error);
         }
 
-        function remove() {
-            return $http.delete(url + '/' + store.get('project').id)
+        function remove(project) {
+            return $http.delete(url + '/' + project.id)
                 .then(success)
                 .catch(error);
         }
-    }
 
-    function success(response) {
-        return response.data;
-    }
-
-    function error(response) {
-        return response;
-    }
-
-    function query(name, op, val) {
-        return '?q={"filters":[{"name":"' + name + '","op":"' + op + '","val":"' + val + '"}]}';
+        // Helpers
+        function success(response) {
+            return $q.resolve(response);
+        }
+        function error(response) {
+            return $q.reject(response);
+        }
+        function query(name, op, val) {
+            return '?q={"filters":[{"name":"' + name + '","op":"' + op + '","val":"' + val + '"}]}';
+        }
     }
 })();
