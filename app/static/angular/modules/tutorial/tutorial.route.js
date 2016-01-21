@@ -38,7 +38,7 @@
             return userService.retrieve();
         }
         function success(response) {
-            return $q.resolve(response);
+            return $q.resolve(response.data);
         }
         function error(response) {
             return $q.reject(response);
