@@ -12,7 +12,7 @@
         vm.project = store.get('project');
         updateSubcontractors();
 
-        // GET Subcontractors
+        // GET function
         function updateSubcontractors() {
             return getSubcontractors();
 
@@ -21,8 +21,8 @@
                     .then(success)
                     .catch(error);
 
-                function success(data) {
-                    vm.subcontractorList = data.objects;
+                function success(response) {
+                    vm.subcontractorList = response.data.objects;
                     return vm.subcontractorList;
                 }
                 function error() {
@@ -31,17 +31,7 @@
             }
         }
 
-        // CLICKED Subcontractor
-        $scope.clicked = function(subcontractor) {
-            var index = vm.subcontractorList.indexOf(subcontractor);
-            if (index !== -1) {
-                store.set('subcontractor', subcontractor);
-                return true;
-            }
-            return false;
-        }
-
-        // CLICKED Checkbox
+        // CLICKED function
         $scope.clickedCheckbox = function(subcontractor) {
             if (subcontractor.selected) {
                 vm.selected = true;
@@ -95,7 +85,7 @@
 
             angular.forEach(vm.subcontractorList, function(subcontractor) {
                 if (subcontractor.selected) {
-                    deleteSubcontractor(subcontractor.id)
+                    deleteSubcontractor(subcontractor)
                         .then(success)
                         .catch(error);
                 }
@@ -117,8 +107,9 @@
         }
 
         // DELETE functions
-        $scope.deleteModal = function() {
+        $scope.deleteModal = function(subcontractor) {
             vm.deleteError = false;
+            vm.deleted = subcontractor;
             $('#delete-modal').modal('show');
         }
         $scope.delete = function() {
@@ -129,7 +120,7 @@
                 .catch(error);
 
             function deleteSubcontractor() {
-                return subcontractorService.remove(store.get('subcontractor').id);
+                return subcontractorService.remove(vm.deleted);
             }
             function success() {
                 $('#delete-modal').modal('hide');
@@ -143,11 +134,12 @@
         }
 
         // UPDATE functions
-        $scope.updateModal = function() {
+        $scope.updateModal = function(subcontractor) {
             vm.updated               = {};
-            vm.updated.name          = store.get('subcontractor').name;
-            vm.updated.company       = store.get('subcontractor').company;
-            vm.updated.contactNumber = store.get('subcontractor').contact_number;
+            vm.updated.id            = subcontractor.id;
+            vm.updated.name          = subcontractor.name;
+            vm.updated.company       = subcontractor.company;
+            vm.updated.contactNumber = subcontractor.contact_number;
             $scope.updateForm.$setPristine();
             $('#update-modal').modal('show');
         }
