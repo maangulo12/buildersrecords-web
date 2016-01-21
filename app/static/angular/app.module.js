@@ -12,7 +12,6 @@
         'app.directive.format',
         'app.directive.page-select',
         'app.directive.username-availability',
-        'app.services',
         'app.service.auth',
         'app.service.category',
         'app.service.chart',
