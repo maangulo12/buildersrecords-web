@@ -144,7 +144,7 @@
         }
 
         function error() {
-            vm.errorMsgGet = true;
+            vm.getError = true;
         }
     }
 })();
