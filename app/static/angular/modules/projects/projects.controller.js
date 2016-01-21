@@ -22,6 +22,7 @@
             }
             function success(response) {
                 vm.projectList = response.data.objects;
+                return vm.projectList;
             }
             function error(response) {
                 vm.getError = true;
