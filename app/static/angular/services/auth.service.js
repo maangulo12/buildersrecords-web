@@ -32,7 +32,7 @@
                 };
                 store.set('jwt', token);
                 store.set('user', user);
-                return response;
+                return $q.resolve(response);
             }
             function error(response) {
                 return $q.reject(response);
