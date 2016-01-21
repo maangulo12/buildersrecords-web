@@ -5,9 +5,9 @@
         .module('app.service.category', [])
         .factory('categoryService', categoryService);
 
-    categoryService.$inject = ['$http', 'store'];
+    categoryService.$inject = ['$http', 'store', '$q'];
 
-    function categoryService($http, store) {
+    function categoryService($http, store, $q) {
         var url = store.get('url') + '/api/categories';
         var service = {
             retrieveList: retrieveList,
@@ -48,17 +48,16 @@
                 .then(success)
                 .catch(error);
         }
-    }
 
-    function success(response) {
-        return response.data;
-    }
-
-    function error(response) {
-        return response;
-    }
-
-    function query(name, op, val) {
-        return '?q={"filters":[{"name":"' + name + '","op":"' + op + '","val":"' + val + '"}]}';
+        // Handlers
+        function success(response) {
+            return $q.resolve(response);
+        }
+        function error(response) {
+            return $q.reject(response);
+        }
+        function query(name, op, val) {
+            return '?q={"filters":[{"name":"' + name + '","op":"' + op + '","val":"' + val + '"}]}';
+        }
     }
 })();
