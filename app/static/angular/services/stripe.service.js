@@ -40,9 +40,9 @@
                 name:      vm.cardName.toUpperCase()
             };
             return $q(function(resolve, reject) {
-                Stripe.card.createToken(data, responseHandler);
+                Stripe.card.createToken(data, responseCallback);
 
-                function responseHandler(status, response) {
+                function responseCallback(status, response) {
                     if (response.error) {
                         return reject(response);
                     } else {
@@ -80,13 +80,13 @@
                 .then(success)
                 .catch(error);
         }
-    }
 
-    function success(response) {
-        return response.data;
-    }
-
-    function error(response) {
-        return response;
+        // Handlers
+        function success(response) {
+            return $q.resolve(response);
+        }
+        function error(response) {
+            return $q.reject(response);
+        }
     }
 })();
