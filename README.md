@@ -6,8 +6,15 @@ BuildersRecords Web Application.
 
 + Priorities:
 ```
-    * Bulk delete project
-    * Create project upload file error msg
+    * Home - Update Home Page
+    * Login - Forgot Password
+    * Signup - Update Signup Page
+    * Signup - Sign Up Error Messages
+    * Signup - Terms of Service & Privacy Policy
+    * Tutorial - Tutorial Write-up and Video
+    * Projects - Bulk delete project
+    * Projects - Upload file error message
+
     * Update email / username
     * Change password
     * Update credit card
@@ -28,17 +35,19 @@ BuildersRecords Web Application.
     * Expenditures Add, Delete, update
     * Expenditure Table resizing
 
+    * Funds
+    * Change to table
+
+    * Fix all routes
+
+    * JsDoc
+    * Angular Testing SPEC
+
     * Edit Draw date is off
 
-    * Fix signUp error msg
     * Payment not processed
 
-    * Forgot Password
     * Send Feedback
-    * Tutorial Video
-    * Terms of Service and Privacy Policy
-
-    * Redesign Home Page
 ```
 
 ## Required Software

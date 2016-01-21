@@ -32,15 +32,14 @@
             function subscribeUser(response) {
                 return stripeService.createSubscription(vm, response.id);
             }
-            function authenticateUser(response) {
+            function authenticateUser() {
                 return authService.authenticate(vm.username, vm.password);
             }
-            function goTutorial(response) {
+            function goTutorial() {
                 $state.go('tutorial');
             }
             function error() {
                 $scope.signupForm.$invalid = true;
-                $scope.signupForm.$submitted = true;
                 btn.button('reset');
             }
         }

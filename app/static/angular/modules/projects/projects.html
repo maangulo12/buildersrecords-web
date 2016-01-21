@@ -31,7 +31,7 @@
         <div class="col-md-9">
             <!-- Error Alert -->
             <div class="alert alert-danger alert-dismissible text-center" role="alert"
-                 ng-if="vm.errorGetProjects">
+                 ng-if="vm.getError">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                 <span class="sr-only"> Error: </span>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -57,7 +57,7 @@
                     <!-- Button -->
                     <div class="text-right">
                         <button type="button" class="btn btn-success" title="Create a new project"
-                                ng-click="showNewProjectModal()">
+                                ng-click="addModal()">
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                             <b> New Project </b>
                         </button>
@@ -76,7 +76,7 @@
                                     <!-- Project Name -->
                                     <span class="glyphicon glyphicon-home glyphicon-padding"
                                           aria-hidden="true"></span>
-                                    <a href ng-click="clickedProject(project)" ui-sref="overview">
+                                    <a href ng-click="clicked(project)" ui-sref="overview">
                                         <b> {{ project.name }} </b>
                                     </a>
                                     <!-- Address -->
@@ -90,12 +90,12 @@
                                     <div class="text-right">
                                         <!-- Button - Edit Project -->
                                         <button type="button" class="btn btn-primary" title="Edit"
-                                                ng-click="clickedProject(project) && showEditProjectModal()">
+                                                ng-click="updateModal(project)">
                                             <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
                                         </button>
                                         <!-- Button - Delete Project -->
                                         <button type="button" class="btn btn-danger" title="Delete"
-                                                ng-click="clickedProject(project) && showDeleteProjectModal()">
+                                                ng-click="deleteModal(project)">
                                             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                         </button>
                                     </div>
@@ -116,9 +116,9 @@
 </div>
 
 <!-- MODALS -->
-<!-- Modal - New Project -->
+<!-- Modal - Add -->
 <div class="container">
-    <div class="modal fade" id="new-project-modal" aria-hidden="true">
+    <div class="modal fade" id="add-modal" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <!-- Modal Header -->
@@ -133,12 +133,12 @@
                     </h4>
                 </div>
                 <!-- Form -->
-                <form name="newProjectForm" novalidate>
+                <form name="addForm" novalidate>
                     <!-- Modal Body -->
                     <div class="modal-body">
                         <!-- Error Alert -->
                         <div class="alert alert-danger alert-dismissible text-center" role="alert"
-                             ng-if="newProjectForm.$invalid && newProjectForm.$submitted">
+                             ng-if="addForm.$invalid && addForm.$submitted">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             <span class="sr-only"> Error: </span>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -147,13 +147,13 @@
                         </div>
                         <!-- Project Name Field -->
                         <div class="form-group"
-                             ng-class="{ 'has-error': (newProjectForm.name.$dirty ||
-                                                       newProjectForm.$submitted) &&
-                                                       newProjectForm.name.$invalid,
-                                         'has-feedback': (newProjectForm.name.$dirty ||
-                                                          newProjectForm.$submitted) &&
-                                                          newProjectForm.name.$invalid }">
-                            <label class="control-label" for="name"> Project Name * </label>
+                             ng-class="{ 'has-error': (addForm.name.$dirty ||
+                                                       addForm.$submitted) &&
+                                                       addForm.name.$invalid,
+                                         'has-feedback': (addForm.name.$dirty ||
+                                                          addForm.$submitted) &&
+                                                          addForm.name.$invalid }">
+                            <label class="control-label" for="name"> Project Name </label>
                             <input class="form-control"
                                    name="name"
                                    type="text"
@@ -162,14 +162,14 @@
                                    required
                                    ng-maxlength=50>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="(newProjectForm.name.$dirty ||
-                                          newProjectForm.$submitted) &&
-                                          newProjectForm.name.$invalid">
+                                  ng-if="(addForm.name.$dirty ||
+                                          addForm.$submitted) &&
+                                          addForm.name.$invalid">
                             </span>
-                            <div ng-messages="newProjectForm.name.$error"
-                                 ng-if="(newProjectForm.name.$dirty ||
-                                         newProjectForm.$submitted) &&
-                                         newProjectForm.name.$invalid">
+                            <div ng-messages="addForm.name.$error"
+                                 ng-if="(addForm.name.$dirty ||
+                                         addForm.$submitted) &&
+                                         addForm.name.$invalid">
                                 <div ng-message="required"
                                      class="help-block"> This field is required. </div>
                                 <div ng-message="maxlength"
@@ -178,13 +178,13 @@
                         </div>
                         <!-- Address Field -->
                         <div class="form-group"
-                             ng-class="{ 'has-error': (newProjectForm.address.$dirty ||
-                                                       newProjectForm.$submitted) &&
-                                                       newProjectForm.address.$invalid,
-                                         'has-feedback': (newProjectForm.address.$dirty ||
-                                                          newProjectForm.$submitted) &&
-                                                          newProjectForm.address.$invalid }">
-                            <label class="control-label" for="address"> Street Address * </label>
+                             ng-class="{ 'has-error': (addForm.address.$dirty ||
+                                                       addForm.$submitted) &&
+                                                       addForm.address.$invalid,
+                                         'has-feedback': (addForm.address.$dirty ||
+                                                          addForm.$submitted) &&
+                                                          addForm.address.$invalid }">
+                            <label class="control-label" for="address"> Street Address </label>
                             <input class="form-control"
                                    name="address"
                                    type="text"
@@ -193,14 +193,14 @@
                                    required
                                    ng-maxlength=80>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="(newProjectForm.address.$dirty ||
-                                          newProjectForm.$submitted) &&
-                                          newProjectForm.address.$invalid">
+                                  ng-if="(addForm.address.$dirty ||
+                                          addForm.$submitted) &&
+                                          addForm.address.$invalid">
                             </span>
-                            <div ng-messages="newProjectForm.address.$error"
-                                 ng-if="(newProjectForm.address.$dirty ||
-                                         newProjectForm.$submitted) &&
-                                         newProjectForm.address.$invalid">
+                            <div ng-messages="addForm.address.$error"
+                                 ng-if="(addForm.address.$dirty ||
+                                         addForm.$submitted) &&
+                                         addForm.address.$invalid">
                                 <div ng-message="required"
                                      class="help-block"> This field is required. </div>
                                 <div ng-message="maxlength"
@@ -209,13 +209,13 @@
                         </div>
                         <!-- City Field -->
                         <div class="form-group"
-                             ng-class="{ 'has-error': (newProjectForm.city.$dirty ||
-                                                       newProjectForm.$submitted) &&
-                                                       newProjectForm.city.$invalid,
-                                         'has-feedback': (newProjectForm.city.$dirty ||
-                                                          newProjectForm.$submitted) &&
-                                                          newProjectForm.city.$invalid }">
-                            <label class="control-label" for="city"> City * </label>
+                             ng-class="{ 'has-error': (addForm.city.$dirty ||
+                                                       addForm.$submitted) &&
+                                                       addForm.city.$invalid,
+                                         'has-feedback': (addForm.city.$dirty ||
+                                                          addForm.$submitted) &&
+                                                          addForm.city.$invalid }">
+                            <label class="control-label" for="city"> City </label>
                             <input class="form-control"
                                    name="city"
                                    type="text"
@@ -224,14 +224,14 @@
                                    required
                                    ng-maxlength=30>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="(newProjectForm.city.$dirty ||
-                                          newProjectForm.$submitted) &&
-                                          newProjectForm.city.$invalid">
+                                  ng-if="(addForm.city.$dirty ||
+                                          addForm.$submitted) &&
+                                          addForm.city.$invalid">
                             </span>
-                            <div ng-messages="newProjectForm.city.$error"
-                                 ng-if="(newProjectForm.city.$dirty ||
-                                         newProjectForm.$submitted) &&
-                                         newProjectForm.city.$invalid">
+                            <div ng-messages="addForm.city.$error"
+                                 ng-if="(addForm.city.$dirty ||
+                                         addForm.$submitted) &&
+                                         addForm.city.$invalid">
                                 <div ng-message="required"
                                      class="help-block"> This field is required. </div>
                                 <div ng-message="maxlength"
@@ -240,13 +240,13 @@
                         </div>
                         <!-- State Field -->
                         <div class="form-group"
-                             ng-class="{ 'has-error': (newProjectForm.state.$dirty ||
-                                                       newProjectForm.$submitted) &&
-                                                       newProjectForm.state.$invalid,
-                                         'has-feedback': (newProjectForm.state.$dirty ||
-                                                          newProjectForm.$submitted) &&
-                                                          newProjectForm.state.$invalid }">
-                            <label class="control-label" for="state"> State * </label>
+                             ng-class="{ 'has-error': (addForm.state.$dirty ||
+                                                       addForm.$submitted) &&
+                                                       addForm.state.$invalid,
+                                         'has-feedback': (addForm.state.$dirty ||
+                                                          addForm.$submitted) &&
+                                                          addForm.state.$invalid }">
+                            <label class="control-label" for="state"> State </label>
                             <select class="form-control"
                                     name="state"
                                     ng-model="vm.project.state"
@@ -304,27 +304,27 @@
                                 <option value="WY"> Wyoming </option>
                             </select>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="(newProjectForm.state.$dirty ||
-                                          newProjectForm.$submitted) &&
-                                          newProjectForm.state.$invalid">
+                                  ng-if="(addForm.state.$dirty ||
+                                          addForm.$submitted) &&
+                                          addForm.state.$invalid">
                             </span>
-                            <div ng-messages="newProjectForm.state.$error"
-                                 ng-if="(newProjectForm.state.$dirty ||
-                                         newProjectForm.$submitted) &&
-                                         newProjectForm.state.$invalid">
+                            <div ng-messages="addForm.state.$error"
+                                 ng-if="(addForm.state.$dirty ||
+                                         addForm.$submitted) &&
+                                         addForm.state.$invalid">
                                 <div ng-message="required"
                                      class="help-block"> This field is required. </div>
                             </div>
                         </div>
                         <!-- Zipcode Field -->
                         <div class="form-group"
-                             ng-class="{ 'has-error': (newProjectForm.zipcode.$dirty ||
-                                                       newProjectForm.$submitted) &&
-                                                       newProjectForm.zipcode.$invalid,
-                                         'has-feedback': (newProjectForm.zipcode.$dirty ||
-                                                          newProjectForm.$submitted) &&
-                                                          newProjectForm.zipcode.$invalid }">
-                            <label class="control-label" for="zipcode"> Zipcode * </label>
+                             ng-class="{ 'has-error': (addForm.zipcode.$dirty ||
+                                                       addForm.$submitted) &&
+                                                       addForm.zipcode.$invalid,
+                                         'has-feedback': (addForm.zipcode.$dirty ||
+                                                          addForm.$submitted) &&
+                                                          addForm.zipcode.$invalid }">
+                            <label class="control-label" for="zipcode"> Zipcode </label>
                             <input class="form-control"
                                    name="zipcode"
                                    type="text"
@@ -333,14 +333,14 @@
                                    required
                                    ng-maxlength=10>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="(newProjectForm.zipcode.$dirty ||
-                                          newProjectForm.$submitted) &&
-                                          newProjectForm.zipcode.$invalid">
+                                  ng-if="(addForm.zipcode.$dirty ||
+                                          addForm.$submitted) &&
+                                          addForm.zipcode.$invalid">
                             </span>
-                            <div ng-messages="newProjectForm.zipcode.$error"
-                                 ng-if="(newProjectForm.zipcode.$dirty ||
-                                         newProjectForm.$submitted) &&
-                                         newProjectForm.zipcode.$invalid">
+                            <div ng-messages="addForm.zipcode.$error"
+                                 ng-if="(addForm.zipcode.$dirty ||
+                                         addForm.$submitted) &&
+                                         addForm.zipcode.$invalid">
                                 <div ng-message="required"
                                      class="help-block"> This field is required. </div>
                                 <div ng-message="maxlength"
@@ -349,13 +349,13 @@
                         </div>
                         <!-- Home Square Footage Field -->
                         <div class="form-group"
-                             ng-class="{ 'has-error': (newProjectForm.homeSq.$dirty ||
-                                                       newProjectForm.$submitted) &&
-                                                       newProjectForm.homeSq.$invalid,
-                                         'has-feedback': (newProjectForm.homeSq.$dirty ||
-                                                          newProjectForm.$submitted) &&
-                                                          newProjectForm.homeSq.$invalid }">
-                            <label class="control-label" for="homeSq"> Home Square Footage * </label>
+                             ng-class="{ 'has-error': (addForm.homeSq.$dirty ||
+                                                       addForm.$submitted) &&
+                                                       addForm.homeSq.$invalid,
+                                         'has-feedback': (addForm.homeSq.$dirty ||
+                                                          addForm.$submitted) &&
+                                                          addForm.homeSq.$invalid }">
+                            <label class="control-label" for="homeSq"> Home Square Footage </label>
                             <div class="input-group">
                                 <input class="form-control"
                                        name="homeSq"
@@ -366,23 +366,23 @@
                                        format="number">
                                 <div class="input-group-addon"> <b> ft<sup>2</sup> </b> </div>
                             </div>
-                            <div ng-messages="newProjectForm.homeSq.$error"
-                                 ng-if="(newProjectForm.homeSq.$dirty ||
-                                         newProjectForm.$submitted) &&
-                                         newProjectForm.homeSq.$invalid">
+                            <div ng-messages="addForm.homeSq.$error"
+                                 ng-if="(addForm.homeSq.$dirty ||
+                                         addForm.$submitted) &&
+                                         addForm.homeSq.$invalid">
                                 <div ng-message="required"
                                      class="help-block"> This field is required. </div>
                             </div>
                         </div>
                         <!-- Project Type Field -->
                         <div class="form-group"
-                             ng-class="{ 'has-error': (newProjectForm.type.$dirty ||
-                                                       newProjectForm.$submitted) &&
-                                                       newProjectForm.type.$invalid,
-                                         'has-feedback': (newProjectForm.type.$dirty ||
-                                                          newProjectForm.$submitted) &&
-                                                          newProjectForm.type.$invalid }">
-                            <label class="control-label" for="type"> Project Type * </label>
+                             ng-class="{ 'has-error': (addForm.type.$dirty ||
+                                                       addForm.$submitted) &&
+                                                       addForm.type.$invalid,
+                                         'has-feedback': (addForm.type.$dirty ||
+                                                          addForm.$submitted) &&
+                                                          addForm.type.$invalid }">
+                            <label class="control-label" for="type"> Project Type </label>
                             <select class="form-control"
                                     name="type"
                                     ng-model="vm.project.type"
@@ -392,14 +392,14 @@
                                 <option value="other"> Other </option>
                             </select>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="(newProjectForm.type.$dirty ||
-                                          newProjectForm.$submitted) &&
-                                          newProjectForm.type.$invalid">
+                                  ng-if="(addForm.type.$dirty ||
+                                          addForm.$submitted) &&
+                                          addForm.type.$invalid">
                             </span>
-                            <div ng-messages="newProjectForm.type.$error"
-                                 ng-if="(newProjectForm.type.$dirty ||
-                                         newProjectForm.$submitted) &&
-                                         newProjectForm.type.$invalid">
+                            <div ng-messages="addForm.type.$error"
+                                 ng-if="(addForm.type.$dirty ||
+                                         addForm.$submitted) &&
+                                         addForm.type.$invalid">
                                 <div ng-message="required"
                                      class="help-block"> This field is required. </div>
                             </div>
@@ -411,8 +411,6 @@
                             </label>
                             <input id="project-file" name="file" type="file">
                         </div>
-                        <!-- Required fields -->
-                        <p class="text-danger"> * Required fields </p>
                     </div>
                     <!-- Modal Footer -->
                     <div class="modal-footer">
@@ -420,10 +418,10 @@
                         <button type="button" class="btn btn-default" data-dismiss="modal">
                             <b> Close </b>
                         </button>
-                        <!-- Submit Button -->
-                        <button id="create-project-button" type="submit" class="btn btn-success"
+                        <!-- Add Button -->
+                        <button id="add-button" type="submit" class="btn btn-success"
                                 data-loading-text="Creating..."
-                                ng-click="newProjectForm.$valid && createProject()">
+                                ng-click="addForm.$valid && add()">
                             <b> Create Project </b>
                         </button>
                     </div>
@@ -433,9 +431,9 @@
     </div>
 </div>
 
-<!-- Modal - Delete Project -->
+<!-- Modal - Delete -->
 <div class="container">
-    <div class="modal fade" id="delete-project-modal" aria-hidden="true">
+    <div class="modal fade" id="delete-modal" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <!-- Modal Header -->
@@ -453,7 +451,7 @@
                 <div class="modal-body">
                     <!-- Alert -->
                     <div class="alert alert-danger alert-dismissible text-center" role="alert"
-                         ng-if="vm.errorMsgDelete">
+                         ng-if="vm.deleteError">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         <span class="sr-only"> Error: </span>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -471,8 +469,8 @@
                         <b> No </b>
                     </button>
                     <!-- Delete Button -->
-                    <button id="delete-project-button" type="button" class="btn btn-danger"
-                            data-loading-text="Deleting..." ng-click="deleteProject()">
+                    <button id="delete-button" type="button" class="btn btn-danger"
+                            data-loading-text="Deleting..." ng-click="delete()">
                         <b> Yes, Delete </b>
                     </button>
                 </div>
@@ -481,9 +479,9 @@
     </div>
 </div>
 
-<!-- Modal - Edit Project -->
+<!-- Modal - Update -->
 <div class="container">
-    <div class="modal fade" id="edit-project-modal" aria-hidden="true">
+    <div class="modal fade" id="update-modal" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <!-- Modal Header -->
@@ -498,12 +496,12 @@
                     </h4>
                 </div>
                 <!-- Form -->
-                <form name="editProjectForm" novalidate>
+                <form name="updateForm" novalidate>
                     <!-- Modal Body -->
                     <div class="modal-body">
                         <!-- Alert -->
                         <div class="alert alert-danger alert-dismissible text-center" role="alert"
-                             ng-if="editProjectForm.$invalid && editProjectForm.$submitted">
+                             ng-if="updateForm.$invalid && updateForm.$submitted">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             <span class="sr-only"> Error: </span>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -512,29 +510,29 @@
                         </div>
                         <!-- Project Name Field -->
                         <div class="form-group"
-                             ng-class="{ 'has-error': (editProjectForm.name.$dirty ||
-                                                       editProjectForm.$submitted) &&
-                                                       editProjectForm.name.$invalid,
-                                         'has-feedback': (editProjectForm.name.$dirty ||
-                                                          editProjectForm.$submitted) &&
-                                                          editProjectForm.name.$invalid }">
+                             ng-class="{ 'has-error': (updateForm.name.$dirty ||
+                                                       updateForm.$submitted) &&
+                                                       updateForm.name.$invalid,
+                                         'has-feedback': (updateForm.name.$dirty ||
+                                                          updateForm.$submitted) &&
+                                                          updateForm.name.$invalid }">
                             <label class="control-label" for="name"> Project Name </label>
                             <input class="form-control"
                                    name="name"
                                    type="text"
                                    placeholder="Project Name"
-                                   ng-model="vm.updatedProject.name"
+                                   ng-model="vm.updated.name"
                                    required
                                    ng-maxlength=50>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="(editProjectForm.name.$dirty ||
-                                          editProjectForm.$submitted) &&
-                                          editProjectForm.name.$invalid">
+                                  ng-if="(updateForm.name.$dirty ||
+                                          updateForm.$submitted) &&
+                                          updateForm.name.$invalid">
                             </span>
-                            <div ng-messages="editProjectForm.name.$error"
-                                 ng-if="(editProjectForm.name.$dirty ||
-                                         editProjectForm.$submitted) &&
-                                         editProjectForm.name.$invalid">
+                            <div ng-messages="updateForm.name.$error"
+                                 ng-if="(updateForm.name.$dirty ||
+                                         updateForm.$submitted) &&
+                                         updateForm.name.$invalid">
                                 <div ng-message="required"
                                      class="help-block"> This field is required. </div>
                                 <div ng-message="maxlength"
@@ -543,29 +541,29 @@
                          </div>
                          <!-- Address Field -->
                          <div class="form-group"
-                              ng-class="{ 'has-error': (editProjectForm.address.$dirty ||
-                                                        editProjectForm.$submitted) &&
-                                                        editProjectForm.address.$invalid,
-                                          'has-feedback': (editProjectForm.address.$dirty ||
-                                                           editProjectForm.$submitted) &&
-                                                           editProjectForm.address.$invalid }">
-                             <label class="control-label" for="address"> Street Address * </label>
+                              ng-class="{ 'has-error': (updateForm.address.$dirty ||
+                                                        updateForm.$submitted) &&
+                                                        updateForm.address.$invalid,
+                                          'has-feedback': (updateForm.address.$dirty ||
+                                                           updateForm.$submitted) &&
+                                                           updateForm.address.$invalid }">
+                             <label class="control-label" for="address"> Street Address </label>
                              <input class="form-control"
                                     name="address"
                                     type="text"
                                     placeholder="Street Address"
-                                    ng-model="vm.updatedProject.address"
+                                    ng-model="vm.updated.address"
                                     required
                                     ng-maxlength=80>
                              <span class="glyphicon glyphicon-remove form-control-feedback"
-                                   ng-if="(editProjectForm.address.$dirty ||
-                                           editProjectForm.$submitted) &&
-                                           editProjectForm.address.$invalid">
+                                   ng-if="(updateForm.address.$dirty ||
+                                           updateForm.$submitted) &&
+                                           updateForm.address.$invalid">
                              </span>
-                             <div ng-messages="editProjectForm.address.$error"
-                                  ng-if="(editProjectForm.address.$dirty ||
-                                          editProjectForm.$submitted) &&
-                                          editProjectForm.address.$invalid">
+                             <div ng-messages="updateForm.address.$error"
+                                  ng-if="(updateForm.address.$dirty ||
+                                          updateForm.$submitted) &&
+                                          updateForm.address.$invalid">
                                  <div ng-message="required"
                                       class="help-block"> This field is required. </div>
                                  <div ng-message="maxlength"
@@ -574,29 +572,29 @@
                          </div>
                          <!-- City Field -->
                          <div class="form-group"
-                              ng-class="{ 'has-error': (editProjectForm.city.$dirty ||
-                                                        editProjectForm.$submitted) &&
-                                                        editProjectForm.city.$invalid,
-                                          'has-feedback': (editProjectForm.city.$dirty ||
-                                                           editProjectForm.$submitted) &&
-                                                           editProjectForm.city.$invalid }">
+                              ng-class="{ 'has-error': (updateForm.city.$dirty ||
+                                                        updateForm.$submitted) &&
+                                                        updateForm.city.$invalid,
+                                          'has-feedback': (updateForm.city.$dirty ||
+                                                           updateForm.$submitted) &&
+                                                           updateForm.city.$invalid }">
                              <label class="control-label" for="city"> City * </label>
                              <input class="form-control"
                                     name="city"
                                     type="text"
                                     placeholder="City"
-                                    ng-model="vm.updatedProject.city"
+                                    ng-model="vm.updated.city"
                                     required
                                     ng-maxlength=30>
                              <span class="glyphicon glyphicon-remove form-control-feedback"
-                                   ng-if="(editProjectForm.city.$dirty ||
-                                           editProjectForm.$submitted) &&
-                                           editProjectForm.city.$invalid">
+                                   ng-if="(updateForm.city.$dirty ||
+                                           updateForm.$submitted) &&
+                                           updateForm.city.$invalid">
                              </span>
-                             <div ng-messages="editProjectForm.city.$error"
-                                  ng-if="(editProjectForm.city.$dirty ||
-                                          editProjectForm.$submitted) &&
-                                          editProjectForm.city.$invalid">
+                             <div ng-messages="updateForm.city.$error"
+                                  ng-if="(updateForm.city.$dirty ||
+                                          updateForm.$submitted) &&
+                                          updateForm.city.$invalid">
                                  <div ng-message="required"
                                       class="help-block"> This field is required. </div>
                                  <div ng-message="maxlength"
@@ -605,16 +603,16 @@
                          </div>
                          <!-- State Field -->
                          <div class="form-group"
-                              ng-class="{ 'has-error': (editProjectForm.state.$dirty ||
-                                                        editProjectForm.$submitted) &&
-                                                        editProjectForm.state.$invalid,
-                                          'has-feedback': (editProjectForm.state.$dirty ||
-                                                           editProjectForm.$submitted) &&
-                                                           editProjectForm.state.$invalid }">
-                             <label class="control-label" for="state"> State * </label>
+                              ng-class="{ 'has-error': (updateForm.state.$dirty ||
+                                                        updateForm.$submitted) &&
+                                                        updateForm.state.$invalid,
+                                          'has-feedback': (updateForm.state.$dirty ||
+                                                           updateForm.$submitted) &&
+                                                           updateForm.state.$invalid }">
+                             <label class="control-label" for="state"> State </label>
                              <select class="form-control"
                                      name="state"
-                                     ng-model="vm.updatedProject.state"
+                                     ng-model="vm.updated.state"
                                      required>
                                  <option value="" disabled selected> Select your state </option>
                                  <option value="AL"> Alabama </option>
@@ -669,43 +667,43 @@
                                  <option value="WY"> Wyoming </option>
                              </select>
                              <span class="glyphicon glyphicon-remove form-control-feedback"
-                                   ng-if="(editProjectForm.state.$dirty ||
-                                           editProjectForm.$submitted) &&
-                                           editProjectForm.state.$invalid">
+                                   ng-if="(updateForm.state.$dirty ||
+                                           updateForm.$submitted) &&
+                                           updateForm.state.$invalid">
                              </span>
-                             <div ng-messages="editProjectForm.state.$error"
-                                  ng-if="(editProjectForm.state.$dirty ||
-                                          editProjectForm.$submitted) &&
-                                          editProjectForm.state.$invalid">
+                             <div ng-messages="updateForm.state.$error"
+                                  ng-if="(updateForm.state.$dirty ||
+                                          updateForm.$submitted) &&
+                                          updateForm.state.$invalid">
                                  <div ng-message="required"
                                       class="help-block"> This field is required. </div>
                              </div>
                          </div>
                          <!-- Zipcode Field -->
                          <div class="form-group"
-                              ng-class="{ 'has-error': (editProjectForm.zipcode.$dirty ||
-                                                        editProjectForm.$submitted) &&
-                                                        editProjectForm.zipcode.$invalid,
-                                          'has-feedback': (editProjectForm.zipcode.$dirty ||
-                                                           editProjectForm.$submitted) &&
-                                                           editProjectForm.zipcode.$invalid }">
-                             <label class="control-label" for="zipcode"> Zipcode * </label>
+                              ng-class="{ 'has-error': (updateForm.zipcode.$dirty ||
+                                                        updateForm.$submitted) &&
+                                                        updateForm.zipcode.$invalid,
+                                          'has-feedback': (updateForm.zipcode.$dirty ||
+                                                           updateForm.$submitted) &&
+                                                           updateForm.zipcode.$invalid }">
+                             <label class="control-label" for="zipcode"> Zipcode </label>
                              <input class="form-control"
                                     name="zipcode"
                                     type="text"
                                     placeholder="Zipcode"
-                                    ng-model="vm.updatedProject.zipcode"
+                                    ng-model="vm.updated.zipcode"
                                     required
                                     ng-maxlength=10>
                              <span class="glyphicon glyphicon-remove form-control-feedback"
-                                   ng-if="(editProjectForm.zipcode.$dirty ||
-                                           editProjectForm.$submitted) &&
-                                           editProjectForm.zipcode.$invalid">
+                                   ng-if="(updateForm.zipcode.$dirty ||
+                                           updateForm.$submitted) &&
+                                           updateForm.zipcode.$invalid">
                              </span>
-                             <div ng-messages="editProjectForm.zipcode.$error"
-                                  ng-if="(editProjectForm.zipcode.$dirty ||
-                                          editProjectForm.$submitted) &&
-                                          editProjectForm.zipcode.$invalid">
+                             <div ng-messages="updateForm.zipcode.$error"
+                                  ng-if="(updateForm.zipcode.$dirty ||
+                                          updateForm.$submitted) &&
+                                          updateForm.zipcode.$invalid">
                                  <div ng-message="required"
                                       class="help-block"> This field is required. </div>
                                  <div ng-message="maxlength"
@@ -714,38 +712,36 @@
                          </div>
                          <!-- Home Square Footage Field -->
                          <div class="form-group"
-                              ng-class="{ 'has-error': (editProjectForm.homeSq.$dirty ||
-                                                        editProjectForm.$submitted) &&
-                                                        editProjectForm.homeSq.$invalid,
-                                          'has-feedback': (editProjectForm.homeSq.$dirty ||
-                                                           editProjectForm.$submitted) &&
-                                                           editProjectForm.homeSq.$invalid }">
-                             <label class="control-label" for="homeSq"> Home Square Footage * </label>
+                              ng-class="{ 'has-error': (updateForm.homeSq.$dirty ||
+                                                        updateForm.$submitted) &&
+                                                        updateForm.homeSq.$invalid,
+                                          'has-feedback': (updateForm.homeSq.$dirty ||
+                                                           updateForm.$submitted) &&
+                                                           updateForm.homeSq.$invalid }">
+                             <label class="control-label" for="homeSq"> Home Square Footage </label>
                              <div class="input-group">
                                  <input class="form-control"
                                         name="homeSq"
                                         type="text"
                                         placeholder="Home Square Footage"
-                                        ng-model="vm.updatedProject.homeSq"
+                                        ng-model="vm.updated.homeSq"
                                         required
                                         format="number">
                                  <div class="input-group-addon"> <b> ft<sup>2</sup> </b> </div>
                              </div>
                              <span class="glyphicon glyphicon-remove form-control-feedback"
-                                   ng-if="(editProjectForm.homeSq.$dirty ||
-                                           editProjectForm.$submitted) &&
-                                           editProjectForm.homeSq.$invalid">
+                                   ng-if="(updateForm.homeSq.$dirty ||
+                                           updateForm.$submitted) &&
+                                           updateForm.homeSq.$invalid">
                              </span>
-                             <div ng-messages="editProjectForm.homeSq.$error"
-                                  ng-if="(editProjectForm.homeSq.$dirty ||
-                                          editProjectForm.$submitted) &&
-                                          editProjectForm.homeSq.$invalid">
+                             <div ng-messages="updateForm.homeSq.$error"
+                                  ng-if="(updateForm.homeSq.$dirty ||
+                                          updateForm.$submitted) &&
+                                          updateForm.homeSq.$invalid">
                                  <div ng-message="required"
                                       class="help-block"> This field is required. </div>
                              </div>
                          </div>
-                         <!-- Required fields -->
-                         <p class="text-danger"> * Required fields </p>
                     </div>
                     <!-- Modal Footer -->
                     <div class="modal-footer">
@@ -753,10 +749,10 @@
                         <button type="button" class="btn btn-default" data-dismiss="modal">
                             <b> Close </b>
                         </button>
-                        <!-- Submit Button -->
-                        <button id="update-project-button" type="submit" class="btn btn-primary"
+                        <!-- Update Button -->
+                        <button id="update-button" type="submit" class="btn btn-primary"
                                 data-loading-text="Saving..."
-                                ng-click="editProjectForm.$valid && updateProject()">
+                                ng-click="updateForm.$valid && update()">
                             <b> Save Changes </b>
                         </button>
                     </div>

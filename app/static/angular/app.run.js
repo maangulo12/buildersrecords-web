@@ -8,12 +8,10 @@
     runBlock.$inject = ['$rootScope', '$state', 'store', 'jwtHelper'];
 
     function runBlock($rootScope, $state, store, jwtHelper) {
-        // Config variables
-        // ******************* Change these for production deployment
-        store.set('api_url', 'https://buildersrecords-api-staging.herokuapp.com');
+        // CHANGE THESE FOR PRODUCTION DEPLOYMENT
+        store.set('url', 'https://buildersrecords-api-staging.herokuapp.com');
         Stripe.setPublishableKey('pk_test_KY3H8e295UxwoHrrqHBobKRC');
         // Restricts access to routes that require login
-        // Checks if the token is expired
         $rootScope.$on('$stateChangeStart', change);
         function change(e, to) {
             if (to.data && to.data.requiresLogin) {

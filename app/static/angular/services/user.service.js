@@ -5,10 +5,10 @@
         .module('app.service.user', [])
         .factory('userService', userService);
 
-    userService.$inject = ['$http', 'store'];
+    userService.$inject = ['$http', 'store', '$q'];
 
-    function userService($http, store) {
-        var url = store.get('api_url') + '/api/users';
+    function userService($http, store, $q) {
+        var url = store.get('url') + '/api/users';
         var service = {
             retrieve:       retrieve,
             updateUser:     updateUser,
@@ -17,19 +17,33 @@
         return service;
 
         function retrieve() {
-            return $http.get(url + '/' + store.get('user').id);
+            return $http.get(url + '/' + store.get('user').id)
+                .then(success)
+                .catch(error);
         }
 
-        function updateUser(vm) {
+        function updateUser(user) {
             var data = {
-                email:    vm.email,
-                username: vm.username
+                email:    user.email,
+                username: user.username
             };
-            return $http.put(url + '/' + store.get('user').id, data);
+            return $http.put(url + '/' + store.get('user').id, data)
+                .then(success)
+                .catch(error);
         }
 
         function updatePassword(password) {
-            return $http.put(url + '/' + store.get('user').id, { password: password });
+            return $http.put(url + '/' + store.get('user').id, { password: password })
+                .then(success)
+                .catch(error);
+        }
+
+        // Helpers
+        function success(response) {
+            return $q.resolve(response);
+        }
+        function error(response) {
+            return $q.reject(response);
         }
     }
 })();

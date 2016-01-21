@@ -134,7 +134,7 @@
             }
 
             function deleteDraws() {
-                return drawService.removeBulk();
+                return drawService.removeByFund();
             }
             function deleteFund() {
                 return fundService.remove();

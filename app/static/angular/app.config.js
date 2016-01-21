@@ -12,8 +12,7 @@
         $urlRouterProvider.otherwise('/');
         // Turn on html5mode
         $locationProvider.html5Mode(true);
-        // Returns the JSON web token in every request
-        // Adds the token to the header of every request
+        // Adds the JSON token to the header of every request
         jwtInterceptorProvider.tokenGetter = function(store) {
             return store.get('jwt');
         }

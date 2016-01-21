@@ -8,7 +8,7 @@
     authService.$inject = ['$http', 'store', 'jwtHelper', '$q'];
 
     function authService($http, store, jwtHelper, $q) {
-        var url = store.get('api_url') + '/api/auth';
+        var url = store.get('url') + '/api/auth';
         var service = {
             authenticate: authenticate
         };
@@ -20,21 +20,21 @@
                 password: password
             };
             return $http.post(url, data)
-                .then(responseHandler)
-                .catch(errorHandler);
+                .then(success)
+                .catch(error);
 
-            function responseHandler(response) {
+            function success(response) {
                 var token   = response.data.token;
                 var payload = jwtHelper.decodeToken(token);
                 var user    = {
-                    id:        payload.user_id,
-                    stripe_id: payload.stripe_id
+                    id:     payload.user_id,
+                    stripe: payload.stripe_id
                 };
                 store.set('jwt', token);
                 store.set('user', user);
-                return response;
+                return $q.resolve(response);
             }
-            function errorHandler(response) {
+            function error(response) {
                 return $q.reject(response);
             }
         }

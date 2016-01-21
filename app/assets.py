@@ -4,7 +4,7 @@
     app.assets
     ~~~~~~~~~~
 
-    This is module is used for cssmin and jsmin.
+    This module is used for cssmin and jsmin.
 """
 
 from flask.ext.assets import Bundle
@@ -37,7 +37,7 @@ js_vendor = Bundle('vendor/jquery/jquery-1.11.3.min.js',
                    'vendor/highcharts/highcharts.min.js',
                    output='gen/vendor.js')
 
-js_ang = Bundle('angular/app.module.js',
+js_app = Bundle('angular/app.module.js',
                 'angular/app.config.js',
                 'angular/app.run.js',
                 'angular/directives/email-availability.directive.js',
@@ -51,7 +51,7 @@ js_ang = Bundle('angular/app.module.js',
                 'angular/services/expenditure.service.js',
                 'angular/services/fund.service.js',
                 'angular/services/item.service.js',
-                'angular/services/projects.service.js',
+                'angular/services/project.service.js',
                 'angular/services/stripe.service.js',
                 'angular/services/subcontractor.service.js',
                 'angular/services/user.service.js',
@@ -95,6 +95,6 @@ js_ang = Bundle('angular/app.module.js',
                 filters='jsmin',
                 output='gen/all.js')
 
-js_all = Bundle(js_vendor, js_ang, output='gen/all.js')
+js_all = Bundle(js_vendor, js_app, output='gen/all.js')
 
 env.register('js_all', js_all)

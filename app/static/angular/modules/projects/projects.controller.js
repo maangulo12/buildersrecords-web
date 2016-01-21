@@ -5,26 +5,31 @@
         .module('app.projects')
         .controller('ProjectsController', ProjectsController);
 
-    ProjectsController.$inject = ['$scope', 'store', 'projectsService', 'utilityService'];
+    ProjectsController.$inject = ['$scope', 'store', 'projectService', 'utilityService'];
 
-    function ProjectsController($scope, store, projectsService, utilityService) {
+    function ProjectsController($scope, store, projectService, utilityService) {
         var vm = this;
-        getProjects();
+        updateProjects();
 
-        function getProjects() {
-            return projectsService.retrieveList()
-                .then(showProjectList)
+        // GET function
+        function updateProjects() {
+            return getProjects()
+                .then(success)
                 .catch(error);
 
-            function showProjectList(response) {
+            function getProjects() {
+                return projectService.retrieveList();
+            }
+            function success(response) {
                 vm.projectList = response.data.objects;
             }
             function error(response) {
-                vm.errorGetProjects = true;
+                vm.getError = true;
             }
         }
 
-        $scope.clickedProject = function(project) {
+        // CLICKED function
+        $scope.clicked = function(project) {
             var index = vm.projectList.indexOf(project);
             if (index !== -1) {
                 store.set('project', project);
@@ -33,22 +38,22 @@
             return false;
         }
 
-        $scope.showNewProjectModal = function() {
+        // ADD functions
+        $scope.addModal = function() {
             vm.project = {};
-            $scope.newProjectForm.$setPristine();
-            $('#new-project-modal').modal('show');
+            $scope.addForm.$setPristine();
+            $('#add-modal').modal('show');
         }
-        $scope.createProject = function() {
-            var btn = $('#create-project-button').button('loading');
-            var exists = $('#project-file').length;
+        $scope.add = function() {
+            var btn = $('#add-button').button('loading');
 
-            if (exists && $('#project-file')[0].files[0]) {
+            if ($('#project-file').length && $('#project-file')[0].files[0]) {
                 parseFile()
-                    .then(projectSuccess)
+                    .then(success)
                     .catch(error);
             } else {
                 createProject()
-                    .then(projectSuccess)
+                    .then(success)
                     .catch(error);
             }
 
@@ -57,72 +62,76 @@
                 return utilityService.parseUbuilditFile(vm.project, file);
             }
             function createProject() {
-                return projectsService.create(vm.project);
+                return projectService.create(vm.project);
             }
-            function projectSuccess(response) {
-                $('#new-project-modal').modal('hide');
+            function success(response) {
+                $('#add-modal').modal('hide');
                 btn.button('reset');
-                getProjects();
+                updateProjects();
             }
             function error(response) {
-                $scope.newProjectForm.$invalid = true;
+                $scope.addForm.$invalid = true;
                 btn.button('reset');
             }
         }
 
-        $scope.showDeleteProjectModal = function() {
-            vm.errorMsgDelete = false;
-            $('#delete-project-modal').modal('show');
+        // DELETE functions
+        $scope.deleteModal = function(project) {
+            vm.deleteError = false;
+            vm.deleted = project;
+            $('#delete-modal').modal('show');
         }
-        $scope.deleteProject = function() {
-            var btn = $('#delete-project-button').button('loading');
+        $scope.delete = function() {
+            var btn = $('#delete-button').button('loading');
 
             deleteProject()
-                .then(deleteSuccess)
+                .then(success)
                 .catch(error);
 
             function deleteProject() {
-                return projectsService.remove();
+                return projectService.remove(vm.deleted);
             }
-            function deleteSuccess(response) {
-                $('#delete-project-modal').modal('hide');
+            function success(response) {
+                $('#delete-modal').modal('hide');
                 btn.button('reset');
-                getProjects();
+                updateProjects();
             }
             function error(response) {
-                vm.errorMsgDelete = true;
+                vm.deleteError = true;
                 btn.button('reset');
             }
         }
 
-        $scope.showEditProjectModal = function(project) {
-            vm.updatedProject         = {};
-            vm.updatedProject.name    = store.get('project').name;
-            vm.updatedProject.address = store.get('project').address;
-            vm.updatedProject.city    = store.get('project').city;
-            vm.updatedProject.state   = store.get('project').state;
-            vm.updatedProject.zipcode = store.get('project').zipcode;
-            vm.updatedProject.homeSq  = store.get('project').home_sq;
-            $scope.editProjectForm.$setPristine();
-            $('#edit-project-modal').modal('show');
+        // UPDATE functions
+        $scope.updateModal = function(project) {
+            vm.updated         = {};
+            vm.updated.id      = project.id;
+            vm.updated.name    = project.name;
+            vm.updated.address = project.address;
+            vm.updated.city    = project.city;
+            vm.updated.state   = project.state;
+            vm.updated.zipcode = project.zipcode;
+            vm.updated.homeSq  = project.home_sq;
+            $scope.updateForm.$setPristine();
+            $('#update-modal').modal('show');
         }
-        $scope.updateProject = function() {
-            var btn = $('#update-project-button').button('loading');
+        $scope.update = function() {
+            var btn = $('#update-button').button('loading');
 
             updateProject()
-                .then(updateSuccess)
+                .then(success)
                 .catch(error);
 
             function updateProject() {
-                return projectsService.update(vm.updatedProject);
+                return projectService.update(vm.updated);
             }
-            function updateSuccess() {
-                $('#edit-project-modal').modal('hide');
+            function success() {
+                $('#update-modal').modal('hide');
                 btn.button('reset');
-                getProjects();
+                updateProjects();
             }
             function error() {
-                $scope.editProjectForm.$invalid = true;
+                $scope.updateForm.$invalid = true;
                 btn.button('reset');
             }
         }

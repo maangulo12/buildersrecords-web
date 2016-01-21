@@ -23,10 +23,10 @@
 
             function getCategories() {
                 return categoryService.retrieveList()
-                    .then(getSuccess);
+                    .then(success);
 
-                    function getSuccess(data) {
-                        vm.categoryList = data.objects;
+                    function success(response) {
+                        vm.categoryList = response.data.objects;
                         return vm.categoryList;
                     }
             }
@@ -118,8 +118,8 @@
                 return fundService.retrieveList()
                     .then(getSuccess);
 
-                    function getSuccess(data) {
-                        vm.fundList = data.objects;
+                    function getSuccess(response) {
+                        vm.fundList = response.data.objects;
                         return vm.fundList;
                     }
             }

@@ -5,62 +5,61 @@
         .module('app.service.draw', [])
         .factory('drawService', drawService);
 
-    drawService.$inject = ['$http', 'store'];
+    drawService.$inject = ['$http', 'store', '$q'];
 
-    function drawService($http, store) {
-        var url = store.get('api_url') + '/api/draws';
+    function drawService($http, store, $q) {
+        var url = store.get('url') + '/api/draws';
         var service = {
-            create:     create,
-            update:     update,
-            remove:     remove,
-            removeBulk: removeBulk
+            create:       create,
+            update:       update,
+            remove:       remove,
+            removeByFund: removeByFund
         };
         return service;
 
-        function create(vm) {
+        function create(draw) {
             var data = {
-                date:    vm.date,
-                amount:  vm.amount,
+                date:    draw.date,
+                amount:  draw.amount,
                 fund_id: store.get('fund').id
             };
             return $http.post(url, data)
-                .then(successHandler)
-                .catch(errorHandler);
+                .then(success)
+                .catch(error);
         }
 
-        function update(vm) {
+        function update(draw) {
             var data = {
-                date:    vm.date,
-                amount:  vm.amount,
+                date:    draw.date,
+                amount:  draw.amount,
                 fund_id: store.get('fund').id
             };
             return $http.put(url + '/' + store.get('draw').id, data)
-                .then(successHandler)
-                .catch(errorHandler);
+                .then(success)
+                .catch(error);
         }
 
-        function remove(draw_id) {
-            return $http.delete(url + '/' + draw_id)
-                .then(successHandler)
-                .catch(errorHandler);
+        function remove(drawId) {
+            return $http.delete(url + '/' + drawId)
+                .then(success)
+                .catch(error);
         }
 
-        function removeBulk() {
+        function removeByFund() {
             return $http.delete(url + query('fund_id', 'equals', store.get('fund').id))
-                .then(successHandler)
-                .catch(errorHandler);
+                .then(success)
+                .catch(error);
         }
-    }
 
-    function successHandler(response) {
-        return response.data;
-    }
-
-    function errorHandler(response) {
-        return response;
-    }
-
-    function query(name, op, val) {
-        return '?q={"filters":[{"name":"' + name + '","op":"' + op + '","val":"' + val + '"}]}';
+        // Helpers
+        function success(response) {
+            return $q.resolve(response);
+        }
+        function error(response) {
+            return $q.reject(response);
+        }
+        function query(name, op, val) {
+            return '?q={"filters":[{"name":"' + name + '","op":"' + op + '","val":"' + val + '"}]}';
+        }
     }
 })();

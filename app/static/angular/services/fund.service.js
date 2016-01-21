@@ -5,10 +5,10 @@
         .module('app.service.fund', [])
         .factory('fundService', fundService);
 
-    fundService.$inject = ['$http', 'store'];
+    fundService.$inject = ['$http', 'store', '$q'];
 
-    function fundService($http, store) {
-        var url = store.get('api_url') + '/api/funds';
+    function fundService($http, store, $q) {
+        var url = store.get('url') + '/api/funds';
         var service = {
             retrieveList: retrieveList,
             create:       create,
@@ -19,49 +19,48 @@
 
         function retrieveList() {
 			return $http.get(url + query('project_id', 'equals', store.get('project').id))
-                .then(successHandler)
-                .catch(errorHandler);
+                .then(success)
+                .catch(error);
         }
 
-        function create(vm) {
+        function create(fund) {
             var data = {
-                name:       vm.name,
-                loan:       vm.loan,
-                amount:     vm.amount,
+                name:       fund.name,
+                loan:       fund.loan,
+                amount:     fund.amount,
                 project_id: store.get('project').id
             };
             return $http.post(url, data)
-                .then(successHandler)
-                .catch(errorHandler);
+                .then(success)
+                .catch(error);
         }
 
-        function update(vm) {
+        function update(fund) {
             var data = {
-                name:       vm.name,
-                amount:     vm.amount,
+                name:       fund.name,
+                amount:     fund.amount,
                 project_id: store.get('project').id
             };
             return $http.put(url + '/' + store.get('fund').id, data)
-                .then(successHandler)
-                .catch(errorHandler);
+                .then(success)
+                .catch(error);
         }
 
         function remove() {
             return $http.delete(url + '/' + store.get('fund').id)
-                .then(successHandler)
-                .catch(errorHandler);
+                .then(success)
+                .catch(error);
         }
-    }
 
-    function successHandler(response) {
-        return response.data;
-    }
-
-    function errorHandler(response) {
-        return response;
-    }
-
-    function query(name, op, val) {
-        return '?q={"filters":[{"name":"' + name + '","op":"' + op + '","val":"' + val + '"}]}';
+        // Helpers
+        function success(response) {
+            return $q.resolve(response);
+        }
+        function error(response) {
+            return $q.reject(response);
+        }
+        function query(name, op, val) {
+            return '?q={"filters":[{"name":"' + name + '","op":"' + op + '","val":"' + val + '"}]}';
+        }
     }
 })();
