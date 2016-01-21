@@ -4,7 +4,7 @@
     app.assets
     ~~~~~~~~~~
 
-    This is module is used for cssmin and jsmin.
+    This module is used for cssmin and jsmin.
 """
 
 from flask.ext.assets import Bundle
