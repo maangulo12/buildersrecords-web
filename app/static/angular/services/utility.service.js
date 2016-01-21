@@ -5,9 +5,9 @@
         .module('app.service.utility', [])
         .factory('utilityService', utilityService);
 
-    utilityService.$inject = ['$http', 'store'];
+    utilityService.$inject = ['$http', 'store', '$q'];
 
-    function utilityService($http, store) {
+    function utilityService($http, store, $q) {
         var url = store.get('url') + '/api/utility';
         var service = {
             verifyEmail:       verifyEmail,
@@ -48,13 +48,13 @@
                 .then(success)
                 .catch(error);
         }
-    }
 
-    function success(response) {
-        return response.data;
-    }
-
-    function error(response) {
-        return response;
+        // Handlers
+        function success(response) {
+            return $q.resolve(response);
+        }
+        function error(response) {
+            return $q.reject(response);
+        }
     }
 })();
