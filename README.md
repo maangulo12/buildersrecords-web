@@ -6,15 +6,15 @@ BuildersRecords Web Application.
 
 + Priorities:
 ```
-    * Home Module - Update Home Page
-    * Login Module - Forgot Password
-    * Signup Module - Update Signup Page
-    * Signup Module - Sign Up Error Messages
-    * Signup Module - Terms of Service & Privacy Policy
-    * Tutorial Module - Tutorial Write-up and Video
+    * Home - Update Home Page
+    * Login - Forgot Password
+    * Signup - Update Signup Page
+    * Signup - Sign Up Error Messages
+    * Signup - Terms of Service & Privacy Policy
+    * Tutorial - Tutorial Write-up and Video
+    * Projects - Bulk delete project
+    * Projects - Upload file error message
 
-    * Bulk delete project
-    * Create project upload file error msg
     * Update email / username
     * Change password
     * Update credit card
@@ -34,6 +34,14 @@ BuildersRecords Web Application.
     * Expenditures
     * Expenditures Add, Delete, update
     * Expenditure Table resizing
+
+    * Funds
+    * Change to table
+
+    * Fix all routes
+
+    * JsDoc
+    * Angular Testing SPEC
 
     * Edit Draw date is off
 
