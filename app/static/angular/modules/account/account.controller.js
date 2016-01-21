@@ -36,7 +36,7 @@
             }
         }
 
-	    // Needs work
+        // Needs work
         // Check if current password matches
         // Hash new password in the backend
         $scope.updatePassword = function() {

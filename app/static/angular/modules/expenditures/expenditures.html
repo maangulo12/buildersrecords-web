@@ -71,13 +71,13 @@
     </div>
     <!-- Button - Add -->
     <button type="button" class="btn btn-success" title="Add Expenditure"
-            ng-click="showAddExpenditureModal()">
+            ng-click="addModal()">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
         <b> Add </b>
     </button>
-    <!-- Button - Delete -->
-    <button id="delete_button" type="button" class="btn btn-danger" title="Delete Selected"
-            ng-class="{ 'disabled': !vm.selected }" ng-click="showDeleteExpendituresModal()">
+    <!-- Button - Delete Many -->
+    <button id="delete-many-button1" type="button" class="btn btn-danger" title="Delete Selected"
+            ng-class="{ 'disabled': !vm.selected }" ng-click="deleteManyModal()">
         <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
         <b> Delete </b>
     </button>
@@ -157,14 +157,14 @@
                 <!-- Edit -->
                 <td style="width: 3%" class="text-center">
                     <a href class="text-primary" title="Edit"
-                       ng-click="clicked(expenditure) && showEditExpenditureModal()">
+                       ng-click="clicked(expenditure) && updateModal()">
                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                     </a>
                 </td>
                 <!-- Delete -->
                 <td style="width: 3%" class="text-center">
                     <a href class="text-danger" title="Delete"
-                       ng-click="clicked(expenditure) && showSingleDeleteExpenditureModal()">
+                       ng-click="clicked(expenditure) && deleteModal()">
                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                    </a>
                 </td>
@@ -197,9 +197,9 @@
 </div>
 
 <!-- MODALS -->
-<!-- Modal - Add Expenditure -->
+<!-- Modal - Add -->
 <div class="container">
-    <div class="modal fade" id="add_expenditure_modal" aria-hidden="true">
+    <div class="modal fade" id="add-modal" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <!-- Modal Header -->
@@ -210,154 +210,137 @@
                     </button>
                     <!-- Title -->
                     <h4 class="modal-title">
-                        <b> Add an Expenditure </b>
+                        <b> Add Expenditure </b>
                     </h4>
                 </div>
                 <!-- Form -->
-                <form name="add_expenditure_form" novalidate>
+                <form name="addForm" novalidate>
                     <!-- Modal Body -->
                     <div class="modal-body">
                         <!-- Error Alert -->
                         <div class="alert alert-danger alert-dismissible text-center" role="alert"
-                             ng-if="add_expenditure_form.$invalid && add_expenditure_form.$submitted">
+                             ng-if="addForm.$invalid && addForm.$submitted">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             <span class="sr-only"> Error: </span>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true"> &times; </span>
-                            </button> <b> There were problems adding your expenditure. </b>
+                            </button> <b> There were problems creating the expenditure. </b>
                         </div>
                         <!-- Date Field -->
                         <div class="form-group"
-                             ng-class="{ 'has-error': add_expenditure_form.date.$dirty &&
-                                                      add_expenditure_form.date.$invalid ||
-                                                      add_expenditure_form.$submitted &&
-                                                      add_expenditure_form.date.$invalid,
-                                         'has-feedback': add_expenditure_form.date.$dirty &&
-                                                         add_expenditure_form.date.$invalid ||
-                                                         add_expenditure_form.$submitted &&
-                                                         add_expenditure_form.date.$invalid }">
+                             ng-class="{ 'has-error': (addForm.date.$dirty ||
+                                                       addForm.$submitted) &&
+                                                       addForm.date.$invalid,
+                                         'has-feedback': (addForm.date.$dirty ||
+                                                          addForm.$submitted) &&
+                                                          addForm.date.$invalid }">
                             <label class="control-label" for="date">
                                 <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-                                Date of Expenditure *
+                                Date of Expenditure
                             </label>
                             <input class="form-control"
                                    name="date"
                                    type="date"
                                    placeholder="Date"
-                                   ng-model="expenditure.date"
+                                   ng-model="vm.expenditure.date"
                                    required>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="add_expenditure_form.date.$dirty &&
-                                         add_expenditure_form.date.$invalid ||
-                                         add_expenditure_form.$submitted &&
-                                         add_expenditure_form.date.$invalid">
+                                  ng-if="(addForm.date.$dirty ||
+                                          addForm.$submitted) &&
+                                          addForm.date.$invalid">
                             </span>
-                            <div ng-messages="add_expenditure_form.date.$error"
-                                 ng-if="add_expenditure_form.date.$dirty &&
-                                        add_expenditure_form.date.$invalid ||
-                                        add_expenditure_form.$submitted &&
-                                        add_expenditure_form.date.$invalid">
+                            <div ng-messages="addForm.date.$error"
+                                 ng-if="(addForm.date.$dirty ||
+                                         addForm.$submitted) &&
+                                         addForm.date.$invalid">
                                 <div ng-message="required"
                                      class="help-block"> This field is required. </div>
                             </div>
                         </div>
                         <!-- Question Field -->
                         <div class="form-group"
-                             ng-class="{ 'has-error': add_expenditure_form.question.$dirty &&
-                                                      add_expenditure_form.question.$invalid ||
-                                                      add_expenditure_form.$submitted &&
-                                                      add_expenditure_form.question.$invalid,
-                                         'has-feedback': add_expenditure_form.question.$dirty &&
-                                                         add_expenditure_form.question.$invalid ||
-                                                         add_expenditure_form.$submitted &&
-                                                         add_expenditure_form.question.$invalid }">
-                            <label class="control-label" for="question"> Is this an invoice from a subcontractor? * </label>
+                             ng-class="{ 'has-error': (addForm.question.$dirty ||
+                                                       addForm.$submitted) &&
+                                                       addForm.question.$invalid,
+                                         'has-feedback': (addForm.question.$dirty ||
+                                                          addForm.$submitted) &&
+                                                          addForm.question.$invalid }">
+                            <label class="control-label" for="question"> Is this an invoice from a subcontractor? </label>
                             <select class="form-control"
                                     name="question"
-                                    ng-model="expenditure.question"
+                                    ng-model="vm.expenditure.question"
                                     required>
-                                <option value="" disabled selected> Select your options </option>
+                                <option value="" disabled selected> Select an option </option>
                                 <option value="1"> Yes </option>
                                 <option value="0"> No </option>
                             </select>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="add_expenditure_form.question.$dirty &&
-                                         add_expenditure_form.question.$invalid ||
-                                         add_expenditure_form.$submitted &&
-                                         add_expenditure_form.question.$invalid">
+                                  ng-if="(addForm.question.$dirty ||
+                                          addForm.$submitted) &&
+                                          addForm.question.$invalid">
                             </span>
-                            <div ng-messages="add_expenditure_form.question.$error"
-                                 ng-if="add_expenditure_form.question.$dirty &&
-                                        add_expenditure_form.question.$invalid ||
-                                        add_expenditure_form.$submitted &&
-                                        add_expenditure_form.question.$invalid">
+                            <div ng-messages="addForm.question.$error"
+                                 ng-if="(addForm.question.$dirty ||
+                                         addForm.$submitted) &&
+                                         addForm.question.$invalid">
                                 <div ng-message="required"
                                      class="help-block"> This field is required. </div>
                             </div>
                         </div>
                         <!-- Subcontractor Field -->
-                        <div class="form-group" ng-if="expenditure.question == 1"
-                             ng-class="{ 'has-error': add_expenditure_form.subcontractor.$dirty &&
-                                                      add_expenditure_form.subcontractor.$invalid ||
-                                                      add_expenditure_form.$submitted &&
-                                                      add_expenditure_form.subcontractor.$invalid,
-                                         'has-feedback': add_expenditure_form.subcontractor.$dirty &&
-                                                         add_expenditure_form.subcontractor.$invalid ||
-                                                         add_expenditure_form.$submitted &&
-                                                         add_expenditure_form.subcontractor.$invalid }">
-                            <label class="control-label" for="subcontractor"> Subcontractor * </label>
+                        <div ng-if="vm.expenditure.question == 1" class="form-group"
+                             ng-class="{ 'has-error': (addForm.subcontractor.$dirty ||
+                                                       addForm.$submitted) &&
+                                                       addForm.subcontractor.$invalid,
+                                         'has-feedback': (addForm.subcontractor.$dirty ||
+                                                          addForm.$submitted) &&
+                                                          addForm.subcontractor.$invalid }">
+                            <label class="control-label" for="subcontractor"> Subcontractor </label>
                             <select class="form-control"
                                     name="subcontractor"
-                                    ng-model="expenditure.subcontractor"
+                                    ng-model="vm.expenditure.subcontractor"
                                     ng-options="subcontractor.name for subcontractor in vm.subcontractorList track by subcontractor.id"
                                     required>
                                 <option value="" disabled selected> Select a subcontractor </option>
                             </select>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="add_expenditure_form.subcontractor.$dirty &&
-                                         add_expenditure_form.subcontractor.$invalid ||
-                                         add_expenditure_form.$submitted &&
-                                         add_expenditure_form.subcontractor.$invalid">
+                                  ng-if="(addForm.subcontractor.$dirty ||
+                                          addForm.$submitted) &&
+                                          addForm.subcontractor.$invalid">
                             </span>
-                            <div ng-messages="add_expenditure_form.subcontractor.$error"
-                                 ng-if="add_expenditure_form.subcontractor.$dirty &&
-                                        add_expenditure_form.subcontractor.$invalid ||
-                                        add_expenditure_form.$submitted &&
-                                        add_expenditure_form.subcontractor.$invalid">
+                            <div ng-messages="addForm.subcontractor.$error"
+                                 ng-if="(addForm.subcontractor.$dirty ||
+                                         addForm.$submitted) &&
+                                         addForm.subcontractor.$invalid">
                                 <div ng-message="required"
                                      class="help-block"> This field is required. </div>
                             </div>
-                            <a href> <b> Add a Subcontractor </b> </a>
                         </div>
                         <!-- Vendor Field -->
-                        <div class="form-group" ng-if="expenditure.question == 0"
-                             ng-class="{ 'has-error': add_expenditure_form.vendor.$dirty &&
-                                                      add_expenditure_form.vendor.$invalid ||
-                                                      add_expenditure_form.$submitted &&
-                                                      add_expenditure_form.vendor.$invalid,
-                                         'has-feedback': add_expenditure_form.vendor.$dirty &&
-                                                         add_expenditure_form.vendor.$invalid ||
-                                                         add_expenditure_form.$submitted &&
-                                                         add_expenditure_form.vendor.$invalid }">
-                            <label class="control-label" for="vendor"> Vendor * </label>
+                        <div ng-if="vm.expenditure.question == 0" class="form-group"
+                             ng-class="{ 'has-error': (addForm.vendor.$dirty ||
+                                                       addForm.$submitted) &&
+                                                       addForm.vendor.$invalid,
+                                         'has-feedback': (addForm.vendor.$dirty ||
+                                                          addForm.$submitted) &&
+                                                          addForm.vendor.$invalid }">
+                            <label class="control-label" for="vendor"> Vendor </label>
                             <input class="form-control"
                                    name="vendor"
                                    type="text"
-                                   placeholder="Vendor"
-                                   ng-model="expenditure.vendor"
+                                   placeholder="Vendor Name"
+                                   ng-model="vm.expenditure.vendor"
                                    required
                                    ng-maxlength=50>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="add_expenditure_form.vendor.$dirty &&
-                                         add_expenditure_form.vendor.$invalid ||
-                                         add_expenditure_form.$submitted &&
-                                         add_expenditure_form.vendor.$invalid">
+                                  ng-if="(addForm.vendor.$dirty ||
+                                          addForm.$submitted) &&
+                                          addForm.vendor.$invalid">
                             </span>
-                            <div ng-messages="add_expenditure_form.vendor.$error"
-                                 ng-if="add_expenditure_form.vendor.$dirty &&
-                                        add_expenditure_form.vendor.$invalid ||
-                                        add_expenditure_form.$submitted &&
-                                        add_expenditure_form.vendor.$invalid">
+                            <div ng-messages="addForm.vendor.$error"
+                                 ng-if="(addForm.vendor.$dirty ||
+                                         addForm.$submitted) &&
+                                         addForm.vendor.$invalid">
                                 <div ng-message="required"
                                      class="help-block"> This field is required. </div>
                                 <div ng-message="maxlength"
@@ -366,103 +349,90 @@
                         </div>
                         <!-- Item Field -->
                         <div class="form-group"
-                             ng-class="{ 'has-error': add_expenditure_form.item.$dirty &&
-                                                      add_expenditure_form.item.$invalid ||
-                                                      add_expenditure_form.$submitted &&
-                                                      add_expenditure_form.item.$invalid,
-                                         'has-feedback': add_expenditure_form.item.$dirty &&
-                                                         add_expenditure_form.item.$invalid ||
-                                                         add_expenditure_form.$submitted &&
-                                                         add_expenditure_form.item.$invalid }">
-                            <label class="control-label" for="item"> Item * </label>
+                             ng-class="{ 'has-error': (addForm.item.$dirty ||
+                                                       addForm.$submitted) &&
+                                                       addForm.item.$invalid,
+                                         'has-feedback': (addForm.item.$dirty ||
+                                                          addForm.$submitted) &&
+                                                          addForm.item.$invalid }">
+                            <label class="control-label" for="item"> Item </label>
                             <select class="form-control"
                                     name="item"
-                                    ng-model="expenditure.item"
+                                    ng-model="vm.expenditure.item"
                                     ng-options="item.name group by item.category.name for item in vm.itemList track by item.id"
                                     required>
                                 <option value="" disabled selected> Select an item </option>
                             </select>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="add_expenditure_form.item.$dirty &&
-                                         add_expenditure_form.item.$invalid ||
-                                         add_expenditure_form.$submitted &&
-                                         add_expenditure_form.item.$invalid">
+                                  ng-if="(addForm.item.$dirty ||
+                                          addForm.$submitted) &&
+                                          addForm.item.$invalid">
                             </span>
-                            <div ng-messages="add_expenditure_form.item.$error"
-                                 ng-if="add_expenditure_form.item.$dirty &&
-                                        add_expenditure_form.item.$invalid ||
-                                        add_expenditure_form.$submitted &&
-                                        add_expenditure_form.item.$invalid">
+                            <div ng-messages="addForm.item.$error"
+                                 ng-if="(addForm.item.$dirty ||
+                                         addForm.$submitted) &&
+                                         addForm.item.$invalid">
                                 <div ng-message="required"
                                      class="help-block"> This field is required. </div>
                             </div>
-                            <a href> <b> Create a New Item </b> </a>
                         </div>
                         <!-- Notes Field -->
                         <div class="form-group"
-                             ng-class="{ 'has-error': add_expenditure_form.notes.$dirty &&
-                                                      add_expenditure_form.notes.$invalid ||
-                                                      add_expenditure_form.$submitted &&
-                                                      add_expenditure_form.notes.$invalid,
-                                         'has-feedback': add_expenditure_form.notes.$dirty &&
-                                                         add_expenditure_form.notes.$invalid ||
-                                                         add_expenditure_form.$submitted &&
-                                                         add_expenditure_form.notes.$invalid }">
+                             ng-class="{ 'has-error': (addForm.notes.$dirty ||
+                                                       addForm.$submitted) &&
+                                                       addForm.notes.$invalid,
+                                         'has-feedback': (addForm.notes.$dirty ||
+                                                          addForm.$submitted) &&
+                                                          addForm.notes.$invalid }">
                             <label class="control-label" for="notes"> Notes </label>
                             <input class="form-control"
                                    name="notes"
                                    type="text"
                                    placeholder="Notes (Optional)"
-                                   ng-model="expenditure.notes"
+                                   ng-model="vm.expenditure.notes"
                                    ng-maxlength=80>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="add_expenditure_form.notes.$dirty &&
-                                         add_expenditure_form.notes.$invalid ||
-                                         add_expenditure_form.$submitted &&
-                                         add_expenditure_form.notes.$invalid">
+                                  ng-if="(addForm.notes.$dirty ||
+                                          addForm.$submitted) &&
+                                          addForm.notes.$invalid">
                             </span>
-                            <div ng-messages="add_expenditure_form.notes.$error"
-                                 ng-if="add_expenditure_form.notes.$dirty &&
-                                        add_expenditure_form.notes.$invalid ||
-                                        add_expenditure_form.$submitted &&
-                                        add_expenditure_form.notes.$invalid">
+                            <div ng-messages="addForm.notes.$error"
+                                 ng-if="(addForm.notes.$dirty ||
+                                         addForm.$submitted) &&
+                                         addForm.notes.$invalid">
                                 <div ng-message="maxlength"
                                      class="help-block"> This field cannot be longer than 80 characters. </div>
                             </div>
                         </div>
                         <!-- Cost Field -->
                         <div class="form-group"
-                             ng-class="{ 'has-error': add_expenditure_form.cost.$dirty &&
-                                                      add_expenditure_form.cost.$invalid ||
-                                                      add_expenditure_form.$submitted &&
-                                                      add_expenditure_form.cost.$invalid,
-                                         'has-feedback': add_expenditure_form.cost.$dirty &&
-                                                         add_expenditure_form.cost.$invalid ||
-                                                         add_expenditure_form.$submitted &&
-                                                         add_expenditure_form.cost.$invalid }">
-                            <label class="control-label" for="cost"> Cost * </label>
+                             ng-class="{ 'has-error': (addForm.cost.$dirty ||
+                                                       addForm.$submitted) &&
+                                                       addForm.cost.$invalid,
+                                         'has-feedback': (addForm.cost.$dirty ||
+                                                          addForm.$submitted) &&
+                                                          addForm.cost.$invalid }">
+                            <label class="control-label" for="cost"> Cost </label>
                             <div class="input-group">
                                 <span class="input-group-addon"> $ </span>
                                 <input class="form-control"
                                        name="cost"
                                        type="text"
                                        placeholder="Cost"
-                                       ng-model="expenditure.cost"
+                                       ng-model="vm.expenditure.cost"
                                        required
                                        ng-maxlength=12
                                        format="number">
                             </div>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="add_expenditure_form.cost.$dirty &&
-                                         add_expenditure_form.cost.$invalid ||
-                                         add_expenditure_form.$submitted &&
-                                         add_expenditure_form.cost.$invalid">
+                                  ng-if="(addForm.cost.$dirty ||
+                                          addForm.$submitted) &&
+                                          addForm.cost.$invalid">
                             </span>
-                            <div ng-messages="add_expenditure_form.cost.$error"
-                                 ng-if="add_expenditure_form.cost.$dirty &&
-                                        add_expenditure_form.cost.$invalid ||
-                                        add_expenditure_form.$submitted &&
-                                        add_expenditure_form.cost.$invalid">
+                            <div ng-messages="addForm.cost.$error"
+                                 ng-if="(addForm.cost.$dirty ||
+                                         addForm.$submitted) &&
+                                         addForm.cost.$invalid">
                                 <div ng-message="required"
                                      class="help-block"> This field is required. </div>
                                 <div ng-message="maxlength"
@@ -471,40 +441,33 @@
                         </div>
                         <!-- Fund Field -->
                         <div class="form-group"
-                             ng-class="{ 'has-error': add_expenditure_form.fund.$dirty &&
-                                                      add_expenditure_form.fund.$invalid ||
-                                                      add_expenditure_form.$submitted &&
-                                                      add_expenditure_form.fund.$invalid,
-                                         'has-feedback': add_expenditure_form.fund.$dirty &&
-                                                         add_expenditure_form.fund.$invalid ||
-                                                         add_expenditure_form.$submitted &&
-                                                         add_expenditure_form.fund.$invalid }">
-                            <label class="control-label" for="fund"> Fund/Loan * </label>
+                             ng-class="{ 'has-error': (addForm.fund.$dirty ||
+                                                       addForm.$submitted) &&
+                                                       addForm.fund.$invalid,
+                                         'has-feedback': (addForm.fund.$dirty ||
+                                                          addForm.$submitted) &&
+                                                          addForm.fund.$invalid }">
+                            <label class="control-label" for="fund"> Fund </label>
                             <select class="form-control"
                                     name="fund"
-                                    ng-model="expenditure.fund"
-                                    ng-options="fund.name for fund in fund_list track by fund.id"
+                                    ng-model="vm.expenditure.fund"
+                                    ng-options="fund.name for fund in vm.fundList track by fund.id"
                                     required>
                                 <option value="" disabled selected> Select your fund </option>
                             </select>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="add_expenditure_form.fund.$dirty &&
-                                         add_expenditure_form.fund.$invalid ||
-                                         add_expenditure_form.$submitted &&
-                                         add_expenditure_form.fund.$invalid">
+                                  ng-if="(addForm.fund.$dirty ||
+                                          addForm.$submitted) &&
+                                          addForm.fund.$invalid">
                             </span>
-                            <div ng-messages="add_expenditure_form.fund.$error"
-                                 ng-if="add_expenditure_form.fund.$dirty &&
-                                        add_expenditure_form.fund.$invalid ||
-                                        add_expenditure_form.$submitted &&
-                                        add_expenditure_form.fund.$invalid">
+                            <div ng-messages="addForm.fund.$error"
+                                 ng-if="(addForm.fund.$dirty ||
+                                         addForm.$submitted) &&
+                                         addForm.fund.$invalid">
                                 <div ng-message="required"
                                      class="help-block"> This field is required. </div>
                             </div>
-                            <a href> <b> Add a New Fund </b> </a>
                         </div>
-                        <!-- Required fields -->
-                        <p class="text-danger"> * Required fields </p>
                     </div>
                     <!-- Modal Footer -->
                     <div class="modal-footer">
@@ -513,9 +476,10 @@
                             <b> Close </b>
                         </button>
                         <!-- Submit -->
-                        <button type="submit" class="btn btn-success" ng-disabled="addDisabled"
-                                ng-click="add_expenditure_form.$valid && addExpenditure()">
-                            <b> Add Expenditure </b>
+                        <button id="add-button" type="submit" class="btn btn-success"
+                                data-loading-text="Creating..."
+                                ng-click="addForm.$valid && add()">
+                            <b> Add </b>
                         </button>
                     </div>
                 </form>
@@ -524,9 +488,9 @@
     </div>
 </div>
 
-<!-- Modal - Delete Expenditures -->
+<!-- Modal - Delete Many -->
 <div class="container">
-    <div class="modal fade" id="delete_expenditures_modal" aria-hidden="true">
+    <div class="modal fade" id="delete-many-modal" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <!-- Modal Header -->
@@ -537,19 +501,19 @@
                     </button>
                     <!-- Title -->
                     <h4 class="modal-title">
-                        <b class="text-danger"> Delete Expenditure(s) </b>
+                        <b class="text-danger"> Delete Expenditures </b>
                     </h4>
                 </div>
                 <!-- Modal Body -->
                 <div class="modal-body">
                     <!-- Error Alert -->
                     <div class="alert alert-danger alert-dismissible text-center" role="alert"
-                         ng-if="error_msg_delete">
+                         ng-if="vm.deleteManyError">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         <span class="sr-only"> Error: </span>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true"> &times; </span>
-                        </button> <b> Could not delete your expenditure(s). Please try again. </b>
+                        </button> <b> Could not delete the expenditures. Please try again. </b>
                     </div>
                     <!-- Message -->
                     <p class="text-center">
@@ -563,8 +527,9 @@
                         <b> No </b>
                     </button>
                     <!-- Delete Button -->
-                    <button type="button" class="btn btn-danger" ng-disabled="deleteDisabled"
-                            ng-click="deleteExpenditures()">
+                    <button id="delete-many-button2" type="button" class="btn btn-danger"
+                            data-loading-text="Deleting..."
+                            ng-click="delete()">
                         <b> Yes, Delete </b>
                     </button>
                 </div>
@@ -573,9 +538,9 @@
     </div>
 </div>
 
-<!-- Modal - Delete Single Expenditure -->
+<!-- Modal - Delete -->
 <div class="container">
-    <div class="modal fade" id="delete_single_expenditure_modal" aria-hidden="true">
+    <div class="modal fade" id="delete-modal" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <!-- Modal Header -->
@@ -593,12 +558,12 @@
                 <div class="modal-body">
                     <!-- Error Alert -->
                     <div class="alert alert-danger alert-dismissible text-center" role="alert"
-                         ng-if="error_msg_delete_single">
+                         ng-if="vm.deleteError">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         <span class="sr-only"> Error: </span>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true"> &times; </span>
-                        </button> <b> Could not delete your expenditure. Please try again. </b>
+                        </button> <b> Could not delete the expenditure. Please try again. </b>
                     </div>
                     <!-- Message -->
                     <p class="text-center">
@@ -612,8 +577,9 @@
                         <b> No </b>
                     </button>
                     <!-- Delete Button -->
-                    <button type="button" class="btn btn-danger" ng-disabled="deleteSingleDisabled"
-                            ng-click="deleteSingleExpenditure()">
+                    <button id="delete-button" type="button" class="btn btn-danger"
+                            data-loading-text="Deleting..."
+                            ng-click="delete()">
                         <b> Yes, Delete </b>
                     </button>
                 </div>
@@ -622,9 +588,9 @@
     </div>
 </div>
 
-<!-- Modal - Edit Expenditure -->
+<!-- Modal - Update -->
 <div class="container">
-    <div class="modal fade" id="edit_expenditure_modal" aria-hidden="true">
+    <div class="modal fade" id="update-modal" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <!-- Modal Header -->
@@ -635,86 +601,78 @@
                     </button>
                     <!-- Title -->
                     <h4 class="modal-title">
-                        <b> Edit an Expenditure </b>
+                        <b> Edit Expenditure </b>
                     </h4>
                 </div>
                 <!-- Form -->
-                <form name="edit_expenditure_form" novalidate>
+                <form name="updateForm" novalidate>
                     <!-- Modal Body -->
                     <div class="modal-body">
                         <!-- Error Alert -->
                         <div class="alert alert-danger alert-dismissible text-center" role="alert"
-                             ng-if="edit_expenditure_form.$invalid && edit_expenditure_form.$submitted">
+                             ng-if="updateForm.$invalid && updateForm.$submitted">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             <span class="sr-only"> Error: </span>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true"> &times; </span>
-                            </button> <b> There were problems updating your expenditure. </b>
+                            </button> <b> There were problems updating the expenditure. </b>
                         </div>
                         <!-- Date Field -->
                         <div class="form-group"
-                             ng-class="{ 'has-error': edit_expenditure_form.date.$dirty &&
-                                                      edit_expenditure_form.date.$invalid ||
-                                                      edit_expenditure_form.$submitted &&
-                                                      edit_expenditure_form.date.$invalid,
-                                         'has-feedback': edit_expenditure_form.date.$dirty &&
-                                                         edit_expenditure_form.date.$invalid ||
-                                                         edit_expenditure_form.$submitted &&
-                                                         edit_expenditure_form.date.$invalid }">
+                             ng-class="{ 'has-error': (updateForm.date.$dirty ||
+                                                       updateForm.$submitted) &&
+                                                       updateForm.date.$invalid,
+                                         'has-feedback': (updateForm.date.$dirty ||
+                                                          updateForm.$submitted) &&
+                                                          updateForm.date.$invalid }">
                             <label class="control-label" for="date">
                                 <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-                                Date of Expenditure *
+                                Date of Expenditure
                             </label>
                             <input class="form-control"
                                    name="date"
                                    type="date"
                                    placeholder="Date"
-                                   ng-model="updated_expenditure.date"
+                                   ng-model="vm.updated.date"
                                    required>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="edit_expenditure_form.date.$dirty &&
-                                         edit_expenditure_form.date.$invalid ||
-                                         edit_expenditure_form.$submitted &&
-                                         edit_expenditure_form.date.$invalid">
+                                  ng-if="(updateForm.date.$dirty ||
+                                          updateForm.$submitted) &&
+                                          updateForm.date.$invalid">
                             </span>
-                            <div ng-messages="edit_expenditure_form.date.$error"
-                                 ng-if="edit_expenditure_form.date.$dirty &&
-                                        edit_expenditure_form.date.$invalid ||
-                                        edit_expenditure_form.$submitted &&
-                                        edit_expenditure_form.date.$invalid">
+                            <div ng-messages="updateForm.date.$error"
+                                 ng-if="(updateForm.date.$dirty ||
+                                         updateForm.$submitted) &&
+                                         updateForm.date.$invalid">
                                 <div ng-message="required"
                                      class="help-block"> This field is required. </div>
                             </div>
                         </div>
                         <!-- Vendor Field -->
                         <div class="form-group"
-                             ng-class="{ 'has-error': edit_expenditure_form.vendor.$dirty &&
-                                                      edit_expenditure_form.vendor.$invalid ||
-                                                      edit_expenditure_form.$submitted &&
-                                                      edit_expenditure_form.vendor.$invalid,
-                                         'has-feedback': edit_expenditure_form.vendor.$dirty &&
-                                                         edit_expenditure_form.vendor.$invalid ||
-                                                         edit_expenditure_form.$submitted &&
-                                                         edit_expenditure_form.vendor.$invalid }">
-                            <label class="control-label" for="vendor"> Vendor * </label>
+                             ng-class="{ 'has-error': (updateForm.vendor.$dirty ||
+                                                       updateForm.$submitted) &&
+                                                       updateForm.vendor.$invalid,
+                                         'has-feedback': (updateForm.vendor.$dirty ||
+                                                          updateForm.$submitted) &&
+                                                          updateForm.vendor.$invalid }">
+                            <label class="control-label" for="vendor"> Vendor </label>
                             <input class="form-control"
                                    name="vendor"
                                    type="text"
                                    placeholder="Vendor"
-                                   ng-model="updated_expenditure.vendor"
+                                   ng-model="vm.updated.vendor"
                                    required
                                    ng-maxlength=50>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="edit_expenditure_form.vendor.$dirty &&
-                                         edit_expenditure_form.vendor.$invalid ||
-                                         edit_expenditure_form.$submitted &&
-                                         edit_expenditure_form.vendor.$invalid">
+                                  ng-if="(updateForm.vendor.$dirty ||
+                                          updateForm.$submitted) &&
+                                          updateForm.vendor.$invalid">
                             </span>
-                            <div ng-messages="edit_expenditure_form.vendor.$error"
-                                 ng-if="edit_expenditure_form.vendor.$dirty &&
-                                        edit_expenditure_form.vendor.$invalid ||
-                                        edit_expenditure_form.$submitted &&
-                                        edit_expenditure_form.vendor.$invalid">
+                            <div ng-messages="updateForm.vendor.$error"
+                                 ng-if="(updateForm.vendor.$dirty ||
+                                         updateForm.$submitted) &&
+                                         updateForm.vendor.$invalid">
                                 <div ng-message="required"
                                      class="help-block"> This field is required. </div>
                                 <div ng-message="maxlength"
@@ -723,101 +681,89 @@
                         </div>
                         <!-- Item Field -->
                         <div class="form-group"
-                             ng-class="{ 'has-error': edit_expenditure_form.item.$dirty &&
-                                                      edit_expenditure_form.item.$invalid ||
-                                                      edit_expenditure_form.$submitted &&
-                                                      edit_expenditure_form.item.$invalid,
-                                         'has-feedback': edit_expenditure_form.item.$dirty &&
-                                                         edit_expenditure_form.item.$invalid ||
-                                                         edit_expenditure_form.$submitted &&
-                                                         edit_expenditure_form.item.$invalid }">
-                            <label class="control-label" for="item"> Item * </label>
+                             ng-class="{ 'has-error': (updateForm.item.$dirty ||
+                                                       updateForm.$submitted) &&
+                                                       updateForm.item.$invalid,
+                                         'has-feedback': (updateForm.item.$dirty ||
+                                                          updateForm.$submitted) &&
+                                                          updateForm.item.$invalid }">
+                            <label class="control-label" for="item"> Item </label>
                             <select class="form-control"
                                     name="item"
-                                    ng-model="updated_expenditure.item"
+                                    ng-model="vm.updated.item"
                                     ng-options="item.name group by item.category.name for item in vm.itemList track by item.id"
                                     required>
                             </select>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="edit_expenditure_form.item.$dirty &&
-                                         edit_expenditure_form.item.$invalid ||
-                                         edit_expenditure_form.$submitted &&
-                                         edit_expenditure_form.item.$invalid">
+                                  ng-if="(updateForm.item.$dirty ||
+                                          updateForm.$submitted) &&
+                                          updateForm.item.$invalid">
                             </span>
-                            <div ng-messages="edit_expenditure_form.item.$error"
-                                 ng-if="edit_expenditure_form.item.$dirty &&
-                                        edit_expenditure_form.item.$invalid ||
-                                        edit_expenditure_form.$submitted &&
-                                        edit_expenditure_form.item.$invalid">
+                            <div ng-messages="updateForm.item.$error"
+                                 ng-if="(updateForm.item.$dirty ||
+                                         updateForm.$submitted) &&
+                                         updateForm.item.$invalid">
                                 <div ng-message="required"
                                      class="help-block"> This field is required. </div>
                             </div>
                         </div>
                         <!-- Notes Field -->
                         <div class="form-group"
-                             ng-class="{ 'has-error': edit_expenditure_form.notes.$dirty &&
-                                                      edit_expenditure_form.notes.$invalid ||
-                                                      edit_expenditure_form.$submitted &&
-                                                      edit_expenditure_form.notes.$invalid,
-                                         'has-feedback': edit_expenditure_form.notes.$dirty &&
-                                                         edit_expenditure_form.notes.$invalid ||
-                                                         edit_expenditure_form.$submitted &&
-                                                         edit_expenditure_form.notes.$invalid }">
+                             ng-class="{ 'has-error': (updateForm.notes.$dirty ||
+                                                       updateForm.$submitted) &&
+                                                       updateForm.notes.$invalid,
+                                         'has-feedback': (updateForm.notes.$dirty ||
+                                                          updateForm.$submitted) &&
+                                                          updateForm.notes.$invalid }">
                             <label class="control-label" for="notes"> Notes </label>
                             <input class="form-control"
                                    name="notes"
                                    type="text"
                                    placeholder="Notes (Optional)"
-                                   ng-model="updated_expenditure.notes"
+                                   ng-model="vm.updated.notes"
                                    ng-maxlength=80>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="edit_expenditure_form.notes.$dirty &&
-                                         edit_expenditure_form.notes.$invalid ||
-                                         edit_expenditure_form.$submitted &&
-                                         edit_expenditure_form.notes.$invalid">
+                                  ng-if="(updateForm.notes.$dirty ||
+                                          updateForm.$submitted) &&
+                                          updateForm.notes.$invalid">
                             </span>
-                            <div ng-messages="edit_expenditure_form.notes.$error"
-                                 ng-if="edit_expenditure_form.notes.$dirty &&
-                                        edit_expenditure_form.notes.$invalid ||
-                                        edit_expenditure_form.$submitted &&
-                                        edit_expenditure_form.notes.$invalid">
+                            <div ng-messages="updateForm.notes.$error"
+                                 ng-if="(updateForm.notes.$dirty ||
+                                         updateForm.$submitted) &&
+                                         updateForm.notes.$invalid">
                                 <div ng-message="maxlength"
                                      class="help-block"> This field cannot be longer than 80 characters. </div>
                             </div>
                         </div>
                         <!-- Cost Field -->
                         <div class="form-group"
-                             ng-class="{ 'has-error': edit_expenditure_form.cost.$dirty &&
-                                                      edit_expenditure_form.cost.$invalid ||
-                                                      edit_expenditure_form.$submitted &&
-                                                      edit_expenditure_form.cost.$invalid,
-                                         'has-feedback': edit_expenditure_form.cost.$dirty &&
-                                                         edit_expenditure_form.cost.$invalid ||
-                                                         edit_expenditure_form.$submitted &&
-                                                         edit_expenditure_form.cost.$invalid }">
-                            <label class="control-label" for="cost"> Cost * </label>
+                             ng-class="{ 'has-error': (updateForm.cost.$dirty ||
+                                                       updateForm.$submitted) &&
+                                                       updateForm.cost.$invalid,
+                                         'has-feedback': (updateForm.cost.$dirty ||
+                                                          updateForm.$submitted) &&
+                                                          updateForm.cost.$invalid }">
+                            <label class="control-label" for="cost"> Cost </label>
                             <div class="input-group">
                                 <span class="input-group-addon"> $ </span>
                                 <input class="form-control"
                                        name="cost"
                                        type="text"
                                        placeholder="Cost"
-                                       ng-model="updated_expenditure.cost"
+                                       ng-model="vm.updated.cost"
                                        required
                                        ng-maxlength=12
                                        format="number">
                             </div>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="edit_expenditure_form.cost.$dirty &&
-                                         edit_expenditure_form.cost.$invalid ||
-                                         edit_expenditure_form.$submitted &&
-                                         edit_expenditure_form.cost.$invalid">
+                                  ng-if="(updateForm.cost.$dirty ||
+                                          updateForm.$submitted) &&
+                                          updateForm.cost.$invalid">
                             </span>
-                            <div ng-messages="edit_expenditure_form.amount.$error"
-                                 ng-if="edit_expenditure_form.cost.$dirty &&
-                                        edit_expenditure_form.cost.$invalid ||
-                                        edit_expenditure_form.$submitted &&
-                                        edit_expenditure_form.cost.$invalid">
+                            <div ng-messages="updateForm.amount.$error"
+                                 ng-if="(updateForm.cost.$dirty ||
+                                         updateForm.$submitted) &&
+                                         updateForm.cost.$invalid">
                                 <div ng-message="required"
                                      class="help-block"> This field is required. </div>
                                 <div ng-message="maxlength"
@@ -826,38 +772,32 @@
                         </div>
                         <!-- Fund Field -->
                         <div class="form-group"
-                             ng-class="{ 'has-error': edit_expenditure_form.fund.$dirty &&
-                                                      edit_expenditure_form.fund.$invalid ||
-                                                      edit_expenditure_form.$submitted &&
-                                                      edit_expenditure_form.fund.$invalid,
-                                         'has-feedback': edit_expenditure_form.fund.$dirty &&
-                                                         edit_expenditure_form.fund.$invalid ||
-                                                         edit_expenditure_form.$submitted &&
-                                                         edit_expenditure_form.fund.$invalid }">
-                            <label class="control-label" for="fund"> Fund/Loan * </label>
+                             ng-class="{ 'has-error': (updateForm.fund.$dirty ||
+                                                       updateForm.$submitted) &&
+                                                       updateForm.fund.$invalid,
+                                         'has-feedback': (updateForm.fund.$dirty ||
+                                                          updateForm.$submitted) &&
+                                                          updateForm.fund.$invalid }">
+                            <label class="control-label" for="fund"> Fund </label>
                             <select class="form-control"
                                     name="fund"
-                                    ng-model="updated_expenditure.fund"
-                                    ng-options="fund.name for fund in fund_list track by fund.id"
+                                    ng-model="vm.updated.fund"
+                                    ng-options="fund.name for fund in vm.fundList track by fund.id"
                                     required>
                             </select>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="add_expenditure_form.fund.$dirty &&
-                                         add_expenditure_form.fund.$invalid ||
-                                         add_expenditure_form.$submitted &&
-                                         add_expenditure_form.fund.$invalid">
+                                  ng-if="(updateForm.fund.$dirty ||
+                                          updateForm.$submitted) &&
+                                          updateForm.fund.$invalid">
                             </span>
-                            <div ng-messages="add_expenditure_form.fund.$error"
-                                 ng-if="add_expenditure_form.fund.$dirty &&
-                                        add_expenditure_form.fund.$invalid ||
-                                        add_expenditure_form.$submitted &&
-                                        add_expenditure_form.fund.$invalid">
+                            <div ng-messages="updateForm.fund.$error"
+                                 ng-if="(updateForm.fund.$dirty ||
+                                         updateForm.$submitted) &&
+                                         updateForm.fund.$invalid">
                                 <div ng-message="required"
                                      class="help-block"> This field is required. </div>
                             </div>
                         </div>
-                        <!-- Required fields -->
-                        <p class="text-danger"> * Required fields </p>
                     </div>
                     <!-- Modal Footer -->
                     <div class="modal-footer">
@@ -866,8 +806,9 @@
                             <b> Close </b>
                         </button>
                         <!-- Submit -->
-                        <button type="submit" class="btn btn-primary" ng-disabled="updateDisabled"
-                                ng-click="edit_expenditure_form.$valid && updateExpenditure()">
+                        <button id="update-button" type="submit" class="btn btn-primary"
+                                data-loading-text="Saving..."
+                                ng-click="updateForm.$valid && update()">
                             <b> Save Changes </b>
                         </button>
                     </div>

@@ -32,16 +32,16 @@
             }
             function populateProgressBars() {
                 angular.forEach(vm.categoryList, function(category) {
-	                var totalExpenditure = 0;
-	                var totalBudget = 0;
-	                angular.forEach(category.expenditures, function(expenditure) {
-	                    totalExpenditure += expenditure.cost;
-	                });
-	                angular.forEach(category.items, function(item) {
-	                    totalBudget += item.actual;
-	                });
-	                category.totalExpenditure = totalExpenditure;
-	                category.totalBudget = totalBudget;
+                    var totalExpenditure = 0;
+                    var totalBudget = 0;
+                    angular.forEach(category.expenditures, function(expenditure) {
+                        totalExpenditure += expenditure.cost;
+                    });
+                    angular.forEach(category.items, function(item) {
+                        totalBudget += item.actual;
+                    });
+                    category.totalExpenditure = totalExpenditure;
+                    category.totalBudget = totalBudget;
 
                     if (totalBudget == 0 && totalBudget < totalExpenditure) {
                         category.spent = 100;
@@ -50,24 +50,24 @@
                         category.spent = Math.round(totalExpenditure / totalBudget * 100);
                         category.left  = Math.round((totalBudget - totalExpenditure) / totalBudget * 100);
                     }
-	            });
+                });
             }
             function populatePieChart() {
                 options.series[0].data = [];
 
-	            if (vm.categoryList.length == 0) {
-	                options.series[0].data.push({ name: 'No Data', y: 0.01 });
-	            } else {
-	                angular.forEach(vm.categoryList, function(category) {
-	                    if (category.items.length != 0) {
-	                        var categoryTotal = 0;
-	                        angular.forEach(category.items, function(item) {
-	                            categoryTotal += item.actual;
-	                        });
-	                        options.series[0].data.push({ name: category.name, y: categoryTotal });
-	                    }
-	                });
-	            }
+                if (vm.categoryList.length == 0) {
+                    options.series[0].data.push({ name: 'No Data', y: 0.01 });
+                } else {
+                    angular.forEach(vm.categoryList, function(category) {
+                        if (category.items.length != 0) {
+                            var categoryTotal = 0;
+                            angular.forEach(category.items, function(item) {
+                                categoryTotal += item.actual;
+                            });
+                            options.series[0].data.push({ name: category.name, y: categoryTotal });
+                        }
+                    });
+                }
                 $('#piechart-container').highcharts(options);
             }
             function populateTable() {
@@ -107,9 +107,9 @@
                 vm.grandTotalSpent = Math.round(grandTotalExpenditure / grandTotalActual * 100);
                 vm.grandTotalLeft  = Math.round((grandTotalActual - grandTotalExpenditure) / grandTotalActual * 100);
             }
-	    }
+        }
 
-	    function updateFunds() {
+        function updateFunds() {
             return getFunds()
                 .then(populateProgressBars)
                 .catch(error);
@@ -124,24 +124,24 @@
                     }
             }
             function populateProgressBars() {
-	            angular.forEach(vm.fundList, function(fund) {
+                angular.forEach(vm.fundList, function(fund) {
                     var totalExpenditure = 0;
                     var totalDraw        = 0;
-	                angular.forEach(fund.expenditures, function(expenditure) {
-	                    totalExpenditure += expenditure.cost;
-	                });
-	                angular.forEach(fund.draws, function(draw) {
-	                    totalDraw += draw.amount;
-	                });
+                    angular.forEach(fund.expenditures, function(expenditure) {
+                        totalExpenditure += expenditure.cost;
+                    });
+                    angular.forEach(fund.draws, function(draw) {
+                        totalDraw += draw.amount;
+                    });
                     fund.totalExpenditure = totalExpenditure;
                     fund.totalDraw        = totalDraw;
                     fund.spent            = Math.round(totalExpenditure / fund.amount * 100);
                     fund.left             = Math.round((fund.amount - totalExpenditure) / fund.amount * 100);
                     fund.drawReceived     = Math.round(totalDraw / fund.amount * 100);
                     fund.drawLeft         = Math.round((fund.amount - totalDraw) / fund.amount * 100);
-	            });
+                });
             }
-	    }
+        }
 
         function error() {
             vm.errorMsgGet = true;
