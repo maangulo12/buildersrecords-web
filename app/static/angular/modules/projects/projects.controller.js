@@ -5,19 +5,20 @@
         .module('app.projects')
         .controller('ProjectsController', ProjectsController);
 
-    ProjectsController.$inject = ['$scope', 'store', 'projectsService', 'utilityService'];
+    ProjectsController.$inject = ['$scope', 'store', 'projectService', 'utilityService'];
 
-    function ProjectsController($scope, store, projectsService, utilityService) {
+    function ProjectsController($scope, store, projectService, utilityService) {
         var vm = this;
         getProjects();
 
         function getProjects() {
-            return projectsService.retrieveList()
+            return projectService.retrieveList()
                 .then(showProjectList)
                 .catch(error);
 
             function showProjectList(response) {
-                vm.projectList = response.data.objects;
+                vm.projectList = data.objects;
+                return vm.projectList;
             }
             function error(response) {
                 vm.errorGetProjects = true;
@@ -57,7 +58,7 @@
                 return utilityService.parseUbuilditFile(vm.project, file);
             }
             function createProject() {
-                return projectsService.create(vm.project);
+                return projectService.create(vm.project);
             }
             function projectSuccess(response) {
                 $('#new-project-modal').modal('hide');
@@ -82,7 +83,7 @@
                 .catch(error);
 
             function deleteProject() {
-                return projectsService.remove();
+                return projectService.remove();
             }
             function deleteSuccess(response) {
                 $('#delete-project-modal').modal('hide');
@@ -114,7 +115,7 @@
                 .catch(error);
 
             function updateProject() {
-                return projectsService.update(vm.updatedProject);
+                return projectService.update(vm.updatedProject);
             }
             function updateSuccess() {
                 $('#edit-project-modal').modal('hide');

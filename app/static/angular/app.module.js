@@ -22,7 +22,7 @@
         'app.service.expenditure',
         'app.service.fund',
         'app.service.item',
-        'app.service.projects',
+        'app.service.project',
         'app.service.stripe',
         'app.service.subcontractor',
         'app.service.user',

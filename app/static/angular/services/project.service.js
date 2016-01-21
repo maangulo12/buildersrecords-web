@@ -2,13 +2,13 @@
     'use strict';
 
     angular
-        .module('app.service.projects', [])
-        .factory('projectsService', projectsService);
+        .module('app.service.project', [])
+        .factory('projectService', projectService);
 
-    projectsService.$inject = ['$http', 'store'];
+    projectService.$inject = ['$http', 'store'];
 
-    function projectsService($http, store) {
-        var url = store.get('api_url') + '/api/projects';
+    function projectService($http, store) {
+        var url = store.get('url') + '/api/projects';
         var service = {
             retrieveList: retrieveList,
             create:       create,
@@ -18,7 +18,9 @@
         return service;
 
         function retrieveList() {
-            return $http.get(url + query('user_id', 'equals', store.get('user').id));
+            return $http.get(url + query('user_id', 'equals', store.get('user').id))
+                .then(success)
+                .catch(error);
         }
 
         function create(vm) {
@@ -32,7 +34,9 @@
                 project_type: vm.type,
                 user_id:      store.get('user').id
             };
-            return $http.post(url, data);
+            return $http.post(url, data)
+                .then(success)
+                .catch(error);
         }
 
         function update(vm) {
@@ -45,12 +49,24 @@
                 home_sq: vm.homeSq,
                 user_id: store.get('user').id
             };
-            return $http.put(url + '/' + store.get('project').id, data);
+            return $http.put(url + '/' + store.get('project').id, data)
+                .then(success)
+                .catch(error);
         }
 
         function remove() {
-            return $http.delete(url + '/' + store.get('project').id);
+            return $http.delete(url + '/' + store.get('project').id)
+                .then(success)
+                .catch(error);
         }
+    }
+
+    function success(response) {
+        return response.data;
+    }
+
+    function error(response) {
+        return response;
     }
 
     function query(name, op, val) {
