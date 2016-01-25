@@ -53,6 +53,13 @@ pip3 install -r /vagrant/requirements.txt
 wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh
 
 # Install SASS
-sudo gem install sass
+gem install sass
+
+# Install Node
+apt-get -y install nodejs
+apt-get -y install npm
+
+# Install package dependencies
+npm install -g
 
 CONTENTS

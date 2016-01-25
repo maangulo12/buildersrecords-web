@@ -11,8 +11,16 @@
         python3 application.py
 """
 
-from app import app
+from flask import Flask, render_template
+
+
+app = Flask(__name__, static_folder='src', template_folder='src')
+
+@app.route('/', defaults={'url': ''})
+@app.route('/<path:url>')
+def catch_all(url):
+    return render_template('index.html')
 
 
 if __name__ == '__main__':
-    app.run(host=app.config['SERVER_HOST'], port=app.config['SERVER_PORT'])
+    app.run(host='0.0.0.0', port=5555, debug=True)

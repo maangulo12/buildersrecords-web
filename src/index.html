@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Bootstrap Meta -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Description -->
+    <meta name="description" content="BuildersRecords" />
+    <!-- Title -->
+    <title> BuildersRecords </title>
+    <!-- Favicon -->
+    <link href="{{ url_for('static', filename='img/piechart.jpg') }}" rel="icon" />
+    <!-- CSS Styles -->
+    {% assets "css_all" %}
+    <link href="{{ ASSET_URL }}" rel="stylesheet" />
+    {% endassets %}
+    <!-- JS Scripts -->
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    {% assets "js_all" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}    
+    <!-- Angular base url (html5Mode) -->
+    <base href="/" />
+</head>
+
+<body ng-app="app">
+    <div ui-view="nav"></div>
+    <div ui-view="body"></div>
+</body>
+
+</html>
