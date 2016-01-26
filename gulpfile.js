@@ -13,10 +13,12 @@ var gulp         = require('gulp'),
     plumber      = require('gulp-plumber');
 
 var target = {
-    sass_src: 'src/sass/*.scss',
-    css_dest: 'src/css',
-    js_src:   'src/js/app/**/*.js',
-    js_dest:  'src/js'
+    sass_src:    'src/sass/*.scss',
+    css_dest:    'src/css',
+    js_src:      'src/js/app/**/*.js',
+    js_dest:     'src/js',
+    vendor_src:  'src/js/vendor/**/*.js',
+    vendor_dest: 'src/js',
 };
 
 gulp.task('sass', function() {
@@ -30,7 +32,7 @@ gulp.task('sass', function() {
         .pipe(cssnano())
         .pipe(rename({ suffix: '.min' }))
         .pipe(gulp.dest(target.css_dest))
-        .pipe(notify({message: 'SCSS processed!'}));
+        .pipe(notify({ message: 'SCSS processed!' }));
 });
 
 gulp.task('js', function() {
@@ -42,12 +44,22 @@ gulp.task('js', function() {
         .pipe(concat('app.js'))
         .pipe(rename({ suffix: '.min' }))
         .pipe(gulp.dest(target.js_dest))
-        .pipe(notify({message: 'JS processed!'}));
+        .pipe(notify({ message: 'JS processed!' }));
+});
+
+gulp.task('vendor', function() {
+    return gulp.src(target.vendor_src)
+        .pipe(plumber())
+        .pipe(concat('vendor.js'))
+        .pipe(rename({ suffix: '.min' }))
+        .pipe(gulp.dest(target.vendor_dest))
+        .pipe(notify({ message: 'JS processed!' }));
 });
 
 gulp.task('watch', function() {
     gulp.watch(target.sass_src, ['sass']);
     gulp.watch(target.js_src, ['js']);
+    gulp.watch(target.vendor_src, ['vendor']);
 });
 
-gulp.task('default', ['sass', 'js', 'watch']);
+gulp.task('default', ['sass', 'js', 'vendor', 'watch']);
