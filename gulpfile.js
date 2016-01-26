@@ -14,9 +14,9 @@ var gulp         = require('gulp'),
 
 var target = {
     sass_src: 'src/sass/*.scss',
-    css_dest: 'builds/css',
-    js_src:   'src/js/**.js',
-    js_dest:  'builds/js'
+    css_dest: 'src/css',
+    js_src:   'src/js/app/**/*.js',
+    js_dest:  'src/js'
 };
 
 gulp.task('sass', function() {

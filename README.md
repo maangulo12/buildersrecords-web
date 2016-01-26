@@ -52,8 +52,8 @@ BuildersRecords Web Application.
 
 ## Required Software
 
-+ [VirtualBox] (https://www.virtualbox.org/wiki/Downloads)
-+ [Vagrant] (https://www.vagrantup.com/downloads.html)
++ [Python 3] (https://www.python.org/)
++ [NodeJS 4] (https://nodejs.org/en/)
 
 ## For Development
 
@@ -64,28 +64,22 @@ $ git clone git@github.com:maangulo12/buildersrecords-web.git
 $ cd buildersrecords-web
 ```
 
-#### Run vagrant
+#### Install Python Dependencies
 >
 ```bash
-$ vagrant up    
+$ pip install -r requirements.txt
 ```
 
-#### SSH into the virtual machine (VM)
+#### Install Node Dependencies
 >
 ```bash
-$ vagrant ssh
-```
-
-#### CD into the vagrant folder
->
-```bash
-$ cd /vagrant/
+$ npm install  
 ```
 
 #### Run app
 >
 ```bash
-$ python3 application.py    
+$ python application.py    
 ```
 
 #### Open [http://localhost:5555] (http://localhost:5555)
