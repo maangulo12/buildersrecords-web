@@ -2,19 +2,11 @@
   "name": "buildersrecords-web",
   "description": "BuildersRecords Web App",
   "version": "1.0.0",
-  "main": "index.js",
-  "directories": {
-    "test": "tests"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/maangulo12/buildersrecords-web.git"
   },
   "author": "Miguel A. Angulo",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/maangulo12/buildersrecords-web/issues"
   },
