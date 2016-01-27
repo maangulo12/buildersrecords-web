@@ -13,12 +13,12 @@
             },
             views: {
                 'nav': {
-                    templateUrl:  'static/angular/partials/navs/nav2.html',
+                    templateUrl:  'src/js/app/partials/navs/nav2.html',
                     controller:   NavController,
                     controllerAs: 'vm'
                 },
                 'body': {
-                    templateUrl:  'static/angular/modules/overview/overview.html',
+                    templateUrl:  'src/js/app/modules/overview/overview.html',
                     controller:   'OverviewController',
                     controllerAs: 'vm'
                 }

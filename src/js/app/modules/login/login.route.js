@@ -10,10 +10,10 @@
             url: '/login',
             views: {
                 'nav': {
-                    templateUrl: 'static/angular/partials/navs/nav1.html'
+                    templateUrl: 'src/js/app/partials/navs/nav1.html'
                 },
                 'body': {
-                    templateUrl:  'static/angular/modules/login/login.html',
+                    templateUrl:  'src/js/app/modules/login/login.html',
                     controller:   'LoginController',
                     controllerAs: 'vm'
                 }

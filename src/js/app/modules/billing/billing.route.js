@@ -24,13 +24,13 @@
             },
             views: {
                 'nav': {
-                    templateUrl: 'static/angular/partials/navs/nav2.html',
+                    templateUrl: 'src/js/app/partials/navs/nav2.html',
                     controller: function($scope, User) {
                         $scope.username = User.username;
                     }
                 },
                 'body': {
-                    templateUrl:  'static/angular/modules/billing/billing.html',
+                    templateUrl:  'src/js/app/modules/billing/billing.html',
                     controller:   'BillingController',
                     controllerAs: 'vm'
                 }

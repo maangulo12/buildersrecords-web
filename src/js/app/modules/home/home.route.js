@@ -10,10 +10,10 @@
             url: '/',
             views: {
                 'nav': {
-                    templateUrl: 'static/angular/partials/navs/nav1.html'
+                    templateUrl: 'src/js/app/partials/navs/nav1.html'
                 },
                 'body': {
-                    templateUrl:  'static/angular/modules/home/home.html',
+                    templateUrl:  'src/js/app/modules/home/home.html',
                     controller:   'HomeController',
                     controllerAs: 'vm'
                 }

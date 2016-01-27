@@ -10,10 +10,10 @@
             url: '/signup',
             views: {
                 'nav': {
-                    templateUrl: 'static/angular/partials/navs/nav1.html'
+                    templateUrl: 'src/js/app/partials/navs/nav1.html'
                 },
                 'body': {
-                    templateUrl:  'static/angular/modules/signup/signup.html',
+                    templateUrl:  'src/js/app/modules/signup/signup.html',
                     controller:   'SignupController',
                     controllerAs: 'vm'
                 }
