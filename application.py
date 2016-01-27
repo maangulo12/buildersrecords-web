@@ -8,7 +8,7 @@
     Run this module to deploy the application.
 
     -How to run it (type the following in the command-line):
-        python3 application.py
+        python application.py
 """
 
 from flask import Flask, render_template
