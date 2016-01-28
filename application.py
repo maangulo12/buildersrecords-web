@@ -14,7 +14,7 @@
 from flask import Flask, render_template
 
 
-app = Flask(__name__, static_folder='src', template_folder='src')
+app = Flask(__name__, static_folder='www', template_folder='www')
 
 @app.route('/', defaults={'url': ''})
 @app.route('/<path:url>')

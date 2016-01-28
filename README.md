@@ -2,7 +2,7 @@
 
 BuildersRecords Web Application.
 
-## TO DO
+## To Do
 
 + Priorities:
 ```
@@ -37,8 +37,6 @@ BuildersRecords Web Application.
 
     * Funds
     * Change to table
-
-    * Fix all routes
 
     * JsDoc
     * Angular Testing SPEC
