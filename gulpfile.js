@@ -12,7 +12,8 @@ var gulp         = require('gulp'),
     notify       = require('gulp-notify'),
     plumber      = require('gulp-plumber'),
     runSequence  = require('run-sequence'),
-    ngAnnotate   = require('gulp-ng-annotate');
+    ngAnnotate   = require('gulp-ng-annotate'),
+    karma        = require('karma');
 
 var target = {
     sass_src: 'scss/*.scss',
@@ -73,10 +74,26 @@ gulp.task('js-vendor', function() {
         .pipe(notify({ message: 'Vendor processed!' }));
 });
 
+gulp.task('test', function(done) {
+    var Server = karma.Server;
+    new Server({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: true
+    }, done).start();
+});
+
+gulp.task('tdd', function(done) {
+    var Server = karma.Server;
+    new Server({
+        configFile: __dirname + '/karma.conf.js'
+    }, done).start();
+});
+
 gulp.task('watch', function() {
     gulp.watch(target.sass_src, ['sass']);
     gulp.watch(target.js_src, ['js']);
     gulp.watch(target.js_vendor_src, ['js-vendor']);
+    gulp.watch(target.js_vendor_src, ['test']);
 });
 
-gulp.task('default', ['sass', 'js', 'js-vendor', 'watch']);
+gulp.task('default', ['sass', 'js', 'js-vendor', 'tdd', 'watch']);
