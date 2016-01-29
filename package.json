@@ -1,0 +1,38 @@
+{
+  "name": "buildersrecords-web",
+  "description": "BuildersRecords Web App",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maangulo12/buildersrecords-web.git"
+  },
+  "author": "Miguel A. Angulo",
+  "bugs": {
+    "url": "https://github.com/maangulo12/buildersrecords-web/issues"
+  },
+  "homepage": "https://github.com/maangulo12/buildersrecords-web#readme",
+  "devDependencies": {
+    "browserify": "^13.0.0",
+    "chai": "^3.4.1",
+    "gulp": "^3.9.0",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-cssnano": "^2.1.0",
+    "gulp-jshint": "^2.0.0",
+    "gulp-ng-annotate": "^1.1.0",
+    "gulp-notify": "^2.2.0",
+    "gulp-plumber": "^1.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.1.1",
+    "gulp-uglify": "^1.5.1",
+    "jshint": "^2.9.1",
+    "jshint-stylish": "^2.1.0",
+    "karma": "^0.13.19",
+    "karma-browserify": "^5.0.1",
+    "karma-chrome-launcher": "^0.2.2",
+    "karma-mocha": "^0.2.1",
+    "mocha": "^2.4.4",
+    "run-sequence": "^1.1.5",
+    "watchify": "^3.7.0"
+  }
+}

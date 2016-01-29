@@ -1,0 +1,451 @@
+<!-- Container -->
+<div class="container">
+    <!-- Breadcrumb -->
+    <ol class="breadcrumb">
+        <!-- Projects -->
+        <li>
+            <a ui-sref="projects">
+                <span class="glyphicon glyphicon-folder-open glyphicon-padding" aria-hidden="true"></span>
+                <b> Projects </b>
+            </a>
+        </li>
+        <!-- Project Name -->
+        <li class="active"> {{ vm.project.name }} </li>
+    </ol>
+    <!--Line Break -->
+    <br>
+    <!-- Tabs -->
+    <ul class="nav nav-tabs">
+        <!-- Overview -->
+        <li role="presentation" class="active">
+            <a ui-sref="overview">
+                <span class="glyphicon glyphicon-dashboard glyphicon-padding" aria-hidden="true"></span>
+                <b> Overview </b>
+            </a>
+        </li>
+        <!-- Budget -->
+        <li role="presentation">
+            <a ui-sref="budget">
+                <span class="glyphicon glyphicon-list-alt glyphicon-padding" aria-hidden="true"></span>
+                <b> Budget </b>
+            </a>
+        </li>
+        <!-- Subcontractors -->
+        <li role="presentation">
+            <a ui-sref="subcontractors">
+                <span class="glyphicon glyphicon-link glyphicon-padding" aria-hidden="true"></span>
+                <b> Subcontractors </b>
+            </a>
+        </li>
+        <!-- Funds -->
+        <li role="presentation">
+            <a ui-sref="funds">
+                <span class="glyphicon glyphicon-piggy-bank glyphicon-padding" aria-hidden="true"></span>
+                <b> Funds & Loans </b>
+            </a>
+        </li>
+        <!-- Expenditures -->
+        <li role="presentation">
+            <a ui-sref="expenditures">
+                <span class="glyphicon glyphicon-usd glyphicon-padding" aria-hidden="true"></span>
+                <b> Expenditures </b>
+            </a>
+        </li>
+    </ul>
+    <!-- Error Alert -->
+    <div ng-if="vm.getError">
+        <!-- Line Break -->
+        <br>
+        <!-- Alert -->
+        <div class="alert alert-danger alert-dismissible text-center" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only"> Error: </span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true"> &times; </span>
+            </button>
+            <b> Could not access your project's data. Please refresh the page. </b>
+        </div>
+    </div>
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1> Overview </h1>
+    </div>
+    <!-- Grid -->
+    <div class="row">
+        <!-- Left Side -->
+        <div class="col-md-6">
+            <!-- Heading -->
+            <h3> Your Expenditures </h3>
+            <!-- Horizontal Rule -->
+            <hr>
+            <!-- Panel -->
+            <div class="panel panel-primary">
+                <!-- Panel Header -->
+                <div class="panel-heading">
+                    <b> Project Overall </b>
+                </div>
+                <!-- Panel Body -->
+                <div class="panel-body">
+                    <!-- Project Overall -->
+                    <div class="row">
+                        <!-- Left Side -->
+                        <div class="col-xs-6">
+                            <b> Spending </b>
+                        </div>
+                        <!-- Right Side -->
+                        <div class="col-xs-6">
+                            <p class="text-right">
+                                <b> Project Cost {{ vm.grandTotalActual | currency }} </b>
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Progress Bar -->
+                    <div class="progress progress-bar-padding">
+                        <div class="progress-bar progress-bar-danger progress-bar-striped"
+                             style="width: {{ vm.grandTotalSpent }}%;">
+                            <span class="sr-only"> {{ vm.grandTotalSpent }}% Complete </span>
+                        </div>
+                        <div class="progress-bar progress-bar-success progress-bar-striped"
+                             style="width: {{ vm.grandTotalLeft }}%;">
+                            <span class="sr-only"> {{ vm.grandTotalLeft }}% Complete </span>
+                        </div>
+                    </div>
+                    <!-- Category -->
+                    <div class="row">
+                        <!-- Left Side -->
+                        <div class="col-xs-6">
+                            <b> {{ vm.grandTotalExpenditure | currency }} Spent </b>
+                        </div>
+                        <!-- Right Side -->
+                        <div class="col-xs-6">
+                            <p class="text-right">
+                                <span ng-if="vm.grandTotalActual > vm.grandTotalExpenditure">
+                                    <b> {{ vm.grandTotalActual - vm.grandTotalExpenditure | currency }} Left </b>
+                                </span>
+                                <span ng-if="vm.grandTotalActual < vm.grandTotalExpenditure">
+                                    <b class="text-danger">
+                                        {{ vm.grandTotalExpenditure - vm.grandTotalActual | currency }} Over
+                                    </b>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Panel -->
+            <div class="panel panel-primary">
+                <!-- Panel Header -->
+                <div class="panel-heading">
+                    <b> By Categories </b>
+                </div>
+                <!-- Panel Body -->
+                <div class="panel-body">
+                    <p ng-if="vm.categoryList.length == 0">
+                        <b> No data to show. </b>
+                    </p>
+                    <!-- Progress Bars -->
+                    <div class="margin-around" ng-repeat="category in vm.categoryList">
+                        <!-- Category -->
+                        <div class="row">
+                            <!-- Left Side -->
+                            <div class="col-xs-6">
+                                <b> {{ category.name }} </b>
+                            </div>
+                            <!-- Right Side -->
+                            <div class="col-xs-6">
+                                <p class="text-right">
+                                    <b> {{ category.totalBudget | currency }} </b>
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Progress Bar -->
+                        <div class="progress progress-bar-padding">
+                            <div class="progress-bar progress-bar-danger progress-bar-striped"
+                                 style="width: {{ category.spent }}%;">
+                                <span class="sr-only"> {{ category.spent }}% Complete </span>
+                            </div>
+                            <div class="progress-bar progress-bar-success progress-bar-striped"
+                                 style="width: {{ category.left }}%;">
+                                <span class="sr-only"> {{ category.left }}% Complete </span>
+                            </div>
+                        </div>
+                        <!-- Category -->
+                        <div class="row">
+                            <!-- Left Side -->
+                            <div class="col-xs-6">
+                                <b> {{ category.totalExpenditure | currency }} Spent </b>
+                            </div>
+                            <!-- Right Side -->
+                            <div class="col-xs-6">
+                                <p class="text-right">
+                                    <span ng-if="category.totalBudget > category.totalExpenditure">
+                                        <b> {{ category.totalBudget - category.totalExpenditure | currency }} Left </b>
+                                    </span>
+                                    <span ng-if="category.totalBudget < category.totalExpenditure">
+                                        <b class="text-danger">
+                                            {{ category.totalExpenditure - category.totalBudget | currency }} Over
+                                        </b>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Right Side -->
+        <div class="col-md-6">
+            <!-- Heading -->
+            <h3> Your Budget </h3>
+            <!-- Horizontal Rule -->
+            <hr>
+            <!-- Piechart -->
+            <div id="piechart-container" class="chart-size"></div>
+            <!-- Heading -->
+            <h3> Your Funds & Loans </h3>
+            <!-- Horizontal Rule -->
+            <hr>
+            <!-- Panel - Empty Project -->
+            <div ng-if="vm.fundList.length == 0" class="panel panel-primary">
+                <div class="panel-heading"> <b> Funds & Loans </b> </div>
+                <div class="panel-body">
+                    <p> <b> No data to show. </b> </p>
+                </div>
+            </div>
+            <!-- Panels -->
+            <div ng-repeat="fund in vm.fundList">
+                <!-- Panel -->
+                <div class="panel panel-primary">
+                    <!-- Panel Heading -->
+                    <div class="panel-heading">
+                        <!-- Panel Title -->
+                        <h4 class="panel-title">
+                            <b> {{ fund.name }} </b>
+                        </h4>
+                    </div>
+                    <!-- Panel Body -->
+                    <div class="panel-body">
+                        <!-- Title -->
+                        <div class="row">
+                            <!-- Left Side -->
+                            <div class="col-xs-6">
+                                <b> Spending </b>
+                            </div>
+                            <!-- Right Side -->
+                            <div class="col-xs-6">
+                                <p class="text-right">
+                                    <b> {{ fund.amount | currency }} </b>
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Progress Bar -->
+                        <div class="progress progress-bar-padding">
+                            <div class="progress-bar progress-bar-danger progress-bar-striped"
+                                 style="width: {{ fund.spent }}%;">
+                                <span class="sr-only"> {{ fund.spent }}% Complete </span>
+                            </div>
+                            <div class="progress-bar progress-bar-success progress-bar-striped"
+                                 style="width: {{ fund.left }}%;">
+                                <span class="sr-only"> {{ fund.left }}% Complete </span>
+                            </div>
+                        </div>
+                        <!-- Amounts -->
+                        <div class="row">
+                            <!-- Left Side -->
+                            <div class="col-xs-6">
+                                <b> {{ fund.totalExpenditure | currency }} Spent </b>
+                            </div>
+                            <!-- Right Side -->
+                            <div class="col-xs-6">
+                                <p class="text-right">
+                                    <span ng-if="fund.amount > fund.totalExpenditure">
+                                        <b> {{ fund.amount - fund.totalExpenditure | currency }} Left </b>
+                                    </span>
+                                    <span ng-if="fund.amount < fund.totalExpenditure">
+                                        <b class="text-danger">
+                                            {{ fund.totalExpenditure - fund.amount | currency }} Over
+                                        </b>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Loan Draws -->
+                        <div class="margin-around" ng-show="fund.loan">
+                            <!-- Title -->
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <b> Loan Draws </b>
+                                </div>
+                                <!-- Right Side -->
+                                <div class="col-xs-6">
+                                    <p class="text-right">
+                                        <b> {{ fund.amount | currency }} </b>
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- Progress Bar -->
+                            <div class="progress progress-bar-padding">
+                                <div class="progress-bar progress-bar-warning progress-bar-striped"
+                                     style="width: {{ fund.drawReceived }}%;">
+                                    <span class="sr-only"> {{ fund.drawReceived }}% Complete </span>
+                                </div>
+                                <div class="progress-bar progress-bar-success progress-bar-striped"
+                                     style="width: {{ fund.drawLeft }}%;">
+                                    <span class="sr-only"> {{ fund.drawLeft }}% Complete </span>
+                                </div>
+                            </div>
+                            <!-- Amounts -->
+                            <div class="row">
+                                <!-- Left Side -->
+                                <div class="col-xs-6">
+                                    <b> {{ fund.totalDraw | currency }} Received </b>
+                                </div>
+                                <!-- Right Side -->
+                                <div class="col-xs-6">
+                                    <p class="text-right">
+                                        <span ng-if="fund.amount > fund.totalDraw">
+                                            <b> {{ fund.amount - fund.totalDraw | currency }} Left </b>
+                                        </span>
+                                        <span ng-if="fund.amount < fund.totalDraw">
+                                            <b class="text-danger">
+                                                {{ fund.totalDraw - fund.amount | currency }} Over
+                                            </b>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Heading -->
+    <h3> Cost Category Detail </h3>
+    <!-- Horizontal Rule -->
+    <hr>
+    <!-- Table -->
+    <table st-table="vm.categoryList"
+           class="table table-condensed table-bordered table-striped table-hover table-responsive">
+        <!-- Table Header -->
+        <thead>
+            <tr>
+                <th> </th>
+                <th class="text-center"> Cost Category / Detail </th>
+                <th class="text-center"> </th>
+                <th class="text-center"> Estimated Cost </th>
+                <th class="text-center"> Actual Cost </th>
+                <th class="text-center"> Over/Under </th>
+                <th class="text-center"> Paid </th>
+                <th class="text-center"> Unpaid </th>
+                <th class="text-center"> Progress </th>
+                <th> </th>
+            <tr>
+        </thead>
+        <!-- Table Body -->
+        <tbody ng-repeat="category in vm.categoryList">
+            <!-- Categories -->
+            <tr>
+                <!-- Expand Button -->
+                <td>
+                  <button ng-if="category.expanded" ng-click="category.expanded = false"> - </button>
+                  <button ng-if="!category.expanded" ng-click="category.expanded = true"> + </button>
+                </td>
+                <!-- Category -->
+                <td> <b> {{ category.name }} </b> </td>
+                <!-- Empty -->
+                <td> </td>
+                <!-- Estimated -->
+                <td class="text-right"> <b> {{ category.totalEstimated | currency }} </b> </td>
+                <!-- Actual -->
+                <td class="text-right"> <b> {{ category.totalActual | currency }} </b> </td>
+                <!-- Over/Under -->
+                <td class="text-right" ng-class="{ 'text-danger': category.totalActual > category.totalEstimated }">
+                    <b> {{ category.totalActual - category.totalEstimated | currency }} </b>
+                </td>
+                <!-- Paid -->
+                <td class="text-right"> <b> {{ category.totalExpenditure | currency }} </b> </td>
+                <!-- Unpaid -->
+                <td class="text-right" ng-class="{ 'text-danger': category.unpaid !== 0 }">
+                    <b ng-if="category.unpaid"> {{ category.unpaid | currency }} </b>
+                    <span ng-if="!category.unpaid" class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+                </td>
+                <!-- Progress -->
+                <td>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="{{ category.paid }}"
+                             aria-valuemin="0" aria-valuemax="100" style="width: {{ category.paid }}%;"
+                             ng-class="{ 'progress-bar-success': category.paid === 100,
+                                         'progress-bar-danger': category.paid !== 100 }">
+                            <span class="sr-only"> {{ category.paid }}% Complete </span>
+                        </div>
+                    </div>
+                </td>
+                <!-- Progress Percentage -->
+                <td class="text-right" ng-class="{ 'text-success': category.paid === 100,
+                                                   'text-danger': category.paid !== 100 }">
+                    <b> {{ category.paid }}% </b>
+                </td>
+            </tr>
+            <!-- Items -->
+            <tr ng-if="category.expanded" ng-repeat="item in category.items">
+                <!-- Empty -->
+                <td> </td>
+                <!-- Name -->
+                <td> {{ item.name }} </td>
+                <!-- Description -->
+                <td> {{ item.description }} </td>
+                <!-- Estimated -->
+                <td class="text-right"> {{ item.estimated | currency }} </td>
+                <!-- Actual -->
+                <td class="text-right"> {{ item.actual | currency }} </td>
+                <!-- Over/Under -->
+                <td class="text-right" ng-class="{ 'text-danger': item.actual > item.estimated }">
+                    {{ item.actual - item.estimated | currency }}
+                </td>
+                <!-- Paid -->
+                <td class="text-right"> </td>
+                <!-- Unpaid -->
+                <td> </td>
+                <!-- Progress -->
+                <td> </td>
+                <!-- Progress Percentage -->
+                <td> </td>
+            </tr>
+        </tbody>
+        <!-- Empty Project -->
+        <tbody>
+            <tr ng-if="vm.categoryList.length == 0" class="active">
+                <td> </td>
+                <td colspan="9"> <b> No data to show. </b> </td>
+            </tr>
+        </tbody>
+        <!-- Table Footer -->
+        <tfoot ng-if="vm.categoryList.length != 0">
+            <tr class="footer-color">
+                <!-- Empty -->
+                <td colspan="2"> </td>
+                <!-- Grand Total -->
+                <td> <b> Grand Total </b> </td>
+                <!-- Estimated -->
+                <td class="text-right"> <b> {{ vm.grandTotalEstimated | currency }} </b> </td>
+                <!-- Actual -->
+                <td class="text-right"> <b> {{ vm.grandTotalActual | currency }} </b> </td>
+                <!-- Over/Under -->
+                <td class="text-right" ng-class="{ 'text-danger': vm.grandTotalActual > vm.grandTotalEstimated }">
+                    <b> {{ vm.grandTotalActual - vm.grandTotalEstimated | currency }} </b>
+                </td>
+                <!-- Paid -->
+                <td class="text-right"> <b> {{ vm.grandTotalExpenditure | currency }} </b> </td>
+                <!-- Unpaid -->
+                <td class="text-right" ng-class="{ 'text-danger': vm.grandTotalActual > vm.grandTotalExpenditure }">
+                    <b> {{ vm.grandTotalActual - vm.grandTotalExpenditure | currency }} </b>
+                </td>
+                <!-- Empty -->
+                <td colspan="2"> </td>
+            </tr>
+        </tfoot>
+    </table>
+    <!-- Line Breaks -->
+    <br><br><br><br>
+</div>
