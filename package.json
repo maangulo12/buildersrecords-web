@@ -12,6 +12,8 @@
   },
   "homepage": "https://github.com/maangulo12/buildersrecords-web#readme",
   "devDependencies": {
+    "browserify": "^13.0.0",
+    "chai": "^3.4.1",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.1.0",
     "gulp-concat": "^2.6.0",
@@ -25,6 +27,12 @@
     "gulp-uglify": "^1.5.1",
     "jshint": "^2.9.1",
     "jshint-stylish": "^2.1.0",
-    "run-sequence": "^1.1.5"
+    "karma": "^0.13.19",
+    "karma-browserify": "^5.0.1",
+    "karma-chrome-launcher": "^0.2.2",
+    "karma-mocha": "^0.2.1",
+    "mocha": "^2.4.4",
+    "run-sequence": "^1.1.5",
+    "watchify": "^3.7.0"
   }
 }
