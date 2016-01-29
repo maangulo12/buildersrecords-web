@@ -19,10 +19,10 @@ var target = {
     sass_src: 'scss/*.scss',
     css_dest: 'www/css',
     js_src:   [
-        'src_client/*.module.js',
-        'src_client/*.js',
-        'src_client/**/*.module.js',
-        'src_client/**/*.js'
+        'src/*.module.js',
+        'src/*.js',
+        'src/**/*.module.js',
+        'src/**/*.js'
     ],
     js_vendor_src: [
         'vendor/jquery/jquery-1.11.3.min.js',
