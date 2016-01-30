@@ -13,7 +13,8 @@ var gulp         = require('gulp'),
     plumber      = require('gulp-plumber'),
     runSequence  = require('run-sequence'),
     ngAnnotate   = require('gulp-ng-annotate'),
-    karma        = require('karma');
+    karma        = require('karma'),
+    jsdoc        = require('gulp-jsdoc');
 
 var target = {
     sass_src: 'scss/*.scss',
@@ -36,7 +37,8 @@ var target = {
         'vendor/smart-table/smart-table.min.js',
         'vendor/highcharts/highcharts.min.js'
     ],
-    js_dest: 'www/js'
+    js_dest: 'www/js',
+    js_docs_dest: 'docs'
 };
 
 gulp.task('sass', function() {
@@ -74,6 +76,13 @@ gulp.task('js-vendor', function() {
         .pipe(notify({ message: 'Vendor processed!' }));
 });
 
+gulp.task('js-docs', function() {
+    return gulp.src(target.js_src)
+        .pipe(plumber())
+        .pipe(jsdoc(target.js_docs_dest))
+        .pipe(notify({ message: 'Docs processed!' }));
+});
+
 gulp.task('test', function(done) {
     var Server = karma.Server;
     new Server({
@@ -91,9 +100,8 @@ gulp.task('tdd', function(done) {
 
 gulp.task('watch', function() {
     gulp.watch(target.sass_src, ['sass']);
-    gulp.watch(target.js_src, ['js']);
+    gulp.watch(target.js_src, ['js', 'js-docs', 'test']);
     gulp.watch(target.js_vendor_src, ['js-vendor']);
-    gulp.watch(target.js_vendor_src, ['test']);
 });
 
-gulp.task('default', ['sass', 'js', 'js-vendor', 'tdd', 'watch']);
+gulp.task('default', ['sass', 'js', 'js-vendor', 'js-docs', 'tdd', 'watch']);
