@@ -32,18 +32,14 @@
         }
 
         // CLICKED function
-        $scope.clickedCheckbox = function(subcontractor) {
-            if (subcontractor.selected) {
-                vm.selected = true;
-            } else {
-                var isSelected = false;
-                angular.forEach(vm.subcontractorList, function(e) {
-                    if (e.selected) {
-                        isSelected = true;
-                    }
-                });
-                vm.selected = isSelected;
-            }
+        $scope.clickedCheckbox = function() {
+            var isSelected = false;
+            angular.forEach(vm.subcontractorList, function(subcontractor) {
+                if (subcontractor.selected) {
+                    isSelected = true;
+                }
+            });
+            vm.selected = isSelected;
         };
 
         // ADD functions
