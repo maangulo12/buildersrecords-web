@@ -1,6 +1,6 @@
 module.exports = function(config) {
     config.set({
-        browsers: ['Chrome'],
+        browsers: ['PhantomJS'],
         preprocessors: {
             'tests/**/*spec.js': ['browserify']
         },
@@ -27,7 +27,7 @@ module.exports = function(config) {
             'tests/**/*spec.js'
         ],
         plugins: [
-            'karma-chrome-launcher',
+            'karma-phantomjs-launcher',
             'karma-browserify',
             'karma-mocha'
         ]
