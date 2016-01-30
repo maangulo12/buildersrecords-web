@@ -48,13 +48,13 @@
                 category_id: item.category.id,
                 project_id:  store.get('project').id
             };
-            return $http.put(url + '/' + store.get('item').id, data)
+            return $http.put(url + '/' + item.id, data)
                 .then(success)
                 .catch(error);
         }
 
-        function remove(itemId) {
-            return $http.delete(url + '/' + itemId)
+        function remove(item) {
+            return $http.delete(url + '/' + item.id)
                 .then(success)
                 .catch(error);
         }
