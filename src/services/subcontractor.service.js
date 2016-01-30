@@ -9,13 +9,13 @@
         .module('app.service.subcontractor', [])
         .factory('subcontractorService', subcontractorService);
 
-    subcontractorService.$inject = ['$http', 'store', '$q'];
-
     /**
      * @namespace Subcontractor Service
      * @desc functions for Subcontractor Service
      * @memberOf Services
      */
+    subcontractorService.$inject = ['$http', 'store', '$q'];
+
     function subcontractorService($http, store, $q) {
         var url = store.get('url') + '/api/subcontractors';
         var service = {
@@ -38,6 +38,12 @@
                 .catch(error);
         }
 
+        /**
+         * @name create
+         * @desc creates a Subcontractor
+         * @returns {Promise}
+         * @memberOf subcontractorService
+         */
         function create(subcontractor) {
             var data = {
                 name:           subcontractor.name,
@@ -50,6 +56,12 @@
                 .catch(error);
         }
 
+        /**
+         * @name update
+         * @desc updates a Subcontractor
+         * @returns {Promise}
+         * @memberOf subcontractorService
+         */
         function update(subcontractor) {
             var data = {
                 name:           subcontractor.name,
@@ -62,6 +74,12 @@
                 .catch(error);
         }
 
+        /**
+         * @name remove
+         * @desc removes a Subcontractor
+         * @returns {Promise}
+         * @memberOf subcontractorService
+         */
         function remove(subcontractor) {
             return $http.delete(url + '/' + subcontractor.id)
                 .then(success)
