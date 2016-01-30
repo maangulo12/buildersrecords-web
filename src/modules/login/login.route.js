@@ -12,10 +12,10 @@
             url: '/login',
             views: {
                 'nav': {
-                    templateUrl: 'www/templates/nav1.html'
+                    templateUrl: 'www/html/nav1.html'
                 },
                 'body': {
-                    templateUrl:  'www/templates/login.html',
+                    templateUrl:  'www/html/login.html',
                     controller:   'LoginController',
                     controllerAs: 'vm'
                 }

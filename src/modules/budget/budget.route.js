@@ -15,12 +15,12 @@
             },
             views: {
                 'nav': {
-                    templateUrl:  'www/templates/nav2.html',
+                    templateUrl:  'www/html/nav2.html',
                     controller:   NavController,
                     controllerAs: 'vm'
                 },
                 'body': {
-                    templateUrl:  'www/templates/budget.html',
+                    templateUrl:  'www/html/budget.html',
                     controller:   'BudgetController',
                     controllerAs: 'vm'
                 }
