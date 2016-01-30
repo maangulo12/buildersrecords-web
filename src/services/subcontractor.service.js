@@ -48,7 +48,6 @@
         }
 
         function remove(subcontractor) {
-            console.log(subcontractor.id);
             return $http.delete(url + '/' + subcontractor.id)
                 .then(success)
                 .catch(error);
