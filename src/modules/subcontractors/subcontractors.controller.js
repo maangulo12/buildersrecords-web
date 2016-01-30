@@ -50,12 +50,13 @@
         $scope.addModal = function() {
             vm.subcontractor = {};
             $scope.addForm.$setPristine();
+            $('#add-button').button('reset');
             $('#add-modal').modal('show');
         };
         $scope.add = function() {
-            var btn = $('#add-button').button('loading');
+            $('#add-button').button('loading');
 
-            addSubcontractor()
+            return addSubcontractor()
                 .then(success)
                 .catch(error);
 
@@ -64,12 +65,11 @@
             }
             function success() {
                 $('#add-modal').modal('hide');
-                btn.button('reset');
                 showSubcontractors();
             }
             function error() {
                 $scope.addForm.$invalid = true;
-                btn.button('reset');
+                $('#add-button').button('reset');
             }
         };
 
@@ -77,32 +77,32 @@
         $scope.deleteManyModal = function() {
             if (!$('#delete-many-button1').hasClass('disabled')) {
                 vm.errorDeleteMany = false;
+                $('#delete-many-button2').button('reset');
                 $('#delete-many-modal').modal('show');
             }
         };
         $scope.deleteMany = function() {
-            var btn = $('#delete-many-button2').button('loading');
+            $('#delete-many-button2').button('loading');
 
             angular.forEach(vm.subcontractorList, function(subcontractor) {
                 if (subcontractor.selected) {
-                    deleteSubcontractor(subcontractor)
+                    return deleteSubcontractor(subcontractor)
                         .then(success)
                         .catch(error);
                 }
             });
 
-            function deleteSubcontractor(subcontractorId) {
-                return subcontractorService.remove(subcontractorId);
+            function deleteSubcontractor(subcontractor) {
+                return subcontractorService.remove(subcontractor);
             }
             function success() {
                 $('#delete-many-modal').modal('hide');
-                btn.button('reset');
                 vm.selected = false;
                 showSubcontractors();
             }
             function error() {
                 vm.errorDeleteMany = true;
-                btn.button('reset');
+                $('#delete-many-button2').button('reset');
             }
         };
 
@@ -111,12 +111,13 @@
             vm.errorDelete = false;
             vm.subcontractor = {};
             vm.subcontractor = subcontractor;
+            $('#delete-button').button('reset');
             $('#delete-modal').modal('show');
         };
         $scope.delete = function() {
-            var btn = $('#delete-button').button('loading');
+            $('#delete-button').button('loading');
 
-            deleteSubcontractor()
+            return deleteSubcontractor()
                 .then(success)
                 .catch(error);
 
@@ -125,12 +126,11 @@
             }
             function success() {
                 $('#delete-modal').modal('hide');
-                btn.button('reset');
                 showSubcontractors();
             }
             function error() {
                 vm.errorDelete = true;
-                btn.button('reset');
+                $('#delete-button').button('reset');
             }
         };
 
@@ -142,12 +142,13 @@
             vm.subcontractor.company       = subcontractor.company;
             vm.subcontractor.contactNumber = subcontractor.contact_number;
             $scope.updateForm.$setPristine();
+            $('#update-button').button('reset');
             $('#update-modal').modal('show');
         };
         $scope.update = function() {
-            var btn = $('#update-button').button('loading');
+            $('#update-button').button('loading');
 
-            updateSubcontractor()
+            return updateSubcontractor()
                 .then(success)
                 .catch(error);
 
@@ -156,12 +157,11 @@
             }
             function success() {
                 $('#update-modal').modal('hide');
-                btn.button('reset');
                 showSubcontractors();
             }
             function error() {
                 $scope.updateForm.$invalid = true;
-                btn.button('reset');
+                $('#update-button').button('reset');
             }
         };
     }
