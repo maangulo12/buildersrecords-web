@@ -10,17 +10,18 @@
     function BudgetController($scope, store, categoryService, itemService, expenditureService) {
         var vm = this;
         vm.project = store.get('project');
-        updateCategories();
+        showCategories();
 
         // GET function
-        function updateCategories() {
+        function showCategories() {
             return getCategories()
                 .then(populateTable)
                 .catch(error);
 
             function getCategories() {
                 return categoryService.retrieveList()
-                    .then(success);
+                    .then(success)
+                    .catch(error);
 
                 function success(response) {
                     vm.categoryList = response.data.objects;
@@ -47,31 +48,19 @@
                 vm.grandTotalActual    = grandTotalActual;
             }
             function error(response) {
-                vm.getError = true;
+                vm.errorGet = true;
             }
         }
 
         // CLICKED functions
-        $scope.clickedItem = function(item) {
-            var index = store.get('category').items.indexOf(item);
-            if (index !== -1) {
-                store.set('item', item);
-                return true;
-            }
-            return false;
-        };
-        $scope.clickedSingleCheckbox = function(category, item) {
-            if (item.selected) {
-                vm.selected = true;
-            } else {
-                var isSelected = false;
-                angular.forEach(category.items, function(e) {
-                    if (e.selected) {
-                        isSelected = true;
-                    }
-                });
-                vm.selected = isSelected;
-            }
+        $scope.clickedCheckbox = function(category) {
+            var isSelected = false;
+            angular.forEach(category.items, function(item) {
+                if (item.selected) {
+                    isSelected = true;
+                }
+            });
+            vm.selected = isSelected;
         };
         $scope.clickedCategory = function(category) {
             var index = vm.categoryList.indexOf(category);
@@ -83,141 +72,144 @@
         };
 
         // ADD Item functions
-        $scope.showAddItemModal = function() {
+        $scope.addItemModal = function() {
             vm.item           = {};
             vm.item.estimated = 0;
             vm.item.actual    = 0;
             $scope.addItemForm.$setPristine();
+            $('#add-item-button').button('reset');
             $('#add-item-modal').modal('show');
         };
         $scope.addItem = function() {
-            var btn = $('#add-item-button').button('loading');
+            $('#add-item-button').button('loading');
 
             if (vm.item.newCategory) {
-                addCategory()
-                    .then(setNewCategory)
+                return addCategory()
+                    .then(newCategory)
                     .then(addItem)
-                    .then(addSuccess)
+                    .then(success)
                     .catch(error);
             } else {
-                addItem()
-                    .then(addSuccess)
+                return addItem()
+                    .then(success)
                     .catch(error);
             }
 
             function addCategory() {
                 return categoryService.create(vm.item.newCategory);
             }
-            function setNewCategory(data) {
-                vm.item.category = data.id;
+            function newCategory(response) {
+                vm.item.category = response.data.id;
             }
             function addItem() {
                 return itemService.create(vm.item);
             }
-            function addSuccess() {
+            function success() {
                 $('#add-item-modal').modal('hide');
-                btn.button('reset');
-                updateCategories();
+                showCategories();
             }
             function error() {
                 $scope.addItemForm.$invalid = true;
-                btn.button('reset');
+                $('#add-item-button').button('reset');
             }
         };
 
         // DELETE MANY Items functions
-        $scope.showDeleteItemsModal = function() {
+        $scope.deleteManyItemsModal = function() {
             if (!$('#delete-button').hasClass('disabled')) {
-                vm.errorMsgDeleteItems = false;
-                $('#delete-items-modal').modal('show');
+                vm.errorDeleteManyItems = false;
+                $('#delete-many-items-button').button('reset');
+                $('#delete-many-items-modal').modal('show');
             }
         };
-        $scope.deleteItems = function() {
-            var btn = $('#delete-items-button').button('loading');
+        $scope.deleteManyItems = function() {
+            $('#delete-many-items-button').button('loading');
 
             angular.forEach(vm.categoryList, function(category) {
                 angular.forEach(category.items, function(item) {
                     if (item.selected) {
-                        deleteItem(item.id)
-                            .then(deleteSuccess)
+                        return deleteItem(item)
+                            .then(success)
                             .catch(error);
                     }
                 });
             });
 
-            function deleteItem(itemId) {
-                return itemService.remove(itemId);
+            function deleteItem(item) {
+                return itemService.remove(item);
             }
-            function deleteSuccess() {
-                $('#delete-items-modal').modal('hide');
-                btn.button('reset');
+            function success() {
+                $('#delete-many-items-modal').modal('hide');
                 vm.selected = false;
-                updateCategories();
+                showCategories();
             }
             function error() {
-                vm.errorMsgDeleteItems = true;
-                btn.button('reset');
+                vm.errorDeleteManyItems = true;
+                $('#delete-many-items-button').button('reset');
             }
         };
 
         // DELETE Item functions
-        $scope.showDeleteItemModal = function() {
-            vm.errorMsgDeleteItem = false;
+        $scope.deleteItemModal = function(item) {
+            vm.errorDeleteItem = false;
+            vm.item = {};
+            vm.item = item;
+            $('#delete-item-button').button('reset');
             $('#delete-item-modal').modal('show');
         };
         $scope.deleteItem = function() {
-            var btn = $('#delete-item-button').button('loading');
+            $('#delete-item-button').button('loading');
 
-            deleteItem()
-                .then(deleteSuccess)
+            return deleteItem()
+                .then(success)
                 .catch(error);
 
             function deleteItem() {
-                return itemService.remove(store.get('item').id);
+                return itemService.remove(vm.item);
             }
-            function deleteSuccess() {
+            function success() {
                 $('#delete-item-modal').modal('hide');
-                btn.button('reset');
-                updateCategories();
+                showCategories();
             }
             function error() {
-                vm.errorMsgDeleteItem = true;
-                btn.button('reset');
+                vm.errorDeleteItem = true;
+                $('#delete-item-button').button('reset');
             }
         };
 
         // UPDATE Item functions
-        $scope.showEditItemModal = function() {
-            vm.updatedItem             = {};
-            vm.updatedItem.category    = {
-                id:   store.get('category').id,
-                name: store.get('category').name
+        $scope.updateItemModal = function(category, item) {
+            vm.item             = {};
+            vm.item.id          = item.id;
+            vm.item.category    = {
+                id:   category.id,
+                name: category.name
             };
-            vm.updatedItem.name        = store.get('item').name;
-            vm.updatedItem.description = store.get('item').description;
-            vm.updatedItem.estimated   = store.get('item').estimated;
-            vm.updatedItem.actual      = store.get('item').actual;
-            $scope.editItemForm.$setPristine();
-            $('#edit-item-modal').modal('show');
+            vm.item.name        = item.name;
+            vm.item.description = item.description;
+            vm.item.estimated   = item.estimated;
+            vm.item.actual      = item.actual;
+            $scope.updateItemForm.$setPristine();
+            $('#update-item-button').button('reset');
+            $('#update-item-modal').modal('show');
         };
         $scope.updateItem = function() {
-            var btn = $('#update-item-button').button('loading');
+            $('#update-item-button').button('loading');
 
-            updateItem()
-                .then(updateSuccess)
+            return updateItem()
+                .then(success)
                 .catch(error);
 
             function updateItem() {
-                return itemService.update(vm.updatedItem);
+                return itemService.update(vm.item);
             }
-            function updateSuccess() {
-                $('#edit-item-modal').modal('hide');
-                btn.button('reset');
-                updateCategories();
+            function success() {
+                $('#update-item-modal').modal('hide');
+                showCategories();
             }
             function error() {
-                $scope.editItemForm.$invalid = true;
-                btn.button('reset');
+                $scope.updateItemForm.$invalid = true;
+                $('#update-item-button').button('reset');
             }
         };
 
@@ -284,7 +276,7 @@
             function deleteSuccess() {
                 $('#delete-category-modal').modal('hide');
                 btn.button('reset');
-                updateCategories();
+                showCategories();
             }
             function error() {
                 vm.errorMsgDeleteCategory = true;
@@ -312,7 +304,7 @@
             function updateSuccess() {
                 $('#edit-category-modal').modal('hide');
                 btn.button('reset');
-                updateCategories();
+                showCategories();
             }
             function error() {
                 $scope.editCategoryForm.$invalid = true;

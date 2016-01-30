@@ -41,7 +41,7 @@
         <li role="presentation">
             <a ui-sref="funds">
                 <span class="glyphicon glyphicon-piggy-bank glyphicon-padding" aria-hidden="true"></span>
-                <b> Funds & Loans </b>
+                <b> Funds </b>
             </a>
         </li>
         <!-- Expenditures -->
@@ -53,7 +53,7 @@
         </li>
     </ul>
     <!-- Error Alert -->
-    <div ng-if="vm.getError">
+    <div ng-if="vm.errorGet">
         <!-- Line Break -->
         <br>
         <!-- Alert -->
@@ -62,12 +62,12 @@
             <span class="sr-only"> Error: </span>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true"> &times; </span>
-            </button> <b> Could not access your subcontractors list. Please refresh the page. </b>
+            </button> <b> Could not access your subcontractors list. </b>
         </div>
     </div>
     <!-- Page Header -->
     <div class="page-header">
-        <h1> Subcontractors </h1>
+        <h1> Your Subcontractors </h1>
     </div>
     <!-- Button - Add -->
     <button type="button" class="btn btn-success" title="Add Subcontractor"
@@ -98,7 +98,7 @@
                     <a href style="text-decoration: none; color: #fff;"> Company </a>
                 </th>
                 <th st-sort="contact_info" style="width: 28%" class="text-center">
-                    <a href style="text-decoration: none; color: #fff;"> Contact Info </a>
+                    <a href style="text-decoration: none; color: #fff;"> Contact Number </a>
                 </th>
                 <th colspan="2" style="width: 10%" class="text-center">
                     Action
@@ -112,7 +112,7 @@
                 <!-- Checkbox -->
                 <td style="width: 5%">
                     <input type="checkbox" class="checkbox" ng-model="subcontractor.selected"
-                           ng-click="clickedCheckbox(subcontractor)">
+                           ng-click="clickedCheckbox()">
                 </td>
                 <!-- Name -->
                 <td style="width: 28%">
@@ -143,7 +143,7 @@
             <!-- Empty -->
             <tr ng-if="vm.subcontractorList.length == 0" class="active">
                 <td colspan="1"></td>
-                <td colspan="6"> <b> You have not added any subcontractors yet. </b> </td>
+                <td colspan="6"> <b> You do not have any subcontractors yet. </b> </td>
             </tr>
         </tbody>
     </table>
@@ -280,7 +280,7 @@
                         </button>
                         <!-- Submit -->
                         <button id="add-button" type="submit" class="btn btn-success"
-                                data-loading-text="Creating..."
+                                data-loading-text="Loading..."
                                 ng-click="addForm.$valid && add()">
                             <b> Add </b>
                         </button>
@@ -311,12 +311,12 @@
                 <div class="modal-body">
                     <!-- Error Alert -->
                     <div class="alert alert-danger alert-dismissible text-center" role="alert"
-                         ng-if="vm.deleteManyError">
+                         ng-if="vm.errorDeleteMany">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         <span class="sr-only"> Error: </span>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true"> &times; </span>
-                        </button> <b> Could not delete the subcontractors. Please try again. </b>
+                        </button> <b> Could not delete the subcontractors. </b>
                     </div>
                     <!-- Message -->
                     <p class="text-center">
@@ -361,12 +361,12 @@
                 <div class="modal-body">
                     <!-- Alert -->
                     <div class="alert alert-danger alert-dismissible text-center" role="alert"
-                         ng-if="vm.deleteError">
+                         ng-if="vm.errorDelete">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         <span class="sr-only"> Error: </span>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true"> &times; </span>
-                        </button> <b> Could not delete the subcontractor. Please try again. </b>
+                        </button> <b> Could not delete the subcontractor. </b>
                     </div>
                     <!-- Message -->
                     <p class="text-center">
@@ -433,7 +433,7 @@
                                    name="name"
                                    type="text"
                                    placeholder="Name"
-                                   ng-model="vm.updated.name"
+                                   ng-model="vm.subcontractor.name"
                                    required
                                    ng-maxlength=50>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
@@ -464,7 +464,7 @@
                                    name="company"
                                    type="text"
                                    placeholder="Company Name"
-                                   ng-model="vm.updated.company"
+                                   ng-model="vm.subcontractor.company"
                                    required
                                    ng-maxlength=50>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
@@ -495,7 +495,7 @@
                                    name="contactNumber"
                                    type="text"
                                    placeholder="Contact Number"
-                                   ng-model="vm.updated.contactNumber"
+                                   ng-model="vm.subcontractor.contactNumber"
                                    ng-maxlength=15>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
                                   ng-if="(updateForm.contactNumber.$dirty ||

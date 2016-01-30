@@ -11,12 +11,12 @@ var gulp         = require('gulp'),
     rename       = require('gulp-rename'),
     notify       = require('gulp-notify'),
     plumber      = require('gulp-plumber'),
-    runSequence  = require('run-sequence'),
     ngAnnotate   = require('gulp-ng-annotate'),
-    karma        = require('karma');
+    karma        = require('karma'),
+    jsdoc        = require('gulp-jsdoc');
 
 var target = {
-    sass_src: 'scss/*.scss',
+    scss_src: 'scss/*.scss',
     css_dest: 'www/css',
     js_src:   [
         'src/*.module.js',
@@ -39,8 +39,8 @@ var target = {
     js_dest: 'www/js'
 };
 
-gulp.task('sass', function() {
-    return gulp.src(target.sass_src)
+gulp.task('scss', function() {
+    return gulp.src(target.scss_src)
         .pipe(plumber())
         .pipe(sass())
         .pipe(autoprefixer({
@@ -71,7 +71,14 @@ gulp.task('js-vendor', function() {
         //.pipe(uglify())
         .pipe(concat('vendor.min.js'))
         .pipe(gulp.dest(target.js_dest))
-        .pipe(notify({ message: 'Vendor processed!' }));
+        .pipe(notify({ message: 'JS Vendor processed!' }));
+});
+
+gulp.task('js-doc', function() {
+    return gulp.src(target.js_src)
+        .pipe(plumber())
+        .pipe(jsdoc())
+        .pipe(notify({ message: 'JS Doc processed!' }));
 });
 
 gulp.task('test', function(done) {
@@ -90,10 +97,9 @@ gulp.task('tdd', function(done) {
 });
 
 gulp.task('watch', function() {
-    gulp.watch(target.sass_src, ['sass']);
-    gulp.watch(target.js_src, ['js']);
+    gulp.watch(target.scss_src, ['scss']);
+    gulp.watch(target.js_src, ['js', 'js-doc', 'test']);
     gulp.watch(target.js_vendor_src, ['js-vendor']);
-    gulp.watch(target.js_vendor_src, ['test']);
 });
 
-gulp.task('default', ['sass', 'js', 'js-vendor', 'tdd', 'watch']);
+gulp.task('default', ['scss', 'js', 'js-vendor', 'js-doc', 'tdd', 'watch']);

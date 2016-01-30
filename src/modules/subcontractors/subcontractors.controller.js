@@ -10,10 +10,10 @@
     function SubcontractorsController($scope, store, subcontractorService) {
         var vm = this;
         vm.project = store.get('project');
-        updateSubcontractors();
+        showSubcontractors();
 
         // GET function
-        function updateSubcontractors() {
+        function showSubcontractors() {
             return getSubcontractors();
 
             function getSubcontractors() {
@@ -26,141 +26,138 @@
                     return vm.subcontractorList;
                 }
                 function error() {
-                    vm.getError = true;
+                    vm.errorGet = true;
                 }
             }
         }
 
         // CLICKED function
-        $scope.clickedCheckbox = function(subcontractor) {
-            if (subcontractor.selected) {
-                vm.selected = true;
-            } else {
-                var isSelected = false;
-                angular.forEach(vm.subcontractorList, function(e) {
-                    if (e.selected) {
-                        isSelected = true;
-                    }
-                });
-                vm.selected = isSelected;
-            }
+        $scope.clickedCheckbox = function() {
+            var isSelected = false;
+            angular.forEach(vm.subcontractorList, function(subcontractor) {
+                if (subcontractor.selected) {
+                    isSelected = true;
+                }
+            });
+            vm.selected = isSelected;
         };
 
         // ADD functions
         $scope.addModal = function() {
             vm.subcontractor = {};
             $scope.addForm.$setPristine();
+            $('#add-button').button('reset');
             $('#add-modal').modal('show');
         };
         $scope.add = function() {
-            var btn = $('#add-button').button('loading');
+            $('#add-button').button('loading');
 
-            addSubcontractor()
-                .then(sucess)
+            return addSubcontractor()
+                .then(success)
                 .catch(error);
 
             function addSubcontractor() {
                 return subcontractorService.create(vm.subcontractor);
             }
-            function sucess() {
+            function success() {
                 $('#add-modal').modal('hide');
-                btn.button('reset');
-                updateSubcontractors();
+                showSubcontractors();
             }
             function error() {
                 $scope.addForm.$invalid = true;
-                btn.button('reset');
+                $('#add-button').button('reset');
             }
         };
 
         // DELETE MANY functions
         $scope.deleteManyModal = function() {
             if (!$('#delete-many-button1').hasClass('disabled')) {
-                vm.deleteManyError = false;
+                vm.errorDeleteMany = false;
+                $('#delete-many-button2').button('reset');
                 $('#delete-many-modal').modal('show');
             }
         };
         $scope.deleteMany = function() {
-            var btn = $('#delete-many-button2').button('loading');
+            $('#delete-many-button2').button('loading');
 
             angular.forEach(vm.subcontractorList, function(subcontractor) {
                 if (subcontractor.selected) {
-                    deleteSubcontractor(subcontractor)
+                    return deleteSubcontractor(subcontractor)
                         .then(success)
                         .catch(error);
                 }
             });
 
-            function deleteSubcontractor(subcontractorId) {
-                return subcontractorService.remove(subcontractorId);
+            function deleteSubcontractor(subcontractor) {
+                return subcontractorService.remove(subcontractor);
             }
             function success() {
                 $('#delete-many-modal').modal('hide');
-                btn.button('reset');
                 vm.selected = false;
-                updateSubcontractors();
+                showSubcontractors();
             }
             function error() {
-                vm.deleteManyError = true;
-                btn.button('reset');
+                vm.errorDeleteMany = true;
+                $('#delete-many-button2').button('reset');
             }
         };
 
         // DELETE functions
         $scope.deleteModal = function(subcontractor) {
-            vm.deleteError = false;
-            vm.deleted = subcontractor;
+            vm.errorDelete = false;
+            vm.subcontractor = {};
+            vm.subcontractor = subcontractor;
+            $('#delete-button').button('reset');
             $('#delete-modal').modal('show');
         };
         $scope.delete = function() {
-            var btn = $('#delete-button').button('loading');
+            $('#delete-button').button('loading');
 
-            deleteSubcontractor()
+            return deleteSubcontractor()
                 .then(success)
                 .catch(error);
 
             function deleteSubcontractor() {
-                return subcontractorService.remove(vm.deleted);
+                return subcontractorService.remove(vm.subcontractor);
             }
             function success() {
                 $('#delete-modal').modal('hide');
-                btn.button('reset');
-                updateSubcontractors();
+                showSubcontractors();
             }
             function error() {
-                vm.deleteError = true;
-                btn.button('reset');
+                vm.errorDelete = true;
+                $('#delete-button').button('reset');
             }
         };
 
         // UPDATE functions
         $scope.updateModal = function(subcontractor) {
-            vm.updated               = {};
-            vm.updated.id            = subcontractor.id;
-            vm.updated.name          = subcontractor.name;
-            vm.updated.company       = subcontractor.company;
-            vm.updated.contactNumber = subcontractor.contact_number;
+            vm.subcontractor               = {};
+            vm.subcontractor.id            = subcontractor.id;
+            vm.subcontractor.name          = subcontractor.name;
+            vm.subcontractor.company       = subcontractor.company;
+            vm.subcontractor.contactNumber = subcontractor.contact_number;
             $scope.updateForm.$setPristine();
+            $('#update-button').button('reset');
             $('#update-modal').modal('show');
         };
         $scope.update = function() {
-            var btn = $('#update-button').button('loading');
+            $('#update-button').button('loading');
 
-            updateSubcontractor()
+            return updateSubcontractor()
                 .then(success)
                 .catch(error);
 
             function updateSubcontractor() {
-                return subcontractorService.update(vm.updated);
+                return subcontractorService.update(vm.subcontractor);
             }
             function success() {
                 $('#update-modal').modal('hide');
-                btn.button('reset');
-                updateSubcontractors();
+                showSubcontractors();
             }
             function error() {
                 $scope.updateForm.$invalid = true;
-                btn.button('reset');
+                $('#update-button').button('reset');
             }
         };
     }
