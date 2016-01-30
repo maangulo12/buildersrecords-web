@@ -16,15 +16,15 @@ var gulp         = require('gulp'),
     jsdoc        = require('gulp-jsdoc');
 
 var target = {
-    scss_src: 'scss/*.scss',
-    css_dest: 'www/css',
-    js_src:   [
+    scssSrc: 'scss/*.scss',
+    cssDest: 'www/css',
+    jsSrc:   [
         'src/*.module.js',
         'src/*.js',
         'src/**/*.module.js',
         'src/**/*.js'
     ],
-    js_vendor_src: [
+    jsVendorSrc: [
         'vendor/jquery/jquery-1.11.3.min.js',
         'vendor/bootstrap/bootstrap.min.js',
         'vendor/angularjs/1.4.5/angular.min.js',
@@ -36,11 +36,12 @@ var target = {
         'vendor/smart-table/smart-table.min.js',
         'vendor/highcharts/highcharts.min.js'
     ],
-    js_dest: 'www/js'
+    jsTestsSrc: 'tests/**/*.spec.js',
+    jsDest:     'www/js'
 };
 
 gulp.task('scss', function() {
-    return gulp.src(target.scss_src)
+    return gulp.src(target.scssSrc)
         .pipe(plumber())
         .pipe(sass())
         .pipe(autoprefixer({
@@ -49,33 +50,33 @@ gulp.task('scss', function() {
         }))
         .pipe(cssnano())
         .pipe(rename({ suffix: '.min' }))
-        .pipe(gulp.dest(target.css_dest))
+        .pipe(gulp.dest(target.cssDest))
         .pipe(notify({ message: 'SCSS processed!' }));
 });
 
 gulp.task('js', function() {
-    return gulp.src(target.js_src)
+    return gulp.src(target.jsSrc)
         .pipe(plumber())
         .pipe(jshint())
         .pipe(jshint.reporter(stylish))
         .pipe(concat('app.min.js'))
-        .pipe(ngAnnotate({ add: true }))
+        //.pipe(ngAnnotate({ add: true }))
         //.pipe(uglify({ mangle: true }))
-        .pipe(gulp.dest(target.js_dest))
+        .pipe(gulp.dest(target.jsDest))
         .pipe(notify({ message: 'JS processed!' }));
 });
 
 gulp.task('js-vendor', function() {
-    return gulp.src(target.js_vendor_src)
+    return gulp.src(target.jsVendorSrc)
         .pipe(plumber())
         //.pipe(uglify())
         .pipe(concat('vendor.min.js'))
-        .pipe(gulp.dest(target.js_dest))
+        .pipe(gulp.dest(target.jsDest))
         .pipe(notify({ message: 'JS Vendor processed!' }));
 });
 
 gulp.task('js-doc', function() {
-    return gulp.src(target.js_src)
+    return gulp.src(target.jsSrc)
         .pipe(plumber())
         .pipe(jsdoc())
         .pipe(notify({ message: 'JS Doc processed!' }));
@@ -96,10 +97,19 @@ gulp.task('tdd', function(done) {
     }, done).start();
 });
 
-gulp.task('watch', function() {
-    gulp.watch(target.scss_src, ['scss']);
-    gulp.watch(target.js_src, ['js', 'js-doc', 'test']);
-    gulp.watch(target.js_vendor_src, ['js-vendor']);
+gulp.task('lint-tests', function(done) {
+    return gulp.src(target.jsTestsSrc)
+        .pipe(plumber())
+        .pipe(jshint())
+        .pipe(jshint.reporter(stylish))
+        .pipe(notify({ message: 'Tests linted!' }));
 });
 
-gulp.task('default', ['scss', 'js', 'js-vendor', 'js-doc', 'tdd', 'watch']);
+gulp.task('watch', function() {
+    gulp.watch(target.scssSrc, ['scss']);
+    gulp.watch(target.jsSrc, ['js', 'js-doc', 'test']);
+    gulp.watch(target.jsVendorSrc, ['js-vendor']);
+    gulp.watch(target.jsTestsSrc, ['lint-tests']);
+});
+
+gulp.task('default', ['scss', 'js', 'js-vendor', 'js-doc', 'lint-tests', 'tdd', 'watch']);
