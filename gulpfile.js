@@ -14,7 +14,8 @@ var gulp         = require('gulp'),
     runSequence  = require('run-sequence'),
     ngAnnotate   = require('gulp-ng-annotate'),
     karma        = require('karma'),
-    jsdoc        = require('gulp-jsdoc');
+    jsdoc        = require('gulp-jsdoc'),
+    gulpJsdoc2md = require('gulp-jsdoc-to-markdown');
 
 var target = {
     sass_src: 'scss/*.scss',
@@ -38,7 +39,7 @@ var target = {
         'vendor/highcharts/highcharts.min.js'
     ],
     js_dest: 'www/js',
-    js_docs_dest: 'docs'
+    js_markdown_dest: 'doc/markdown'
 };
 
 gulp.task('sass', function() {
@@ -76,11 +77,20 @@ gulp.task('js-vendor', function() {
         .pipe(notify({ message: 'Vendor processed!' }));
 });
 
-gulp.task('js-docs', function() {
+gulp.task('js-doc', function() {
     return gulp.src(target.js_src)
         .pipe(plumber())
-        .pipe(jsdoc(target.js_docs_dest))
-        .pipe(notify({ message: 'Docs processed!' }));
+        .pipe(jsdoc())
+        .pipe(notify({ message: 'Doc processed!' }));
+});
+
+gulp.task('js-markdown', function() {
+    return gulp.src(target.js_src)
+        .pipe(plumber())
+        .pipe(gulpJsdoc2md())
+        .pipe(rename({ extname: '.md' }))
+        .pipe(gulp.dest(target.js_markdown_dest))
+        .pipe(notify({ message: 'Markdown processed!' }));
 });
 
 gulp.task('test', function(done) {
@@ -100,8 +110,8 @@ gulp.task('tdd', function(done) {
 
 gulp.task('watch', function() {
     gulp.watch(target.sass_src, ['sass']);
-    gulp.watch(target.js_src, ['js', 'js-docs', 'test']);
+    gulp.watch(target.js_src, ['js', 'js-doc', 'js-markdown', 'test']);
     gulp.watch(target.js_vendor_src, ['js-vendor']);
 });
 
-gulp.task('default', ['sass', 'js', 'js-vendor', 'js-docs', 'tdd', 'watch']);
+gulp.task('default', ['sass', 'js', 'js-vendor', 'js-doc', 'js-markdown', 'tdd', 'watch']);
