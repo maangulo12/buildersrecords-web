@@ -5,6 +5,33 @@ NG_DOCS={
   "pages": [
     {
       "section": "api",
+      "id": "categoryService",
+      "shortName": "categoryService",
+      "type": "service",
+      "moduleName": "categoryService",
+      "shortDescription": "This is the service module for Category.",
+      "keywords": "api category categoryservice module service"
+    },
+    {
+      "section": "api",
+      "id": "expenditureService",
+      "shortName": "expenditureService",
+      "type": "service",
+      "moduleName": "expenditureService",
+      "shortDescription": "This is the service module for Expenditure.",
+      "keywords": "api expenditure expenditureservice module service"
+    },
+    {
+      "section": "api",
+      "id": "itemService",
+      "shortName": "itemService",
+      "type": "service",
+      "moduleName": "itemService",
+      "shortDescription": "This is the service module for Item.",
+      "keywords": "api item itemservice module service"
+    },
+    {
+      "section": "api",
       "id": "subcontractorService",
       "shortName": "subcontractorService",
       "type": "service",
