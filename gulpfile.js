@@ -13,7 +13,7 @@ var gulp         = require('gulp'),
     plumber      = require('gulp-plumber'),
     ngAnnotate   = require('gulp-ng-annotate'),
     karma        = require('karma'),
-    jsdoc        = require('gulp-jsdoc');
+    gulpDocs     = require('gulp-ngdocs');
 
 var target = {
     scssSrc: 'scss/*.scss',
@@ -37,7 +37,8 @@ var target = {
         'vendor/highcharts/highcharts.min.js'
     ],
     jsTestsSrc: 'tests/**/*.spec.js',
-    jsDest:     'www/js'
+    jsDest:     'www/js',
+    jsDocsDest: 'docs'
 };
 
 gulp.task('scss', function() {
@@ -75,11 +76,12 @@ gulp.task('js-vendor', function() {
         .pipe(notify({ message: 'JS Vendor processed!' }));
 });
 
-gulp.task('js-doc', function() {
+gulp.task('js-docs', function() {
     return gulp.src(target.jsSrc)
         .pipe(plumber())
-        .pipe(jsdoc())
-        .pipe(notify({ message: 'JS Doc processed!' }));
+        .pipe(gulpDocs.process())
+        .pipe(gulp.dest(target.jsDocsDest))
+        .pipe(notify({ message: 'JS Docs processed!' }));
 });
 
 gulp.task('test', function(done) {
@@ -107,9 +109,9 @@ gulp.task('lint-tests', function(done) {
 
 gulp.task('watch', function() {
     gulp.watch(target.scssSrc, ['scss']);
-    gulp.watch(target.jsSrc, ['js', 'js-doc', 'test']);
+    gulp.watch(target.jsSrc, ['js', 'js-docs', 'test']);
     gulp.watch(target.jsVendorSrc, ['js-vendor']);
     gulp.watch(target.jsTestsSrc, ['lint-tests']);
 });
 
-gulp.task('default', ['scss', 'js', 'js-vendor', 'js-doc', 'lint-tests', 'tdd', 'watch']);
+gulp.task('default', ['scss', 'js', 'js-vendor', 'js-docs', 'lint-tests', 'tdd', 'watch']);
