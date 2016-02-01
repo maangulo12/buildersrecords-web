@@ -23,6 +23,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "fundService",
+      "shortName": "fundService",
+      "type": "service",
+      "moduleName": "fundService",
+      "shortDescription": "This is the service module for Fund.",
+      "keywords": "api fund fundservice module service"
+    },
+    {
+      "section": "api",
       "id": "itemService",
       "shortName": "itemService",
       "type": "service",
