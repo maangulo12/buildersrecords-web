@@ -59,13 +59,13 @@
                 item_id:     expenditure.item.id,
                 project_id:  store.get('project').id
             };
-            return $http.put(url + '/' + store.get('expenditure').id, data)
+            return $http.put(url + '/' + expenditure.id, data)
                 .then(success)
                 .catch(error);
         }
 
-        function remove(expenditureId) {
-            return $http.delete(url + '/' + expenditureId)
+        function remove(expenditure) {
+            return $http.delete(url + '/' + expenditure.id)
                 .then(success)
                 .catch(error);
         }
