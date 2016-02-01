@@ -10,23 +10,24 @@
     function ExpendituresController($scope, store, expenditureService, subcontractorService, itemService, fundService) {
         var vm = this;
         vm.project = store.get('project');
-        updateExpenditures();
-        updateSubcontractors();
-        updateItems();
-        updateFunds();
+        showExpenditures();
+        setSubcontractors();
+        setItems();
+        setFunds();
 
         // GET Expenditures
-        function updateExpenditures() {
-            getExpenditures()
+        function showExpenditures() {
+            return getExpenditures()
                 .then(calculateTotal)
                 .catch(error);
 
             function getExpenditures() {
                 return expenditureService.retrieveList()
-                    .then(success);
+                    .then(success)
+                    .catch(error);
 
-                function success(data) {
-                    vm.expenditureList = data.objects;
+                function success(response) {
+                    vm.expenditureList = response.data.objects;
                     return vm.expenditureList;
                 }
             }
@@ -39,12 +40,12 @@
                 vm.totalCost = total;
             }
             function error() {
-                vm.getError = true;
+                vm.errorGet = true;
             }
         }
 
         // GET Subcontractors
-        function updateSubcontractors() {
+        function setSubcontractors() {
             return getSubcontractors();
 
             function getSubcontractors() {
@@ -52,28 +53,29 @@
                     .then(success)
                     .catch(error);
 
-                function success(data) {
-                    vm.subcontractorList = data.objects;
+                function success(response) {
+                    vm.subcontractorList = response.data.objects;
                     return vm.subcontractorList;
                 }
                 function error() {
-                    vm.getError = true;
+                    vm.errorGet = true;
                 }
             }
         }
 
         // GET Items
-        function updateItems() {
+        function setItems() {
             return getItems()
                 .then(populateList)
                 .catch(error);
 
             function getItems() {
                 return itemService.retrieveList()
-                    .then(success);
+                    .then(success)
+                    .catch(error);
 
-                function success(data) {
-                    vm.itemList = data.objects;
+                function success(response) {
+                    vm.itemList = response.data.objects;
                     return vm.itemList;
                 }
             }
@@ -90,24 +92,26 @@
                     });
                 });
                 vm.itemList = list;
+                return vm.itemList;
             }
             function error() {
-                vm.getError = true;
+                vm.errorGet = true;
             }
         }
 
         // GET Funds
-        function updateFunds() {
+        function setFunds() {
             return getFunds()
                 .then(populateList)
                 .catch(error);
 
             function getFunds() {
                 return fundService.retrieveList()
-                    .then(success);
+                    .then(success)
+                    .catch(error);
 
-                function success(data) {
-                    vm.fundList = data.objects;
+                function success(response) {
+                    vm.fundList = response.data.objects;
                     return vm.fundList;
                 }
             }
@@ -120,35 +124,22 @@
                     });
                 });
                 vm.fundList = list;
+                return vm.fundList;
             }
             function error() {
-                vm.getError = true;
+                vm.errorGet = true;
             }
         }
 
-        // CLICKED Expenditure
-        $scope.clicked = function(expenditure) {
-            var index = vm.expenditureList.indexOf(expenditure);
-            if (index !== -1) {
-                store.set('expenditure', expenditure);
-                return true;
-            }
-            return false;
-        };
-
-        // CLICKED Checkbox
-        $scope.clickedCheckbox = function(expenditure) {
-            if (expenditure.selected) {
-                vm.selected = true;
-            } else {
-                var isSelected = false;
-                angular.forEach(vm.expenditureList, function(e) {
-                    if (e.selected) {
-                        isSelected = true;
-                    }
-                });
-                vm.selected = isSelected;
-            }
+        // CLICKED function
+        $scope.clickedCheckbox = function() {
+            var isSelected = false;
+            angular.forEach(vm.expenditureList, function(expenditure) {
+                if (expenditure.selected) {
+                    isSelected = true;
+                }
+            });
+            vm.selected = isSelected;
         };
 
         // ADD functions
@@ -156,16 +147,17 @@
             vm.expenditure      = {};
             vm.expenditure.date = new Date();
             $scope.addForm.$setPristine();
+            $('#add-button').button('reset');
             $('#add-modal').modal('show');
         };
         $scope.add = function() {
-            var btn = $('#add-button').button('loading');
+            $('#add-button').button('loading');
 
             if (vm.expenditure.question == 1) {
                 vm.expenditure.vendor = vm.expenditure.subcontractor.name;
             }
 
-            addExpenditure()
+            return addExpenditure()
                 .then(success)
                 .catch(error);
 
@@ -174,124 +166,116 @@
             }
             function success() {
                 $('#add-modal').modal('hide');
-                btn.button('reset');
-                updateExpenditures();
+                showExpenditures();
             }
             function error() {
                 $scope.addForm.$invalid = true;
-                btn.button('reset');
+                $('#add-button').button('reset');
             }
         };
 
         // DELETE MANY functions
         $scope.deleteManyModal = function() {
             if (!$('#delete-many-button1').hasClass('disabled')) {
-                vm.deleteManyError = false;
+                vm.errorDeleteMany = false;
+                $('#delete-many-button2').button('reset');
                 $('#delete-many-modal').modal('show');
             }
         };
-        $scope.delete = function() {
-            var btn = $('#delete-many-button2').button('loading');
+        $scope.deleteMany = function() {
+            $('#delete-many-button2').button('loading');
 
             angular.forEach(vm.expenditureList, function(expenditure) {
                 if (expenditure.selected) {
-                    deleteExpenditure(expenditure.id)
+                    return deleteExpenditure(expenditure)
                         .then(success)
                         .catch(error);
-
-                    // This needs work
-                    var index = vm.expenditureList.indexOf(expenditure);
-                    if (index !== -1) {
-                        vm.expenditureList.splice(index, 1);
-                    }
                 }
             });
 
-            function deleteExpenditure(expenditureId) {
-                return expenditureService.remove(expenditureId);
+            function deleteExpenditure(expenditure) {
+                return expenditureService.remove(expenditure);
             }
             function success() {
                 $('#delete-many-modal').modal('hide');
-                btn.button('reset');
                 vm.selected = false;
+                showExpenditures();
             }
             function error() {
-                vm.deleteManyError = true;
-                btn.button('reset');
+                vm.errorDeleteMany = true;
+                $('#delete-many-button2').button('reset');
             }
         };
 
         // DELETE functions
-        $scope.deleteModal = function() {
-            vm.deleteError = false;
+        $scope.deleteModal = function(expenditure) {
+            vm.errorDelete = false;
+            vm.expenditure = {};
+            vm.expenditure = expenditure;
+            $('#delete-button').button('reset');
             $('#delete-modal').modal('show');
         };
         $scope.delete = function() {
-            var btn = $('#delete-button').button('loading');
+            $('#delete-button').button('loading');
 
-            deleteExpenditure()
+            return deleteExpenditure()
                 .then(success)
                 .catch(error);
 
             function deleteExpenditure() {
-                return expenditureService.remove(store.get('expenditure').id);
+                return expenditureService.remove(vm.expenditure);
             }
             function success() {
                 $('#delete-modal').modal('hide');
-                btn.button('reset');
-
-                // This needs work
-                var index = vm.expenditureList.indexOf(store.get('expenditure'));
-                if (index !== -1) {
-                    vm.expenditureList.splice(index, 1);
-                }
+                showExpenditures();
             }
             function error() {
-                vm.deleteError = true;
-                btn.button('reset');
+                vm.errorDelete = true;
+                $('#delete-button').button('reset');
             }
         };
 
         // UPDATE functions
-        $scope.updateModal = function() {
-            vm.updated        = {};
-            vm.updated.date   = new Date(store.get('expenditure').date);
-            vm.updated.vendor = store.get('expenditure').vendor;
-            vm.updated.item   = {
-                id  : store.get('expenditure').items.id,
-                name: store.get('expenditure').items.name,
+        $scope.updateModal = function(expenditure) {
+            vm.expenditure        = {};
+            vm.expenditure.id     = expenditure.id;
+            vm.expenditure.date   = new Date(expenditure.date);
+            vm.expenditure.vendor = expenditure.vendor;
+            vm.expenditure.item   = {
+                id  : expenditure.items.id,
+                name: expenditure.items.name,
                 category: {
-                    id  : store.get('expenditure').categories.id,
-                    name: store.get('expenditure').categories.name,
+                    id  : expenditure.categories.id,
+                    name: expenditure.categories.name,
                 }
             };
-            vm.updated.notes = store.get('expenditure').notes;
-            vm.updated.cost = store.get('expenditure').cost;
-            vm.updated.fund = {
-                id  : store.get('expenditure').funds.id,
-                name: store.get('expenditure').funds.name
+            vm.expenditure.notes = expenditure.notes;
+            vm.expenditure.cost  = expenditure.cost;
+            vm.expenditure.fund  = {
+                id:   expenditure.funds.id,
+                name: expenditure.funds.name
             };
             $scope.updateForm.$setPristine();
+            $('#update-button').button('reset');
             $('#update-modal').modal('show');
         };
         $scope.update = function() {
-            var btn = $('#update-button').button('loading');
+            $('#update-button').button('loading');
 
-            updateExpenditure()
+            return updateExpenditure()
                 .then(success)
                 .catch(error);
 
             function updateExpenditure() {
-                return expenditureService.update(vm.updated);
+                return expenditureService.update(vm.expenditure);
             }
             function success() {
                 $('#update-modal').modal('hide');
-                btn.button('reset');
-                updateExpenditures();
+                showExpenditures();
             }
             function error() {
                 $scope.updateForm.$invalid = true;
-                btn.button('reset');
+                $('#update-button').button('reset');
             }
         };
     }
