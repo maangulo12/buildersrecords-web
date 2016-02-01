@@ -5,9 +5,9 @@
         .module('app.projects.expenditures')
         .controller('ExpendituresController', ExpendituresController);
 
-    ExpendituresController.$inject = ['$scope', 'store', 'expenditureService', 'subcontractorService', 'itemService', 'fundService'];
+    ExpendituresController.$inject = ['$scope', 'store', '$filter', 'expenditureService', 'subcontractorService', 'itemService', 'fundService'];
 
-    function ExpendituresController($scope, store, expenditureService, subcontractorService, itemService, fundService) {
+    function ExpendituresController($scope, store, $filter, expenditureService, subcontractorService, itemService, fundService) {
         var vm = this;
         vm.project = store.get('project');
         showExpenditures();
@@ -211,7 +211,7 @@
         $scope.deleteModal = function(expenditure) {
             vm.errorDelete = false;
             vm.expenditure = {};
-            vm.expenditure = expenditure;
+            vm.expenditure.id = expenditure.id;
             $('#delete-button').button('reset');
             $('#delete-modal').modal('show');
         };
@@ -237,9 +237,10 @@
 
         // UPDATE functions
         $scope.updateModal = function(expenditure) {
+            var date = new Date(expenditure.date);
             vm.expenditure        = {};
             vm.expenditure.id     = expenditure.id;
-            vm.expenditure.date   = new Date(expenditure.date);
+            vm.expenditure.date   = new Date(date.getTime() + date.getTimezoneOffset()*60000);
             vm.expenditure.vendor = expenditure.vendor;
             vm.expenditure.item   = {
                 id  : expenditure.items.id,
