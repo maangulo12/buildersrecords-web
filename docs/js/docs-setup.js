@@ -41,6 +41,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "projectService",
+      "shortName": "projectService",
+      "type": "service",
+      "moduleName": "projectService",
+      "shortDescription": "This is the service module for Project.",
+      "keywords": "api module project projectservice service"
+    },
+    {
+      "section": "api",
       "id": "subcontractorService",
       "shortName": "subcontractorService",
       "type": "service",
