@@ -1,3 +1,10 @@
+/**
+ * @ngdoc service
+ * @name chartService
+ * @description
+ *
+ * This is the service module for Chart.
+**/
 (function() {
     'use strict';
 
