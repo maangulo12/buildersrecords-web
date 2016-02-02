@@ -9,10 +9,10 @@
 
     function ProjectsController($scope, store, projectService, utilityService) {
         var vm = this;
-        updateProjects();
+        showProjects();
 
         // GET function
-        function updateProjects() {
+        function showProjects() {
             return getProjects()
                 .then(success)
                 .catch(error);
@@ -25,7 +25,7 @@
                 return vm.projectList;
             }
             function error(response) {
-                vm.getError = true;
+                vm.errorGet = true;
             }
         }
 
@@ -43,17 +43,18 @@
         $scope.addModal = function() {
             vm.project = {};
             $scope.addForm.$setPristine();
+            $('#add-button').button('reset');
             $('#add-modal').modal('show');
         };
         $scope.add = function() {
-            var btn = $('#add-button').button('loading');
+            $('#add-button').button('loading');
 
             if ($('#project-file').length && $('#project-file')[0].files[0]) {
-                parseFile()
+                return parseFile()
                     .then(success)
                     .catch(error);
             } else {
-                createProject()
+                return createProject()
                     .then(success)
                     .catch(error);
             }
@@ -67,25 +68,25 @@
             }
             function success(response) {
                 $('#add-modal').modal('hide');
-                btn.button('reset');
-                updateProjects();
+                showProjects();
             }
             function error(response) {
                 $scope.addForm.$invalid = true;
-                btn.button('reset');
+                $('#add-button').button('reset');
             }
         };
 
         // DELETE functions
         $scope.deleteModal = function(project) {
-            vm.deleteError = false;
+            vm.errorDelete = false;
             vm.deleted = project;
+            $('#delete-button').button('reset');
             $('#delete-modal').modal('show');
         };
         $scope.delete = function() {
-            var btn = $('#delete-button').button('loading');
+            $('#delete-button').button('loading');
 
-            deleteProject()
+            return deleteProject()
                 .then(success)
                 .catch(error);
 
@@ -94,46 +95,45 @@
             }
             function success(response) {
                 $('#delete-modal').modal('hide');
-                btn.button('reset');
-                updateProjects();
+                showProjects();
             }
             function error(response) {
-                vm.deleteError = true;
-                btn.button('reset');
+                vm.errorDelete = true;
+                $('#delete-button').button('reset');
             }
         };
 
         // UPDATE functions
         $scope.updateModal = function(project) {
-            vm.updated         = {};
-            vm.updated.id      = project.id;
-            vm.updated.name    = project.name;
-            vm.updated.address = project.address;
-            vm.updated.city    = project.city;
-            vm.updated.state   = project.state;
-            vm.updated.zipcode = project.zipcode;
-            vm.updated.homeSq  = project.home_sq;
+            vm.project         = {};
+            vm.project.id      = project.id;
+            vm.project.name    = project.name;
+            vm.project.address = project.address;
+            vm.project.city    = project.city;
+            vm.project.state   = project.state;
+            vm.project.zipcode = project.zipcode;
+            vm.project.homeSq  = project.home_sq;
             $scope.updateForm.$setPristine();
+            $('#update-button').button('reset');
             $('#update-modal').modal('show');
         };
         $scope.update = function() {
-            var btn = $('#update-button').button('loading');
+            $('#update-button').button('loading');
 
-            updateProject()
+            return updateProject()
                 .then(success)
                 .catch(error);
 
             function updateProject() {
-                return projectService.update(vm.updated);
+                return projectService.update(vm.project);
             }
             function success() {
                 $('#update-modal').modal('hide');
-                btn.button('reset');
-                updateProjects();
+                showProjects();
             }
             function error() {
                 $scope.updateForm.$invalid = true;
-                btn.button('reset');
+                $('#update-button').button('reset');
             }
         };
     }
