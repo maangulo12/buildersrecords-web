@@ -12,9 +12,9 @@
         store.remove('jwt');
 
         $scope.logIn = function() {
-            var btn = $('#login-button').button('loading');
+            $('#login-button').button('loading');
 
-            authenticateUser()
+            return authenticateUser()
                 .then(goProjects)
                 .catch(error);
 
@@ -27,7 +27,7 @@
             function error() {
                 $scope.loginForm.$invalid = true;
                 vm.password = '';
-                btn.button('reset');
+                $('#login-button').button('reset');
             }
         };
     }
