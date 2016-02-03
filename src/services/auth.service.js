@@ -1,3 +1,10 @@
+/**
+ * @ngdoc service
+ * @name authService
+ * @description
+ *
+ * This is the service module for Auth.
+**/
 (function() {
     'use strict';
 

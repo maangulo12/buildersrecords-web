@@ -1,0 +1,819 @@
+<!-- Container -->
+<div class="container">
+    <!-- Breadcrumb -->
+    <ol class="breadcrumb">
+        <!-- Projects -->
+        <li>
+            <a ui-sref="projects">
+                <span class="glyphicon glyphicon-folder-open glyphicon-padding" aria-hidden="true"></span>
+                <b> Projects </b>
+            </a>
+        </li>
+        <!-- Project Name -->
+        <li class="active"> {{ vm.project.name }} </li>
+    </ol>
+    <!--Line Break -->
+    <br>
+    <!-- Tabs -->
+    <ul class="nav nav-tabs">
+        <!-- Overview -->
+        <li role="presentation">
+            <a ui-sref="overview">
+                <span class="glyphicon glyphicon-dashboard glyphicon-padding" aria-hidden="true"></span>
+                <b> Overview </b>
+            </a>
+        </li>
+        <!-- Budget -->
+        <li role="presentation">
+            <a ui-sref="budget">
+                <span class="glyphicon glyphicon-list-alt glyphicon-padding" aria-hidden="true"></span>
+                <b> Budget </b>
+            </a>
+        </li>
+        <!-- Subcontractors -->
+        <li role="presentation">
+            <a ui-sref="subcontractors">
+                <span class="glyphicon glyphicon-link glyphicon-padding" aria-hidden="true"></span>
+                <b> Subcontractors </b>
+            </a>
+        </li>
+        <!-- Funds -->
+        <li role="presentation">
+            <a ui-sref="funds">
+                <span class="glyphicon glyphicon-piggy-bank glyphicon-padding" aria-hidden="true"></span>
+                <b> Funds </b>
+            </a>
+        </li>
+        <!-- Expenditures -->
+        <li role="presentation" class="active">
+            <a ui-sref="expenditures">
+                <span class="glyphicon glyphicon-usd glyphicon-padding" aria-hidden="true"></span>
+                <b> Expenditures </b>
+            </a>
+        </li>
+    </ul>
+    <!-- Error Alert -->
+    <div ng-if="vm.errorGet">
+        <!-- Line Break -->
+        <br>
+        <!-- Alert -->
+        <div class="alert alert-danger alert-dismissible text-center" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only"> Error: </span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true"> &times; </span>
+            </button> <b> Could not access your expenditures. Please refresh the page. </b>
+        </div>
+    </div>
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1> Your Expenditures </h1>
+    </div>
+    <!-- Button - Add -->
+    <button type="button" class="btn btn-success" title="Add Expenditure"
+            ng-click="addModal()">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        <b> Add </b>
+    </button>
+    <!-- Button - Delete Many -->
+    <button id="delete-many-button1" type="button" class="btn btn-danger" title="Delete Selected"
+            ng-class="{ 'disabled': !vm.selected }" ng-click="deleteManyModal()">
+        <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+        <b> Delete </b>
+    </button>
+    <!-- Line Breaks -->
+    <br>
+    <br>
+    <!-- Table -->
+    <table st-table="collection" st-safe-src="vm.expenditureList"
+           class="table table-condensed table-striped table-hover table-responsive">
+        <!-- Table Header -->
+        <thead>
+            <tr>
+                <th style="width: 2%"></th>
+                <th st-sort="date" style="width: 5%" class="text-center">
+                    <a href style="text-decoration: none; color: #fff;"> Date </a>
+                </th>
+                <th st-sort="vendor" style="width: 12%" class="text-center">
+                    <a href style="text-decoration: none; color: #fff;"> Vendor </a>
+                </th>
+                <th st-sort="categories.name" style="width: 15%" class="text-center">
+                    <a href style="text-decoration: none; color: #fff;"> Category </a>
+                </th>
+                <th st-sort="items.name" style="width: 20%" class="text-center">
+                    <a href style="text-decoration: none; color: #fff;"> Item / Job </a>
+                </th>
+                <th st-sort="notes" style="width: 23%" class="text-center">
+                    <a href style="text-decoration: none; color: #fff;"> Notes </a>
+                </th>
+                <th st-sort="cost" style="width: 5%" class="text-center">
+                    <a href style="text-decoration: none; color: #fff;"> Cost </a>
+                </th>
+                <th st-sort="funds.name" style="width: 7%" class="text-center">
+                    <a href style="text-decoration: none; color: #fff;"> Fund </a>
+                </th>
+                <th colspan="2" style="width: 6%" class="text-center">
+                    Action
+                </th>
+            <tr>
+        </thead>
+        <!-- Table Body -->
+        <tbody>
+            <!-- Expenditures -->
+            <tr ng-repeat="expenditure in collection">
+                <!-- Checkbox -->
+                <td style="width: 2%">
+                    <input type="checkbox" class="checkbox" ng-model="expenditure.selected"
+                           ng-click="clickedCheckbox()">
+                </td>
+                <!-- Date -->
+                <td style="width: 5%">
+                    {{ expenditure.date | date: 'MM/dd/yyyy' }}
+                </td>
+                <!-- Vendor -->
+                <td style="width: 12%" class="text-success">
+                    <b> {{ expenditure.vendor }} </b>
+                </td>
+                <!-- Category -->
+                <td style="width: 15%">
+                    <b> {{ expenditure.categories.name }} </b>
+                </td>
+                <!-- Item -->
+                <td style="width: 20%">
+                    {{ expenditure.items.name }}
+                </td>
+                <!-- Notes -->
+                <td style="width: 23%">
+                    {{ expenditure.notes }}
+                </td>
+                <!-- Cost -->
+                <td style="width: 5%" class="text-right">
+                    {{ expenditure.cost | currency }}
+                </td>
+                <!-- Fund -->
+                <td style="width: 7%">
+                    <b> {{ expenditure.funds.name }} </b>
+                </td>
+                <!-- Edit -->
+                <td style="width: 3%" class="text-center">
+                    <a href class="text-primary" title="Edit"
+                       ng-click="updateModal(expenditure)">
+                       <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                    </a>
+                </td>
+                <!-- Delete -->
+                <td style="width: 3%" class="text-center">
+                    <a href class="text-danger" title="Delete"
+                       ng-click="deleteModal(expenditure)">
+                       <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                   </a>
+                </td>
+            </tr>
+            <!-- Total -->
+            <tr ng-if="vm.expenditureList.length != 0" class="active">
+                <td colspan="5"></td>
+                <td class="text-right"> <b> Total Amount Spent </b> </td>
+                <td class="text-right"> <b> {{ vm.totalCost | currency }} </b> </td>
+                <td colspan="4"></td>
+            </tr>
+            <!-- Empty -->
+            <tr ng-if="vm.expenditureList.length == 0" class="active">
+                <td colspan="1"></td>
+                <td colspan="9"> <b> You have not made any expenditures yet. </b> </td>
+            </tr>
+        </tbody>
+        <!-- Table Footer -->
+        <tfoot>
+			<tr>
+				<td colspan="10" class="text-right">
+					<div st-pagination="" st-items-by-page="10"
+                         st-template="www/html/pagination.html"></div>
+				</td>
+			</tr>
+		</tfoot>
+    </table>
+    <!-- Line Breaks -->
+    <br><br><br><br>
+</div>
+
+<!-- MODALS -->
+<!-- Modal - Add -->
+<div class="container">
+    <div class="modal fade" id="add-modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <!-- Close Button -->
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"> &times; </span>
+                    </button>
+                    <!-- Title -->
+                    <h4 class="modal-title">
+                        <b> Add Expenditure </b>
+                    </h4>
+                </div>
+                <!-- Form -->
+                <form name="addForm" novalidate>
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+                        <!-- Error Alert -->
+                        <div class="alert alert-danger alert-dismissible text-center" role="alert"
+                             ng-if="addForm.$invalid && addForm.$submitted">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            <span class="sr-only"> Error: </span>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true"> &times; </span>
+                            </button> <b> There were problems creating the expenditure. </b>
+                        </div>
+                        <!-- Date Field -->
+                        <div class="form-group"
+                             ng-class="{ 'has-error': (addForm.date.$dirty ||
+                                                       addForm.$submitted) &&
+                                                       addForm.date.$invalid,
+                                         'has-feedback': (addForm.date.$dirty ||
+                                                          addForm.$submitted) &&
+                                                          addForm.date.$invalid }">
+                            <label class="control-label" for="date">
+                                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                                Date of Expenditure
+                            </label>
+                            <input class="form-control"
+                                   name="date"
+                                   type="date"
+                                   placeholder="Date"
+                                   ng-model="vm.expenditure.date"
+                                   required>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(addForm.date.$dirty ||
+                                          addForm.$submitted) &&
+                                          addForm.date.$invalid">
+                            </span>
+                            <div ng-messages="addForm.date.$error"
+                                 ng-if="(addForm.date.$dirty ||
+                                         addForm.$submitted) &&
+                                         addForm.date.$invalid">
+                                <div ng-message="required"
+                                     class="help-block"> This field is required. </div>
+                            </div>
+                        </div>
+                        <!-- Question Field -->
+                        <div class="form-group"
+                             ng-class="{ 'has-error': (addForm.question.$dirty ||
+                                                       addForm.$submitted) &&
+                                                       addForm.question.$invalid,
+                                         'has-feedback': (addForm.question.$dirty ||
+                                                          addForm.$submitted) &&
+                                                          addForm.question.$invalid }">
+                            <label class="control-label" for="question"> Is this an invoice from a subcontractor? </label>
+                            <select class="form-control"
+                                    name="question"
+                                    ng-model="vm.expenditure.question"
+                                    required>
+                                <option value="" disabled selected> Select an option </option>
+                                <option value="1"> Yes </option>
+                                <option value="0"> No </option>
+                            </select>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(addForm.question.$dirty ||
+                                          addForm.$submitted) &&
+                                          addForm.question.$invalid">
+                            </span>
+                            <div ng-messages="addForm.question.$error"
+                                 ng-if="(addForm.question.$dirty ||
+                                         addForm.$submitted) &&
+                                         addForm.question.$invalid">
+                                <div ng-message="required"
+                                     class="help-block"> This field is required. </div>
+                            </div>
+                        </div>
+                        <!-- Subcontractor Field -->
+                        <div ng-if="vm.expenditure.question == 1" class="form-group"
+                             ng-class="{ 'has-error': (addForm.subcontractor.$dirty ||
+                                                       addForm.$submitted) &&
+                                                       addForm.subcontractor.$invalid,
+                                         'has-feedback': (addForm.subcontractor.$dirty ||
+                                                          addForm.$submitted) &&
+                                                          addForm.subcontractor.$invalid }">
+                            <label class="control-label" for="subcontractor"> Subcontractor </label>
+                            <select class="form-control"
+                                    name="subcontractor"
+                                    ng-model="vm.expenditure.subcontractor"
+                                    ng-options="subcontractor.name for subcontractor in vm.subcontractorList track by subcontractor.id"
+                                    required>
+                                <option value="" disabled selected> Select a subcontractor </option>
+                            </select>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(addForm.subcontractor.$dirty ||
+                                          addForm.$submitted) &&
+                                          addForm.subcontractor.$invalid">
+                            </span>
+                            <div ng-messages="addForm.subcontractor.$error"
+                                 ng-if="(addForm.subcontractor.$dirty ||
+                                         addForm.$submitted) &&
+                                         addForm.subcontractor.$invalid">
+                                <div ng-message="required"
+                                     class="help-block"> This field is required. </div>
+                            </div>
+                        </div>
+                        <!-- Vendor Field -->
+                        <div ng-if="vm.expenditure.question == 0" class="form-group"
+                             ng-class="{ 'has-error': (addForm.vendor.$dirty ||
+                                                       addForm.$submitted) &&
+                                                       addForm.vendor.$invalid,
+                                         'has-feedback': (addForm.vendor.$dirty ||
+                                                          addForm.$submitted) &&
+                                                          addForm.vendor.$invalid }">
+                            <label class="control-label" for="vendor"> Vendor Name </label>
+                            <input class="form-control"
+                                   name="vendor"
+                                   type="text"
+                                   placeholder="Vendor Name"
+                                   ng-model="vm.expenditure.vendor"
+                                   required
+                                   ng-maxlength=50>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(addForm.vendor.$dirty ||
+                                          addForm.$submitted) &&
+                                          addForm.vendor.$invalid">
+                            </span>
+                            <div ng-messages="addForm.vendor.$error"
+                                 ng-if="(addForm.vendor.$dirty ||
+                                         addForm.$submitted) &&
+                                         addForm.vendor.$invalid">
+                                <div ng-message="required"
+                                     class="help-block"> This field is required. </div>
+                                <div ng-message="maxlength"
+                                     class="help-block"> This field cannot be longer than 50 characters. </div>
+                            </div>
+                        </div>
+                        <!-- Item Field -->
+                        <div class="form-group"
+                             ng-class="{ 'has-error': (addForm.item.$dirty ||
+                                                       addForm.$submitted) &&
+                                                       addForm.item.$invalid,
+                                         'has-feedback': (addForm.item.$dirty ||
+                                                          addForm.$submitted) &&
+                                                          addForm.item.$invalid }">
+                            <label class="control-label" for="item"> Budget Item </label>
+                            <select class="form-control"
+                                    name="item"
+                                    ng-model="vm.expenditure.item"
+                                    ng-options="item.name group by item.category.name for item in vm.itemList track by item.id"
+                                    required>
+                                <option value="" disabled selected> Select a budget item </option>
+                            </select>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(addForm.item.$dirty ||
+                                          addForm.$submitted) &&
+                                          addForm.item.$invalid">
+                            </span>
+                            <div ng-messages="addForm.item.$error"
+                                 ng-if="(addForm.item.$dirty ||
+                                         addForm.$submitted) &&
+                                         addForm.item.$invalid">
+                                <div ng-message="required"
+                                     class="help-block"> This field is required. </div>
+                            </div>
+                        </div>
+                        <!-- Notes Field -->
+                        <div class="form-group"
+                             ng-class="{ 'has-error': (addForm.notes.$dirty ||
+                                                       addForm.$submitted) &&
+                                                       addForm.notes.$invalid,
+                                         'has-feedback': (addForm.notes.$dirty ||
+                                                          addForm.$submitted) &&
+                                                          addForm.notes.$invalid }">
+                            <label class="control-label" for="notes"> Notes </label>
+                            <input class="form-control"
+                                   name="notes"
+                                   type="text"
+                                   placeholder="Notes (Optional)"
+                                   ng-model="vm.expenditure.notes"
+                                   ng-maxlength=80>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(addForm.notes.$dirty ||
+                                          addForm.$submitted) &&
+                                          addForm.notes.$invalid">
+                            </span>
+                            <div ng-messages="addForm.notes.$error"
+                                 ng-if="(addForm.notes.$dirty ||
+                                         addForm.$submitted) &&
+                                         addForm.notes.$invalid">
+                                <div ng-message="maxlength"
+                                     class="help-block"> This field cannot be longer than 80 characters. </div>
+                            </div>
+                        </div>
+                        <!-- Cost Field -->
+                        <div class="form-group"
+                             ng-class="{ 'has-error': (addForm.cost.$dirty ||
+                                                       addForm.$submitted) &&
+                                                       addForm.cost.$invalid,
+                                         'has-feedback': (addForm.cost.$dirty ||
+                                                          addForm.$submitted) &&
+                                                          addForm.cost.$invalid }">
+                            <label class="control-label" for="cost"> Cost </label>
+                            <div class="input-group">
+                                <span class="input-group-addon"> $ </span>
+                                <input class="form-control"
+                                       name="cost"
+                                       type="text"
+                                       placeholder="Cost"
+                                       ng-model="vm.expenditure.cost"
+                                       required
+                                       ng-maxlength=12
+                                       format="number">
+                            </div>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(addForm.cost.$dirty ||
+                                          addForm.$submitted) &&
+                                          addForm.cost.$invalid">
+                            </span>
+                            <div ng-messages="addForm.cost.$error"
+                                 ng-if="(addForm.cost.$dirty ||
+                                         addForm.$submitted) &&
+                                         addForm.cost.$invalid">
+                                <div ng-message="required"
+                                     class="help-block"> This field is required. </div>
+                                <div ng-message="maxlength"
+                                     class="help-block"> This field cannot be longer than 12 digits. </div>
+                            </div>
+                        </div>
+                        <!-- Fund Field -->
+                        <div class="form-group"
+                             ng-class="{ 'has-error': (addForm.fund.$dirty ||
+                                                       addForm.$submitted) &&
+                                                       addForm.fund.$invalid,
+                                         'has-feedback': (addForm.fund.$dirty ||
+                                                          addForm.$submitted) &&
+                                                          addForm.fund.$invalid }">
+                            <label class="control-label" for="fund"> Fund </label>
+                            <select class="form-control"
+                                    name="fund"
+                                    ng-model="vm.expenditure.fund"
+                                    ng-options="fund.name for fund in vm.fundList track by fund.id"
+                                    required>
+                                <option value="" disabled selected> Select your fund </option>
+                            </select>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(addForm.fund.$dirty ||
+                                          addForm.$submitted) &&
+                                          addForm.fund.$invalid">
+                            </span>
+                            <div ng-messages="addForm.fund.$error"
+                                 ng-if="(addForm.fund.$dirty ||
+                                         addForm.$submitted) &&
+                                         addForm.fund.$invalid">
+                                <div ng-message="required"
+                                     class="help-block"> This field is required. </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                        <!-- Close -->
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            <b> Close </b>
+                        </button>
+                        <!-- Submit -->
+                        <button id="add-button" type="submit" class="btn btn-success"
+                                data-loading-text="Loading..."
+                                ng-click="addForm.$valid && add()">
+                            <b> Add </b>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal - Delete Many -->
+<div class="container">
+    <div class="modal fade" id="delete-many-modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <!-- Close Button -->
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"> &times; </span>
+                    </button>
+                    <!-- Title -->
+                    <h4 class="modal-title">
+                        <b class="text-danger"> Delete Expenditures </b>
+                    </h4>
+                </div>
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <!-- Error Alert -->
+                    <div class="alert alert-danger alert-dismissible text-center" role="alert"
+                         ng-if="vm.errorDeleteMany">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span class="sr-only"> Error: </span>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true"> &times; </span>
+                        </button> <b> Could not delete the expenditures. </b>
+                    </div>
+                    <!-- Message -->
+                    <p class="text-center">
+                        Are you sure you would like to <b> delete </b>?
+                    </p>
+                </div>
+                <!-- Modal Footer -->
+                <div class="modal-footer">
+                    <!-- Cancel Button -->
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <b> No </b>
+                    </button>
+                    <!-- Delete Button -->
+                    <button id="delete-many-button2" type="button" class="btn btn-danger"
+                            data-loading-text="Deleting..."
+                            ng-click="deleteMany()">
+                        <b> Yes, Delete </b>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal - Delete -->
+<div class="container">
+    <div class="modal fade" id="delete-modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <!-- Close Button -->
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"> &times; </span>
+                    </button>
+                    <!-- Title -->
+                    <h4 class="modal-title">
+                        <b class="text-danger"> Delete Expenditure </b>
+                    </h4>
+                </div>
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <!-- Error Alert -->
+                    <div class="alert alert-danger alert-dismissible text-center" role="alert"
+                         ng-if="vm.errorDelete">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span class="sr-only"> Error: </span>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true"> &times; </span>
+                        </button> <b> Could not delete the expenditure. </b>
+                    </div>
+                    <!-- Message -->
+                    <p class="text-center">
+                        Are you sure you would like to <b> delete </b>?
+                    </p>
+                </div>
+                <!-- Modal Footer -->
+                <div class="modal-footer">
+                    <!-- Cancel Button -->
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <b> No </b>
+                    </button>
+                    <!-- Delete Button -->
+                    <button id="delete-button" type="button" class="btn btn-danger"
+                            data-loading-text="Deleting..."
+                            ng-click="delete()">
+                        <b> Yes, Delete </b>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal - Update -->
+<div class="container">
+    <div class="modal fade" id="update-modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <!-- Close Button -->
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"> &times; </span>
+                    </button>
+                    <!-- Title -->
+                    <h4 class="modal-title">
+                        <b> Edit Expenditure </b>
+                    </h4>
+                </div>
+                <!-- Form -->
+                <form name="updateForm" novalidate>
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+                        <!-- Error Alert -->
+                        <div class="alert alert-danger alert-dismissible text-center" role="alert"
+                             ng-if="updateForm.$invalid && updateForm.$submitted">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            <span class="sr-only"> Error: </span>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true"> &times; </span>
+                            </button> <b> There were problems updating the expenditure. </b>
+                        </div>
+                        <!-- Date Field -->
+                        <div class="form-group"
+                             ng-class="{ 'has-error': (updateForm.date.$dirty ||
+                                                       updateForm.$submitted) &&
+                                                       updateForm.date.$invalid,
+                                         'has-feedback': (updateForm.date.$dirty ||
+                                                          updateForm.$submitted) &&
+                                                          updateForm.date.$invalid }">
+                            <label class="control-label" for="date">
+                                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                                Date of Expenditure
+                            </label>
+                            <input class="form-control"
+                                   name="date"
+                                   type="date"
+                                   placeholder="Date"
+                                   ng-model="vm.expenditure.date"
+                                   required>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(updateForm.date.$dirty ||
+                                          updateForm.$submitted) &&
+                                          updateForm.date.$invalid">
+                            </span>
+                            <div ng-messages="updateForm.date.$error"
+                                 ng-if="(updateForm.date.$dirty ||
+                                         updateForm.$submitted) &&
+                                         updateForm.date.$invalid">
+                                <div ng-message="required"
+                                     class="help-block"> This field is required. </div>
+                            </div>
+                        </div>
+                        <!-- Vendor Field -->
+                        <div class="form-group"
+                             ng-class="{ 'has-error': (updateForm.vendor.$dirty ||
+                                                       updateForm.$submitted) &&
+                                                       updateForm.vendor.$invalid,
+                                         'has-feedback': (updateForm.vendor.$dirty ||
+                                                          updateForm.$submitted) &&
+                                                          updateForm.vendor.$invalid }">
+                            <label class="control-label" for="vendor"> Vendor Name </label>
+                            <input class="form-control"
+                                   name="vendor"
+                                   type="text"
+                                   placeholder="Vendor Name"
+                                   ng-model="vm.expenditure.vendor"
+                                   required
+                                   ng-maxlength=50>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(updateForm.vendor.$dirty ||
+                                          updateForm.$submitted) &&
+                                          updateForm.vendor.$invalid">
+                            </span>
+                            <div ng-messages="updateForm.vendor.$error"
+                                 ng-if="(updateForm.vendor.$dirty ||
+                                         updateForm.$submitted) &&
+                                         updateForm.vendor.$invalid">
+                                <div ng-message="required"
+                                     class="help-block"> This field is required. </div>
+                                <div ng-message="maxlength"
+                                     class="help-block"> This field cannot be longer than 50 characters. </div>
+                            </div>
+                        </div>
+                        <!-- Item Field -->
+                        <div class="form-group"
+                             ng-class="{ 'has-error': (updateForm.item.$dirty ||
+                                                       updateForm.$submitted) &&
+                                                       updateForm.item.$invalid,
+                                         'has-feedback': (updateForm.item.$dirty ||
+                                                          updateForm.$submitted) &&
+                                                          updateForm.item.$invalid }">
+                            <label class="control-label" for="item"> Item </label>
+                            <select class="form-control"
+                                    name="item"
+                                    ng-model="vm.expenditure.item"
+                                    ng-options="item.name group by item.category.name for item in vm.itemList track by item.id"
+                                    required>
+                            </select>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(updateForm.item.$dirty ||
+                                          updateForm.$submitted) &&
+                                          updateForm.item.$invalid">
+                            </span>
+                            <div ng-messages="updateForm.item.$error"
+                                 ng-if="(updateForm.item.$dirty ||
+                                         updateForm.$submitted) &&
+                                         updateForm.item.$invalid">
+                                <div ng-message="required"
+                                     class="help-block"> This field is required. </div>
+                            </div>
+                        </div>
+                        <!-- Notes Field -->
+                        <div class="form-group"
+                             ng-class="{ 'has-error': (updateForm.notes.$dirty ||
+                                                       updateForm.$submitted) &&
+                                                       updateForm.notes.$invalid,
+                                         'has-feedback': (updateForm.notes.$dirty ||
+                                                          updateForm.$submitted) &&
+                                                          updateForm.notes.$invalid }">
+                            <label class="control-label" for="notes"> Notes </label>
+                            <input class="form-control"
+                                   name="notes"
+                                   type="text"
+                                   placeholder="Notes (Optional)"
+                                   ng-model="vm.expenditure.notes"
+                                   ng-maxlength=80>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(updateForm.notes.$dirty ||
+                                          updateForm.$submitted) &&
+                                          updateForm.notes.$invalid">
+                            </span>
+                            <div ng-messages="updateForm.notes.$error"
+                                 ng-if="(updateForm.notes.$dirty ||
+                                         updateForm.$submitted) &&
+                                         updateForm.notes.$invalid">
+                                <div ng-message="maxlength"
+                                     class="help-block"> This field cannot be longer than 80 characters. </div>
+                            </div>
+                        </div>
+                        <!-- Cost Field -->
+                        <div class="form-group"
+                             ng-class="{ 'has-error': (updateForm.cost.$dirty ||
+                                                       updateForm.$submitted) &&
+                                                       updateForm.cost.$invalid,
+                                         'has-feedback': (updateForm.cost.$dirty ||
+                                                          updateForm.$submitted) &&
+                                                          updateForm.cost.$invalid }">
+                            <label class="control-label" for="cost"> Cost </label>
+                            <div class="input-group">
+                                <span class="input-group-addon"> $ </span>
+                                <input class="form-control"
+                                       name="cost"
+                                       type="text"
+                                       placeholder="Cost"
+                                       ng-model="vm.expenditure.cost"
+                                       required
+                                       ng-maxlength=12
+                                       format="number">
+                            </div>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(updateForm.cost.$dirty ||
+                                          updateForm.$submitted) &&
+                                          updateForm.cost.$invalid">
+                            </span>
+                            <div ng-messages="updateForm.amount.$error"
+                                 ng-if="(updateForm.cost.$dirty ||
+                                         updateForm.$submitted) &&
+                                         updateForm.cost.$invalid">
+                                <div ng-message="required"
+                                     class="help-block"> This field is required. </div>
+                                <div ng-message="maxlength"
+                                     class="help-block"> This field cannot be longer than 12 digits. </div>
+                            </div>
+                        </div>
+                        <!-- Fund Field -->
+                        <div class="form-group"
+                             ng-class="{ 'has-error': (updateForm.fund.$dirty ||
+                                                       updateForm.$submitted) &&
+                                                       updateForm.fund.$invalid,
+                                         'has-feedback': (updateForm.fund.$dirty ||
+                                                          updateForm.$submitted) &&
+                                                          updateForm.fund.$invalid }">
+                            <label class="control-label" for="fund"> Fund </label>
+                            <select class="form-control"
+                                    name="fund"
+                                    ng-model="vm.expenditure.fund"
+                                    ng-options="fund.name for fund in vm.fundList track by fund.id"
+                                    required>
+                            </select>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(updateForm.fund.$dirty ||
+                                          updateForm.$submitted) &&
+                                          updateForm.fund.$invalid">
+                            </span>
+                            <div ng-messages="updateForm.fund.$error"
+                                 ng-if="(updateForm.fund.$dirty ||
+                                         updateForm.$submitted) &&
+                                         updateForm.fund.$invalid">
+                                <div ng-message="required"
+                                     class="help-block"> This field is required. </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                        <!-- Close -->
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            <b> Close </b>
+                        </button>
+                        <!-- Submit -->
+                        <button id="update-button" type="submit" class="btn btn-primary"
+                                data-loading-text="Saving..."
+                                ng-click="updateForm.$valid && update()">
+                            <b> Save Changes </b>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

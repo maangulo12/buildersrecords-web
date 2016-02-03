@@ -10,16 +10,18 @@
     function FundsController($scope, store, fundService, drawService) {
         var vm = this;
         vm.project = store.get('project');
-        updateFunds();
+        showFunds();
 
-        function updateFunds() {
+        // GET function
+        function showFunds() {
             return getFunds()
                 .then(updateTable)
                 .catch(error);
 
             function getFunds() {
                 return fundService.retrieveList()
-                    .then(success);
+                    .then(success)
+                    .catch(error);
 
                 function success(response) {
                     vm.fundList = response.data.objects;
@@ -45,10 +47,11 @@
                 });
             }
             function error(response) {
-                vm.errorMsgGet = true;
+                vm.errorGet = true;
             }
         }
 
+        // CLICKED functions
         $scope.clickedFund = function(fund) {
             var index = vm.fundList.indexOf(fund);
             if (index !== -1) {
@@ -71,7 +74,7 @@
                 store.get('fund').selected = draw.selected;
             });
         };
-        $scope.clickedSingleCheckbox = function(draw) {
+        $scope.clickedCheckbox = function(draw) {
             if (draw.selected) {
                 store.get('fund').selected = true;
             } else {
@@ -85,30 +88,30 @@
             }
         };
 
-        $scope.showAddFundModal = function() {
+        $scope.addFundModal = function() {
             vm.fund         = {};
             vm.loanQuestion = [{ value: true, name: 'Yes' }, { value: false, name: 'No' }];
             $scope.addFundForm.$setPristine();
+            $('#add-fund-button').button('reset');
             $('#add-fund-modal').modal('show');
         };
         $scope.addFund = function() {
-            var btn = $('#add-fund-button').button('loading');
+            $('#add-fund-button').button('loading');
 
-            addFund()
-                .then(addSuccess)
+            return addFund()
+                .then(success)
                 .catch(error);
 
             function addFund() {
                 return fundService.create(vm.fund);
             }
-            function addSuccess(response) {
+            function success(response) {
                 $('#add-fund-modal').modal('hide');
-                btn.button('reset');
-                updateFunds();
+                showFunds();
             }
             function error(response) {
                 $scope.addFundForm.$invalid = true;
-                btn.button('reset');
+                $('#add-fund-button').button('reset');
             }
         };
 
@@ -139,7 +142,7 @@
             function deleteSuccess(response) {
                 $('#delete-fund-modal').modal('hide');
                 btn.button('reset');
-                updateFunds();
+                showFunds();
             }
             function error(response) {
                 vm.errorMsgDelete = true;
@@ -167,7 +170,7 @@
             function updateSuccess(response) {
                 $('#edit-fund-modal').modal('hide');
                 btn.button('reset');
-                updateFunds();
+                showFunds();
             }
             function error(response) {
                 $scope.editFundForm.$invalid = true;
@@ -194,7 +197,7 @@
             function addSuccess(response) {
                 $('#add-draw-modal').modal('hide');
                 btn.button('reset');
-                updateFunds();
+                showFunds();
             }
             function error(response) {
                 $scope.addDrawForm.$invalid = true;
@@ -225,7 +228,7 @@
             function deleteSuccess(response) {
                 $('#delete-draws-modal').modal('hide');
                 btn.button('reset');
-                updateFunds();
+                showFunds();
             }
             function error(response) {
                 vm.errorMsgDeleteDraws = true;
@@ -253,7 +256,7 @@
             function updateSuccess(response) {
                 $('#edit-draw-modal').modal('hide');
                 btn.button('reset');
-                updateFunds();
+                showFunds();
             }
             function error(response) {
                 $scope.editDrawForm.$invalid = true;

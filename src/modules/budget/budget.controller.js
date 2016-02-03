@@ -52,7 +52,7 @@
             }
         }
 
-        // CLICKED functions
+        // CLICKED function
         $scope.clickedCheckbox = function(category) {
             var isSelected = false;
             angular.forEach(category.items, function(item) {
@@ -61,14 +61,6 @@
                 }
             });
             vm.selected = isSelected;
-        };
-        $scope.clickedCategory = function(category) {
-            var index = vm.categoryList.indexOf(category);
-            if (index !== -1) {
-                store.set('category', category);
-                return true;
-            }
-            return false;
         };
 
         // ADD Item functions
@@ -214,36 +206,37 @@
         };
 
         // DELETE Category functions
-        $scope.showDeleteCategoryModal = function() {
-            vm.errorMsgDeleteCategory = false;
+        $scope.deleteCategoryModal = function(category) {
+            vm.errorDeleteCategory = false;
+            vm.category = {};
+            vm.category = category;
+            $('#delete-category-button').button('reset');
             $('#delete-category-modal').modal('show');
         };
         $scope.deleteCategory = function() {
-            var btn = $('#delete-category-button').button('loading');
+            $('#delete-category-button').button('loading');
             var expenditures = 0;
             var items = 0;
 
-            getExpenditures()
+            return getExpenditures()
                 .then(setExpenditures)
                 .then(getItems)
                 .then(setItems)
                 .then(checkCategory)
-                .then(deleteSuccess)
+                .then(success)
                 .catch(error);
 
             function getExpenditures() {
-                return expenditureService.retrieveByCategory();
+                return expenditureService.retrieveByCategory(vm.category);
             }
-            function setExpenditures(data) {
-                console.log(data.num_results);
-                expenditures = data.num_results;
+            function setExpenditures(response) {
+                expenditures = response.data.num_results;
             }
             function getItems() {
-                return itemService.retrieveByCategory();
+                return itemService.retrieveByCategory(vm.category);
             }
-            function setItems(data) {
-                console.log(data.num_results);
-                items = data.num_results;
+            function setItems(response) {
+                items = response.data.num_results;
             }
             function checkCategory() {
                 if (expenditures === 0 && items === 0) {
@@ -259,56 +252,55 @@
                         .then(deleteCategory);
                 }
                 else {
-                    console.log('MADE IT');
                     return deleteItems()
                         .then(deleteCategory);
                 }
             }
             function deleteExpenditures() {
-                return expenditureService.removeByCategory();
+                return expenditureService.removeByCategory(vm.category);
             }
             function deleteItems() {
-                return itemService.removeByCategory();
+                return itemService.removeByCategory(vm.category);
             }
             function deleteCategory() {
-                return categoryService.remove();
+                return categoryService.remove(vm.category);
             }
-            function deleteSuccess() {
+            function success() {
                 $('#delete-category-modal').modal('hide');
-                btn.button('reset');
                 showCategories();
             }
             function error() {
-                vm.errorMsgDeleteCategory = true;
-                btn.button('reset');
+                vm.errorDeleteCategory = true;
+                $('#delete-category-button').button('reset');
             }
         };
 
         // UPDATE Category functions
-        $scope.showEditCategoryModal = function() {
-            vm.category = {};
-            vm.category.name = store.get('category').name;
-            $scope.editCategoryForm.$setPristine();
-            $('#edit-category-modal').modal('show');
+        $scope.updateCategoryModal = function(category) {
+            vm.category      = {};
+            vm.category.id   = category.id;
+            vm.category.name = category.name;
+            $scope.updateCategoryForm.$setPristine();
+            $('#update-category-button').button('reset');
+            $('#update-category-modal').modal('show');
         };
         $scope.updateCategory = function() {
-            var btn = $('#update-category-button').button('loading');
+            $('#update-category-button').button('loading');
 
-            updateCategory()
-                .then(updateSuccess)
+            return updateCategory()
+                .then(success)
                 .catch(error);
 
             function updateCategory() {
-                return categoryService.update(vm.category.name);
+                return categoryService.update(vm.category);
             }
-            function updateSuccess() {
-                $('#edit-category-modal').modal('hide');
-                btn.button('reset');
+            function success() {
+                $('#update-category-modal').modal('hide');
                 showCategories();
             }
             function error() {
-                $scope.editCategoryForm.$invalid = true;
-                btn.button('reset');
+                $scope.updateCategoryForm.$invalid = true;
+                $('#update-category-button').button('reset');
             }
         };
     }

@@ -15,12 +15,12 @@
             },
             views: {
                 'nav': {
-                    templateUrl:  'www/templates/nav2.html',
+                    templateUrl:  'www/html/nav2.html',
                     controller:   NavController,
                     controllerAs: 'vm'
                 },
                 'body': {
-                    templateUrl:  'www/templates/projects.html',
+                    templateUrl:  'www/html/projects.html',
                     controller:   'ProjectsController',
                     controllerAs: 'vm'
                 }
@@ -30,6 +30,8 @@
             }
         });
     }
+
+    updateUser.$inject = ['userService', '$q'];
 
     function updateUser(userService, $q) {
         return getUser()
@@ -46,6 +48,8 @@
             return $q.reject(response);
         }
     }
+
+    NavController.$inject = ['User'];
 
     function NavController(User) {
         var vm = this;

@@ -4,23 +4,31 @@
     var assert = require('chai').assert;
 
     describe('BudgetController Test', function() {
-        it('should get Subcontractors', function() {
+        it('should get Category List', function() {
             // TODO
         });
 
-        it('should add Subcontractor', function() {
+        it('should add Item', function() {
             // TODO
         });
 
-        it('should delete many Subcontractors', function() {
+        it('should delete many Items', function() {
             // TODO
         });
 
-        it('should delete Subcontractor', function() {
+        it('should delete Item', function() {
             // TODO
         });
 
-        it('should update Subcontractor', function() {
+        it('should update Item', function() {
+            // TODO
+        });
+
+        it('should delete Category', function() {
+            // TODO
+        });
+
+        it('should update Category', function() {
             // TODO
         });
     });

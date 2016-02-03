@@ -1,3 +1,10 @@
+/**
+ * @ngdoc service
+ * @name categoryService
+ * @description
+ *
+ * This is the service module for Category.
+**/
 (function() {
     'use strict';
 
@@ -33,18 +40,18 @@
                 .catch(error);
         }
 
-        function update(name) {
+        function update(category) {
             var data = {
-                name:       name,
+                name:       category.name,
                 project_id: store.get('project').id
             };
-            return $http.put(url + '/' + store.get('category').id, data)
+            return $http.put(url + '/' + category.id, data)
                 .then(success)
                 .catch(error);
         }
 
-        function remove() {
-            return $http.delete(url + '/' + store.get('category').id)
+        function remove(category) {
+            return $http.delete(url + '/' + category.id)
                 .then(success)
                 .catch(error);
         }

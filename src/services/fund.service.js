@@ -1,3 +1,10 @@
+/**
+ * @ngdoc service
+ * @name fundService
+ * @description
+ *
+ * This is the service module for Fund.
+**/
 (function() {
     'use strict';
 

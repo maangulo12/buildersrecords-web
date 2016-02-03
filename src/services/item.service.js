@@ -1,3 +1,10 @@
+/**
+ * @ngdoc service
+ * @name itemService
+ * @description
+ *
+ * This is the service module for Item.
+**/
 (function() {
     'use strict';
 
@@ -59,14 +66,14 @@
                 .catch(error);
         }
 
-        function retrieveByCategory() {
-            return $http.get(url + query('category_id', 'equals', store.get('category').id))
+        function retrieveByCategory(category) {
+            return $http.get(url + query('category_id', 'equals', category.id))
                 .then(success)
                 .catch(error);
         }
 
-        function removeByCategory() {
-            return $http.delete(url + query('category_id', 'equals', store.get('category').id))
+        function removeByCategory(category) {
+            return $http.delete(url + query('category_id', 'equals', category.id))
                 .then(success)
                 .catch(error);
         }

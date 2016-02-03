@@ -12,10 +12,10 @@
             url: '/',
             views: {
                 'nav': {
-                    templateUrl: 'www/templates/nav1.html'
+                    templateUrl: 'www/html/nav1.html'
                 },
                 'body': {
-                    templateUrl:  'www/templates/home.html',
+                    templateUrl:  'www/html/home.html',
                     controller:   'HomeController',
                     controllerAs: 'vm'
                 }
