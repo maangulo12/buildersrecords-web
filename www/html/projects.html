@@ -31,7 +31,7 @@
         <div class="col-md-9">
             <!-- Error Alert -->
             <div class="alert alert-danger alert-dismissible text-center" role="alert"
-                 ng-if="vm.getError">
+                 ng-if="vm.errorGet">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                 <span class="sr-only"> Error: </span>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -451,7 +451,7 @@
                 <div class="modal-body">
                     <!-- Alert -->
                     <div class="alert alert-danger alert-dismissible text-center" role="alert"
-                         ng-if="vm.deleteError">
+                         ng-if="vm.errorDelete">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         <span class="sr-only"> Error: </span>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -521,7 +521,7 @@
                                    name="name"
                                    type="text"
                                    placeholder="Project Name"
-                                   ng-model="vm.updated.name"
+                                   ng-model="vm.project.name"
                                    required
                                    ng-maxlength=50>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
@@ -552,7 +552,7 @@
                                     name="address"
                                     type="text"
                                     placeholder="Street Address"
-                                    ng-model="vm.updated.address"
+                                    ng-model="vm.project.address"
                                     required
                                     ng-maxlength=80>
                              <span class="glyphicon glyphicon-remove form-control-feedback"
@@ -583,7 +583,7 @@
                                     name="city"
                                     type="text"
                                     placeholder="City"
-                                    ng-model="vm.updated.city"
+                                    ng-model="vm.project.city"
                                     required
                                     ng-maxlength=30>
                              <span class="glyphicon glyphicon-remove form-control-feedback"
@@ -612,7 +612,7 @@
                              <label class="control-label" for="state"> State </label>
                              <select class="form-control"
                                      name="state"
-                                     ng-model="vm.updated.state"
+                                     ng-model="vm.project.state"
                                      required>
                                  <option value="" disabled selected> Select your state </option>
                                  <option value="AL"> Alabama </option>
@@ -692,7 +692,7 @@
                                     name="zipcode"
                                     type="text"
                                     placeholder="Zipcode"
-                                    ng-model="vm.updated.zipcode"
+                                    ng-model="vm.project.zipcode"
                                     required
                                     ng-maxlength=10>
                              <span class="glyphicon glyphicon-remove form-control-feedback"
@@ -724,7 +724,7 @@
                                         name="homeSq"
                                         type="text"
                                         placeholder="Home Square Footage"
-                                        ng-model="vm.updated.homeSq"
+                                        ng-model="vm.project.homeSq"
                                         required
                                         format="number">
                                  <div class="input-group-addon"> <b> ft<sup>2</sup> </b> </div>

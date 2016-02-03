@@ -1,3 +1,10 @@
+/**
+ * @ngdoc service
+ * @name projectService
+ * @description
+ *
+ * This is the service module for Project.
+**/
 (function() {
     'use strict';
 

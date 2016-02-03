@@ -5,12 +5,30 @@ NG_DOCS={
   "pages": [
     {
       "section": "api",
+      "id": "authService",
+      "shortName": "authService",
+      "type": "service",
+      "moduleName": "authService",
+      "shortDescription": "This is the service module for Auth.",
+      "keywords": "api authservice module service"
+    },
+    {
+      "section": "api",
       "id": "categoryService",
       "shortName": "categoryService",
       "type": "service",
       "moduleName": "categoryService",
       "shortDescription": "This is the service module for Category.",
       "keywords": "api category categoryservice module service"
+    },
+    {
+      "section": "api",
+      "id": "chartService",
+      "shortName": "chartService",
+      "type": "service",
+      "moduleName": "chartService",
+      "shortDescription": "This is the service module for Chart.",
+      "keywords": "api chart chartservice module service"
     },
     {
       "section": "api",
@@ -38,6 +56,15 @@ NG_DOCS={
       "moduleName": "itemService",
       "shortDescription": "This is the service module for Item.",
       "keywords": "api item itemservice module service"
+    },
+    {
+      "section": "api",
+      "id": "projectService",
+      "shortName": "projectService",
+      "type": "service",
+      "moduleName": "projectService",
+      "shortDescription": "This is the service module for Project.",
+      "keywords": "api module project projectservice service"
     },
     {
       "section": "api",

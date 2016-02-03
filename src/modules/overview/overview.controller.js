@@ -11,10 +11,11 @@
         var vm = this;
         vm.project = store.get('project');
         var options = chartService.setPieChartOptions();
-        updateCategories();
-        updateFunds();
+        showCategories();
+        showFunds();
 
-        function updateCategories() {
+        // GET Categories
+        function showCategories() {
             return getCategories()
                 .then(populateProgressBars)
                 .then(populatePieChart)
@@ -23,7 +24,8 @@
 
             function getCategories() {
                 return categoryService.retrieveList()
-                    .then(success);
+                    .then(success)
+                    .catch(error);
 
                     function success(response) {
                         vm.categoryList = response.data.objects;
@@ -109,14 +111,16 @@
             }
         }
 
-        function updateFunds() {
+        // GET Funds
+        function showFunds() {
             return getFunds()
                 .then(populateProgressBars)
                 .catch(error);
 
             function getFunds() {
                 return fundService.retrieveList()
-                    .then(success);
+                    .then(success)
+                    .catch(error);
 
                     function success(response) {
                         vm.fundList = response.data.objects;
@@ -143,8 +147,9 @@
             }
         }
 
+        // Error
         function error() {
-            vm.getError = true;
+            vm.errorGet = true;
         }
     }
 })();
