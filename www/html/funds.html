@@ -53,7 +53,7 @@
         </li>
     </ul>
     <!-- Error Alert -->
-    <div ng-if="vm.errorMsgGet">
+    <div ng-if="vm.errorGet">
         <!-- Line Break -->
         <br>
         <!-- Alert -->
@@ -62,7 +62,7 @@
             <span class="sr-only"> Error: </span>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true"> &times; </span>
-            </button> <b> Could not access your funds. Please refresh the page. </b>
+            </button> <b> Could not access your funds. </b>
         </div>
     </div>
     <!-- Page Header -->
@@ -71,9 +71,9 @@
     </div>
     <!-- Button - Add -->
     <button type="button" class="btn btn-success" title="Add Fund"
-            ng-click="showAddFundModal()">
+            ng-click="addFundModal()">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-        <b> Add </b>
+        <b> Add
     </button>
     <!-- Line Breaks -->
     <br><br>
@@ -245,7 +245,7 @@
                             <tr ng-repeat="draw in fund.draws">
                                 <!-- Checkbox -->
                                 <td><input type="checkbox" class="checkbox" ng-model="draw.selected"
-                                           ng-click="clickedFund(fund) && clickedSingleCheckbox(draw)">
+                                           ng-click="clickedFund(fund) && clickedCheckbox(draw)">
                                 </td>
                                 <!-- Draw Number -->
                                 <td class="text-center" ng-model="draw.index">
