@@ -192,8 +192,9 @@
         <!-- Table Footer -->
         <tfoot ng-if="vm.categoryList.length != 0">
             <tr class="footer-color">
-                <td colspan="2"> </td>
-                <td class="text-right"> <b> Grand Total </b> </td>
+                <td></td>
+                <td class="text-left"> <b> Grand Total </b> </td>
+                <td></td>
                 <td class="text-right"> <b> {{ vm.grandTotalEstimated | currency }} </b> </td>
                 <td class="text-right"> <b> {{ vm.grandTotalActual | currency }} </b> </td>
                 <td class="text-right" ng-class="{ 'text-danger': vm.grandTotalActual > vm.grandTotalEstimated }">
