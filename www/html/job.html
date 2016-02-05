@@ -23,11 +23,11 @@
                 <b> Overview </b>
             </a>
         </li>
-        <!-- Budget -->
+        <!-- Job Costing -->
         <li role="presentation" class="active">
-            <a ui-sref="budget">
+            <a ui-sref="job">
                 <span class="glyphicon glyphicon-list-alt glyphicon-padding" aria-hidden="true"></span>
-                <b> Budget </b>
+                <b> Job Costing </b>
             </a>
         </li>
         <!-- Subcontractors -->
@@ -68,7 +68,10 @@
     </div>
     <!-- Page Header -->
     <div class="page-header">
-        <h1> Your Budget </h1>
+        <h1>
+            <span class="glyphicon glyphicon-list-alt glyphicon-padding" aria-hidden="true"></span>
+            Job Costing
+        </h1>
     </div>
     <!-- Button - Add -->
     <button type="button" class="btn btn-success" title="Add Item"
@@ -92,11 +95,11 @@
         <thead>
             <tr>
                 <th style="width: 4%"> </th>
-                <th colspan="2" class="text-center"> Cost Category / Detail </th>
-                <th class="text-center"> Estimated Cost </th>
-                <th class="text-center"> Actual Cost </th>
-                <th class="text-center"> Over / Under </th>
-                <th colspan="2" class="text-center" style="width: 7%"> Action </th>
+                <th colspan="2" class="text-left"> Job Cost Category / Item </th>
+                <th class="text-right"> Estimated Cost </th>
+                <th class="text-right"> Actual Cost </th>
+                <th class="text-right"> Over / Under </th>
+                <th colspan="2" class="text-center" style="width: 7%"> </th>
             </tr>
         </thead>
         <!-- Table Body -->
@@ -217,8 +220,8 @@
                         <span aria-hidden="true"> &times; </span>
                     </button>
                     <!-- Title -->
-                    <h4 class="modal-title">
-                        <b> Add Budget Item </b>
+                    <h4 class="modal-title text-success">
+                        <b> Add Job Cost Item </b>
                     </h4>
                 </div>
                 <!-- Form -->
@@ -232,9 +235,9 @@
                             <span class="sr-only"> Error: </span>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true"> &times; </span>
-                            </button> <b> There were problems creating the budget item. </b>
+                            </button> <b> There were problems creating the job cost item. </b>
                         </div>
-                        <!-- Category Field -->
+                        <!-- Job Category Field -->
                         <div class="form-group"
                              ng-class="{ 'has-error': (addItemForm.category.$dirty ||
                                                        addItemForm.$submitted) &&
@@ -242,7 +245,7 @@
                                          'has-feedback': (addItemForm.category.$dirty ||
                                                           addItemForm.$submitted) &&
                                                           addItemForm.category.$invalid }">
-                            <label class="control-label" for="category"> Category </label>
+                            <label class="control-label" for="category"> Job Category </label>
                             <select class="form-control"
                                     name="category"
                                     ng-model="vm.item.category"
@@ -267,7 +270,7 @@
                             </div>
                         </div>
                         <div ng-if="vm.item.category=='new'">
-                            <!-- New Category Field -->
+                            <!-- New Job Category Field -->
                             <div class="form-group"
                                  ng-class="{ 'has-error': (addItemForm.newCategory.$dirty ||
                                                            addItemForm.$submitted) &&
@@ -275,11 +278,11 @@
                                              'has-feedback': (addItemForm.newCategory.$dirty ||
                                                               addItemForm.$submitted) &&
                                                               addItemForm.newCategory.$invalid }">
-                                <label class="control-label" for="newCategory"> New Category Name </label>
+                                <label class="control-label" for="newCategory"> New Job Category </label>
                                 <input class="form-control"
                                        name="newCategory"
                                        type="text"
-                                       placeholder="New Category Name"
+                                       placeholder="New Job Category"
                                        ng-model="vm.item.newCategory"
                                        required
                                        ng-maxlength=50>
@@ -299,7 +302,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Item Name Field -->
+                        <!-- Job Item Field -->
                         <div class="form-group"
                              ng-class="{ 'has-error': (addItemForm.name.$dirty ||
                                                        addItemForm.$submitted) &&
@@ -307,11 +310,11 @@
                                          'has-feedback': (addItemForm.name.$dirty ||
                                                           addItemForm.$submitted) &&
                                                           addItemForm.name.$invalid }">
-                            <label class="control-label" for="name"> Item Name </label>
+                            <label class="control-label" for="name"> Job Item </label>
                             <input class="form-control"
                                    name="name"
                                    type="text"
-                                   placeholder="Name"
+                                   placeholder="Job Item"
                                    ng-model="vm.item.name"
                                    required
                                    ng-maxlength=50>
@@ -330,7 +333,7 @@
                                      class="help-block"> This field cannot be longer than 50 characters. </div>
                             </div>
                         </div>
-                        <!-- Description Field -->
+                        <!-- Job Description Field -->
                         <div class="form-group"
                              ng-class="{ 'has-error': (addItemForm.description.$dirty ||
                                                        addItemForm.$submitted) &&
@@ -338,11 +341,11 @@
                                          'has-feedback': (addItemForm.description.$dirty ||
                                                           addItemForm.$submitted) &&
                                                           addItemForm.description.$invalid }">
-                            <label class="control-label" for="description"> Description </label>
+                            <label class="control-label" for="description"> Job Description </label>
                             <input class="form-control"
                                    name="description"
                                    type="text"
-                                   placeholder="Description (Optional)"
+                                   placeholder="Job Description (Optional)"
                                    ng-model="vm.item.description"
                                    ng-maxlength=80>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
@@ -455,7 +458,7 @@
                     </button>
                     <!-- Title -->
                     <h4 class="modal-title">
-                        <b class="text-danger"> Delete Budget Items </b>
+                        <b class="text-danger"> Delete Job Cost Items </b>
                     </h4>
                 </div>
                 <!-- Modal Body -->
@@ -467,11 +470,12 @@
                         <span class="sr-only"> Error: </span>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true"> &times; </span>
-                        </button> <b> Could not delete the budget items. </b>
+                        </button> <b> Could not delete the job cost items. </b>
                     </div>
                     <!-- Message -->
                     <p class="text-center">
-                        Are you sure you would like to <b> delete </b>?
+                        Are you sure you would like to <b> delete </b>
+                        the selected <b> job cost items </b>?
                     </p>
                 </div>
                 <!-- Modal Footer -->
@@ -505,7 +509,7 @@
                     </button>
                     <!-- Title -->
                     <h4 class="modal-title">
-                        <b class="text-danger"> Delete Budget Item </b>
+                        <b class="text-danger"> Delete Job Cost Item </b>
                     </h4>
                 </div>
                 <!-- Modal Body -->
@@ -517,10 +521,10 @@
                         <span class="sr-only"> Error: </span>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true"> &times; </span>
-                        </button> <b> Could not delete the budget item. </b>
+                        </button> <b> Could not delete the job cost item. </b>
                     </div>
                     <p class="text-center">
-                        Are you sure you would like to <b> delete </b>?
+                        Are you sure you would like to <b> delete </b> this <b> job cost item </b>?
                     </p>
                 </div>
                 <!-- Modal Footer -->
@@ -554,7 +558,7 @@
                     </button>
                     <!-- Title -->
                     <h4 class="modal-title">
-                        <b> Edit Budget Item </b>
+                        <b> Edit Job Cost Item </b>
                     </h4>
                 </div>
                 <!-- Form -->
@@ -568,9 +572,9 @@
                             <span class="sr-only"> Error: </span>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true"> &times; </span>
-                            </button> <b> There were problems updating the budget item. </b>
+                            </button> <b> There were problems updating the job cost item. </b>
                         </div>
-                        <!-- Category Field -->
+                        <!-- Job Category Field -->
                         <div class="form-group"
                              ng-class="{ 'has-error': (updateItemForm.category.$dirty ||
                                                        updateItemForm.$submitted) &&
@@ -578,7 +582,7 @@
                                          'has-feedback': (updateItemForm.category.$dirty ||
                                                           updateItemForm.$submitted) &&
                                                           updateItemForm.category.$invalid }">
-                            <label class="control-label" for="category"> Category </label>
+                            <label class="control-label" for="category"> Job Category </label>
                             <select class="form-control"
                                     name="category"
                                     ng-model="vm.item.category"
@@ -599,7 +603,7 @@
                                      class="help-block"> This field is required. </div>
                             </div>
                         </div>
-                        <!-- Item Name Field -->
+                        <!-- Job Item Field -->
                         <div class="form-group"
                              ng-class="{ 'has-error': (updateItemForm.name.$dirty ||
                                                        updateItemForm.$submitted) &&
@@ -607,11 +611,11 @@
                                          'has-feedback': (updateItemForm.name.$dirty ||
                                                           updateItemForm.$submitted) &&
                                                           updateItemForm.name.$invalid }">
-                            <label class="control-label" for="name"> Item Name </label>
+                            <label class="control-label" for="name"> Job Item </label>
                             <input class="form-control"
                                    name="name"
                                    type="text"
-                                   placeholder="Name"
+                                   placeholder="Job Item"
                                    ng-model="vm.item.name"
                                    required
                                    ng-maxlength=50>
@@ -630,7 +634,7 @@
                                      class="help-block"> This field cannot be longer than 50 characters. </div>
                             </div>
                         </div>
-                        <!-- Description Field -->
+                        <!-- Job Description Field -->
                         <div class="form-group"
                              ng-class="{ 'has-error': (updateItemForm.description.$dirty ||
                                                        updateItemForm.$submitted) &&
@@ -638,11 +642,11 @@
                                          'has-feedback': (updateItemForm.description.$dirty ||
                                                           updateItemForm.$submitted) &&
                                                           updateItemForm.description.$invalid }">
-                            <label class="control-label" for="description"> Description </label>
+                            <label class="control-label" for="description"> Job Description </label>
                             <input class="form-control"
                                    name="description"
                                    type="text"
-                                   placeholder="Description"
+                                   placeholder="Job Description (Optional)"
                                    ng-model="vm.item.description"
                                    ng-maxlength=80>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
@@ -758,7 +762,7 @@
                     </button>
                     <!-- Title -->
                     <h4 class="modal-title">
-                        <b class="text-danger"> Delete Category </b>
+                        <b class="text-danger"> Delete Job Cost Category </b>
                     </h4>
                 </div>
                 <!-- Modal Body -->
@@ -770,13 +774,14 @@
                         <span class="sr-only"> Error: </span>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true"> &times; </span>
-                        </button> <b> Could not delete category. Please try again. </b>
+                        </button> <b> Could not delete the job cost category. </b>
                     </div>
                     <!-- Message -->
                     <p class="text-center">
-                        Deleting this category will also delete all of the <b> budget items </b>
-                        and <b> expenditures </b> associated to this category.
-                        Are you sure you would like to <b> delete </b>?
+                        Deleting this <b> job cost category </b> will also delete all of the
+                        <b> job cost items </b> and <b> expenditures </b> associated to
+                        this category. Are you sure you would like to <b> delete </b>
+                        this <b> job cost category </b>?
                     </p>
                 </div>
                 <!-- Modal Footer -->
@@ -810,7 +815,7 @@
                     </button>
                     <!-- Title -->
                     <h4 class="modal-title">
-                        <b> Edit Category </b>
+                        <b> Edit Job Cost Category </b>
                     </h4>
                 </div>
                 <!-- Form -->
@@ -825,11 +830,11 @@
                                          'has-feedback': (updateCategoryForm.category.$dirty ||
                                                           updateCategoryForm.$submitted) &&
                                                           updateCategoryForm.category.$invalid }">
-                            <label class="control-label" for="category"> Category </label>
+                            <label class="control-label" for="category"> Job Category </label>
                             <input class="form-control"
                                    name="category"
                                    type="text"
-                                   placeholder="Category"
+                                   placeholder="Job Category"
                                    ng-model="vm.category.name"
                                    required
                                    ng-maxlength=50>

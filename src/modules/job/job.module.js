@@ -1,7 +1,7 @@
 (function() {
     'use strict';
 
-    angular.module('app.projects.budget', [
+    angular.module('app.projects.job', [
         /* Vendor modules */
         'ngMessages',
         'ui.router',

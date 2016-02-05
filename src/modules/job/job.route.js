@@ -2,14 +2,14 @@
     'use strict';
 
     angular
-        .module('app.projects.budget')
+        .module('app.projects.job')
         .config(route);
 
     route.$inject = ['$stateProvider'];
 
     function route($stateProvider) {
-        $stateProvider.state('budget', {
-            url: '/projects/budget',
+        $stateProvider.state('job', {
+            url: '/projects/job',
             resolve: {
                 User: updateUser
             },
@@ -20,8 +20,8 @@
                     controllerAs: 'vm'
                 },
                 'body': {
-                    templateUrl:  'www/html/budget.html',
-                    controller:   'BudgetController',
+                    templateUrl:  'www/html/job.html',
+                    controller:   'JobController',
                     controllerAs: 'vm'
                 }
             },
@@ -48,7 +48,7 @@
             return $q.reject(response);
         }
     }
-    
+
     NavController.$inject = ['User'];
 
     function NavController(User) {

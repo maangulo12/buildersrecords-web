@@ -3,7 +3,7 @@
 
     var assert = require('chai').assert;
 
-    describe('BudgetController Test', function() {
+    describe('JobController Test', function() {
         it('should get Category List', function() {
             // TODO
         });

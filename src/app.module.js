@@ -34,7 +34,7 @@
         'app.tutorial',
         'app.projects',
         'app.projects.overview',
-        'app.projects.budget',
+        'app.projects.job',
         'app.projects.funds',
         'app.projects.expenditures',
         'app.projects.subcontractors',

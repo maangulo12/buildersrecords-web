@@ -3,8 +3,8 @@
 
     var assert = require('chai').assert;
 
-    describe('Budget Route Test', function() {
-        it('should route to /projects/budget', function() {
+    describe('Job Route Test', function() {
+        it('should route to /projects/job', function() {
             // TODO
         });
 
