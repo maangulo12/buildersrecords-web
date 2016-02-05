@@ -35,8 +35,7 @@
         function create(expenditure) {
             var data = {
                 date:        $filter('date')(expenditure.date,'yyyy-MM-dd'),
-                vendor:      expenditure.vendor,
-                notes:       expenditure.notes,
+                company:     expenditure.company,
                 cost:        expenditure.cost,
                 fund_id:     expenditure.fund.id,
                 category_id: expenditure.item.category.id,
@@ -51,8 +50,7 @@
         function update(expenditure) {
             var data = {
                 date:        $filter('date')(expenditure.date,'yyyy-MM-dd'),
-                vendor:      expenditure.vendor,
-                notes:       expenditure.notes,
+                company:     expenditure.company,
                 cost:        expenditure.cost,
                 fund_id:     expenditure.fund.id,
                 category_id: expenditure.item.category.id,
