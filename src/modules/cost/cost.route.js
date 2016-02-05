@@ -2,14 +2,14 @@
     'use strict';
 
     angular
-        .module('app.projects.job')
+        .module('app.projects.cost')
         .config(route);
 
     route.$inject = ['$stateProvider'];
 
     function route($stateProvider) {
-        $stateProvider.state('job', {
-            url: '/projects/job',
+        $stateProvider.state('cost', {
+            url: '/projects/cost',
             resolve: {
                 User: updateUser
             },
@@ -20,8 +20,8 @@
                     controllerAs: 'vm'
                 },
                 'body': {
-                    templateUrl:  'www/html/job.html',
-                    controller:   'JobController',
+                    templateUrl:  'www/html/cost.html',
+                    controller:   'CostController',
                     controllerAs: 'vm'
                 }
             },

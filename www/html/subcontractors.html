@@ -25,7 +25,7 @@
         </li>
         <!-- Job Costing -->
         <li role="presentation">
-            <a ui-sref="job">
+            <a ui-sref="cost">
                 <span class="glyphicon glyphicon-list-alt glyphicon-padding" aria-hidden="true"></span>
                 <b> Job Costing </b>
             </a>
@@ -91,18 +91,16 @@
         <thead>
             <tr>
                 <th style="width: 5%"></th>
-                <th st-sort="name" style="width: 28%" class="text-center">
-                    <a href style="text-decoration: none; color: #fff;"> Name </a>
+                <th st-sort="company" style="width: 28%" class="text-left">
+                    <a href style="text-decoration: none; color: #fff;"> Company Name </a>
                 </th>
-                <th st-sort="company" style="width: 28%" class="text-center">
-                    <a href style="text-decoration: none; color: #fff;"> Company </a>
+                <th st-sort="name" style="width: 28%" class="text-left">
+                    <a href style="text-decoration: none; color: #fff;"> Contact Person </a>
                 </th>
-                <th st-sort="contact_info" style="width: 28%" class="text-center">
+                <th st-sort="contact_info" style="width: 28%" class="text-left">
                     <a href style="text-decoration: none; color: #fff;"> Contact Number </a>
                 </th>
-                <th colspan="2" style="width: 10%" class="text-center">
-                    Action
-                </th>
+                <th colspan="2" style="width: 10%"></th>
             <tr>
         </thead>
         <!-- Table Body -->
@@ -114,16 +112,16 @@
                     <input type="checkbox" class="checkbox" ng-model="subcontractor.selected"
                            ng-click="clickedCheckbox()">
                 </td>
-                <!-- Name -->
-                <td style="width: 28%">
-                    <b> {{ subcontractor.name }} </b>
-                </td>
                 <!-- Company -->
                 <td style="width: 28%" class="text-success">
                     <b> {{ subcontractor.company }} </b>
                 </td>
+                <!-- Name -->
                 <td style="width: 28%">
-                    {{ subcontractor.contact_number }}
+                    <b> {{ subcontractor.person }} </b>
+                </td>
+                <td style="width: 28%">
+                    {{ subcontractor.number }}
                 </td>
                 <!-- Edit -->
                 <td style="width: 5%" class="text-center">
@@ -143,7 +141,7 @@
             <!-- Empty -->
             <tr ng-if="vm.subcontractorList.length == 0" class="active">
                 <td colspan="1"></td>
-                <td colspan="6"> <b> You do not have any subcontractors yet. </b> </td>
+                <td colspan="6"> <b> There are 0 subcontractors. </b> </td>
             </tr>
         </tbody>
     </table>
@@ -164,7 +162,7 @@
                         <span aria-hidden="true"> &times; </span>
                     </button>
                     <!-- Title -->
-                    <h4 class="modal-title">
+                    <h4 class="modal-title text-success">
                         <b> Add Subcontractor </b>
                     </h4>
                 </div>
@@ -180,37 +178,6 @@
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true"> &times; </span>
                             </button> <b> There were problems adding the subcontractor. </b>
-                        </div>
-                        <!-- Name Field -->
-                        <div class="form-group"
-                             ng-class="{ 'has-error': (addForm.name.$dirty ||
-                                                       addForm.$submitted) &&
-                                                       addForm.name.$invalid,
-                                         'has-feedback': (addForm.name.$dirty ||
-                                                          addForm.$submitted) &&
-                                                          addForm.name.$invalid }">
-                            <label class="control-label" for="name"> Name </label>
-                            <input class="form-control"
-                                   name="name"
-                                   type="text"
-                                   placeholder="Name"
-                                   ng-model="vm.subcontractor.name"
-                                   required
-                                   ng-maxlength=50>
-                            <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="(addForm.name.$dirty ||
-                                          addForm.$submitted) &&
-                                          addForm.name.$invalid">
-                            </span>
-                            <div ng-messages="addForm.name.$error"
-                                 ng-if="(addForm.name.$dirty ||
-                                         addForm.$submitted) &&
-                                         addForm.name.$invalid">
-                                <div ng-message="required"
-                                     class="help-block"> This field is required. </div>
-                                <div ng-message="maxlength"
-                                     class="help-block"> This field cannot be longer than 50 characters. </div>
-                            </div>
                         </div>
                         <!-- Company Field -->
                         <div class="form-group"
@@ -243,30 +210,60 @@
                                      class="help-block"> This field cannot be longer than 50 characters. </div>
                             </div>
                         </div>
+                        <!-- Contact Person Field -->
+                        <div class="form-group"
+                             ng-class="{ 'has-error': (addForm.person.$dirty ||
+                                                       addForm.$submitted) &&
+                                                       addForm.person.$invalid,
+                                         'has-feedback': (addForm.person.$dirty ||
+                                                          addForm.$submitted) &&
+                                                          addForm.person.$invalid }">
+                            <label class="control-label" for="person"> Contact Person </label>
+                            <input class="form-control"
+                                   name="person"
+                                   type="text"
+                                   placeholder="Contact Person (Optional)"
+                                   ng-model="vm.subcontractor.person"
+                                   ng-maxlength=50>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(addForm.person.$dirty ||
+                                          addForm.$submitted) &&
+                                          addForm.person.$invalid">
+                            </span>
+                            <div ng-messages="addForm.person.$error"
+                                 ng-if="(addForm.person.$dirty ||
+                                         addForm.$submitted) &&
+                                         addForm.person.$invalid">
+                                <div ng-message="required"
+                                     class="help-block"> This field is required. </div>
+                                <div ng-message="maxlength"
+                                     class="help-block"> This field cannot be longer than 50 characters. </div>
+                            </div>
+                        </div>
                         <!-- Contact Number Field -->
                         <div class="form-group"
-                             ng-class="{ 'has-error': (addForm.contactNumber.$dirty ||
+                             ng-class="{ 'has-error': (addForm.number.$dirty ||
                                                        addForm.$submitted) &&
-                                                       addForm.contactNumber.$invalid,
-                                         'has-feedback': (addForm.contactNumber.$dirty ||
+                                                       addForm.number.$invalid,
+                                         'has-feedback': (addForm.number.$dirty ||
                                                           addForm.$submitted) &&
-                                                          addForm.contactNumber.$invalid }">
-                            <label class="control-label" for="contactNumber"> Contact Number </label>
+                                                          addForm.number.$invalid }">
+                            <label class="control-label" for="number"> Contact Number </label>
                             <input class="form-control"
-                                   name="contactNumber"
+                                   name="number"
                                    type="text"
                                    placeholder="Contact Number (Optional)"
-                                   ng-model="vm.subcontractor.contactNumber"
+                                   ng-model="vm.subcontractor.number"
                                    ng-maxlength=15>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="(addForm.contactNumber.$dirty ||
+                                  ng-if="(addForm.number.$dirty ||
                                           addForm.$submitted) &&
-                                          addForm.contactNumber.$invalid">
+                                          addForm.number.$invalid">
                             </span>
-                            <div ng-messages="addForm.contactNumber.$error"
-                                 ng-if="(addForm.contactNumber.$dirty ||
+                            <div ng-messages="addForm.number.$error"
+                                 ng-if="(addForm.number.$dirty ||
                                          addForm.$submitted) &&
-                                         addForm.contactNumber.$invalid">
+                                         addForm.number.$invalid">
                                 <div ng-message="maxlength"
                                      class="help-block"> This field cannot be longer than 15 characters. </div>
                             </div>
@@ -320,7 +317,7 @@
                     </div>
                     <!-- Message -->
                     <p class="text-center">
-                        Are you sure you would like to <b> delete </b>?
+                        Are you sure you would like to <b> delete </b> the selected <b> subcontractors </b>?
                     </p>
                 </div>
                 <!-- Modal Footer -->
@@ -370,7 +367,7 @@
                     </div>
                     <!-- Message -->
                     <p class="text-center">
-                        Are you sure you would like to <b> delete </b>?
+                        Are you sure you would like to <b> delete </b> this <b> subcontractor</b>?
                     </p>
                 </div>
                 <!-- Modal Footer -->
@@ -420,37 +417,6 @@
                                 <span aria-hidden="true"> &times; </span>
                             </button> <b> There were problems updating the subcontractor. </b>
                         </div>
-                        <!-- Name Field -->
-                        <div class="form-group"
-                             ng-class="{ 'has-error': (updateForm.name.$dirty ||
-                                                       updateForm.$submitted) &&
-                                                       updateForm.name.$invalid,
-                                         'has-feedback': (updateForm.name.$dirty ||
-                                                          updateForm.$submitted) &&
-                                                          updateForm.name.$invalid }">
-                            <label class="control-label" for="name"> Name </label>
-                            <input class="form-control"
-                                   name="name"
-                                   type="text"
-                                   placeholder="Name"
-                                   ng-model="vm.subcontractor.name"
-                                   required
-                                   ng-maxlength=50>
-                            <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="(updateForm.name.$dirty ||
-                                          updateForm.$submitted) &&
-                                          updateForm.name.$invalid">
-                            </span>
-                            <div ng-messages="updateForm.name.$error"
-                                 ng-if="(updateForm.name.$dirty ||
-                                         updateForm.$submitted) &&
-                                         updateForm.name.$invalid">
-                                <div ng-message="required"
-                                     class="help-block"> This field is required. </div>
-                                <div ng-message="maxlength"
-                                     class="help-block"> This field cannot be longer than 50 characters. </div>
-                            </div>
-                        </div>
                         <!-- Company Field -->
                         <div class="form-group"
                              ng-class="{ 'has-error': (updateForm.company.$dirty ||
@@ -482,30 +448,60 @@
                                      class="help-block"> This field cannot be longer than 50 characters. </div>
                             </div>
                         </div>
+                        <!-- Contact Person Field -->
+                        <div class="form-group"
+                             ng-class="{ 'has-error': (updateForm.person.$dirty ||
+                                                       updateForm.$submitted) &&
+                                                       updateForm.person.$invalid,
+                                         'has-feedback': (updateForm.person.$dirty ||
+                                                          updateForm.$submitted) &&
+                                                          updateForm.person.$invalid }">
+                            <label class="control-label" for="person"> Contact Person </label>
+                            <input class="form-control"
+                                   name="person"
+                                   type="text"
+                                   placeholder="Contact Person (Optional)"
+                                   ng-model="vm.subcontractor.person"
+                                   ng-maxlength=50>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(updateForm.person.$dirty ||
+                                          updateForm.$submitted) &&
+                                          updateForm.person.$invalid">
+                            </span>
+                            <div ng-messages="updateForm.person.$error"
+                                 ng-if="(updateForm.person.$dirty ||
+                                         updateForm.$submitted) &&
+                                         updateForm.person.$invalid">
+                                <div ng-message="required"
+                                     class="help-block"> This field is required. </div>
+                                <div ng-message="maxlength"
+                                     class="help-block"> This field cannot be longer than 50 characters. </div>
+                            </div>
+                        </div>
                         <!-- Contact Number Field -->
                         <div class="form-group"
-                             ng-class="{ 'has-error': (updateForm.contactNumber.$dirty ||
+                             ng-class="{ 'has-error': (updateForm.number.$dirty ||
                                                        updateForm.$submitted) &&
-                                                       updateForm.contactNumber.$invalid,
-                                         'has-feedback': (updateForm.contactNumber.$dirty ||
+                                                       updateForm.number.$invalid,
+                                         'has-feedback': (updateForm.number.$dirty ||
                                                           updateForm.$submitted) &&
-                                                          updateForm.contactNumber.$invalid }">
-                            <label class="control-label" for="contactNumber"> Contact Number </label>
+                                                          updateForm.number.$invalid }">
+                            <label class="control-label" for="number"> Contact Number </label>
                             <input class="form-control"
-                                   name="contactNumber"
+                                   name="number"
                                    type="text"
-                                   placeholder="Contact Number"
-                                   ng-model="vm.subcontractor.contactNumber"
+                                   placeholder="Contact Number (Optional)"
+                                   ng-model="vm.subcontractor.number"
                                    ng-maxlength=15>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="(updateForm.contactNumber.$dirty ||
+                                  ng-if="(updateForm.number.$dirty ||
                                           updateForm.$submitted) &&
-                                          updateForm.contactNumber.$invalid">
+                                          updateForm.number.$invalid">
                             </span>
-                            <div ng-messages="updateForm.contactNumber.$error"
-                                 ng-if="(updateForm.contactNumber.$dirty ||
+                            <div ng-messages="updateForm.number.$error"
+                                 ng-if="(updateForm.number.$dirty ||
                                          updateForm.$submitted) &&
-                                         updateForm.contactNumber.$invalid">
+                                         updateForm.number.$invalid">
                                 <div ng-message="maxlength"
                                      class="help-block"> This field cannot be longer than 15 characters. </div>
                             </div>
