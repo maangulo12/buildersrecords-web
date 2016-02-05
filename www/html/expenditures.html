@@ -67,7 +67,10 @@
     </div>
     <!-- Page Header -->
     <div class="page-header">
-        <h1> Your Expenditures </h1>
+        <h1>
+            <span class="glyphicon glyphicon-usd glyphicon-padding" aria-hidden="true"></span>
+            Expenditures
+        </h1>
     </div>
     <!-- Button - Add -->
     <button type="button" class="btn btn-success" title="Add Expenditure"
@@ -91,30 +94,25 @@
         <thead>
             <tr>
                 <th style="width: 2%"></th>
-                <th st-sort="date" style="width: 5%" class="text-center">
+                <th st-sort="date" style="width: 5%">
                     <a href style="text-decoration: none; color: #fff;"> Date </a>
                 </th>
-                <th st-sort="vendor" style="width: 12%" class="text-center">
+                <th st-sort="vendor">
                     <a href style="text-decoration: none; color: #fff;"> Vendor </a>
                 </th>
-                <th st-sort="categories.name" style="width: 15%" class="text-center">
-                    <a href style="text-decoration: none; color: #fff;"> Category </a>
+                <th st-sort="categories.name">
+                    <a href style="text-decoration: none; color: #fff;"> Job Category </a>
                 </th>
-                <th st-sort="items.name" style="width: 20%" class="text-center">
-                    <a href style="text-decoration: none; color: #fff;"> Item / Job </a>
+                <th st-sort="items.name">
+                    <a href style="text-decoration: none; color: #fff;"> Job Item </a>
                 </th>
-                <th st-sort="notes" style="width: 23%" class="text-center">
-                    <a href style="text-decoration: none; color: #fff;"> Notes </a>
-                </th>
-                <th st-sort="cost" style="width: 5%" class="text-center">
-                    <a href style="text-decoration: none; color: #fff;"> Cost </a>
-                </th>
-                <th st-sort="funds.name" style="width: 7%" class="text-center">
+                <th st-sort="funds.name">
                     <a href style="text-decoration: none; color: #fff;"> Fund </a>
                 </th>
-                <th colspan="2" style="width: 6%" class="text-center">
-                    Action
+                <th st-sort="cost" class="text-right">
+                    <a href style="text-decoration: none; color: #fff;"> Cost </a>
                 </th>
+                <th colspan="2" style="width: 6%"></th>
             <tr>
         </thead>
         <!-- Table Body -->
@@ -131,28 +129,24 @@
                     {{ expenditure.date | date: 'MM/dd/yyyy' }}
                 </td>
                 <!-- Vendor -->
-                <td style="width: 12%" class="text-success">
+                <td class="text-success">
                     <b> {{ expenditure.vendor }} </b>
                 </td>
-                <!-- Category -->
-                <td style="width: 15%">
+                <!-- Job Category -->
+                <td>
                     <b> {{ expenditure.categories.name }} </b>
                 </td>
-                <!-- Item -->
-                <td style="width: 20%">
+                <!-- Job Item -->
+                <td>
                     {{ expenditure.items.name }}
                 </td>
-                <!-- Notes -->
-                <td style="width: 23%">
-                    {{ expenditure.notes }}
+                <!-- Fund -->
+                <td>
+                    <b> {{ expenditure.funds.name }} </b>
                 </td>
                 <!-- Cost -->
-                <td style="width: 5%" class="text-right">
+                <td class="text-right">
                     {{ expenditure.cost | currency }}
-                </td>
-                <!-- Fund -->
-                <td style="width: 7%">
-                    <b> {{ expenditure.funds.name }} </b>
                 </td>
                 <!-- Edit -->
                 <td style="width: 3%" class="text-center">
@@ -169,24 +163,17 @@
                    </a>
                 </td>
             </tr>
-            <!-- Total -->
-            <tr ng-if="vm.expenditureList.length != 0" class="active">
-                <td colspan="5"></td>
-                <td class="text-right"> <b> Total Amount Spent </b> </td>
-                <td class="text-right"> <b> {{ vm.totalCost | currency }} </b> </td>
-                <td colspan="4"></td>
-            </tr>
             <!-- Empty -->
             <tr ng-if="vm.expenditureList.length == 0" class="active">
                 <td colspan="1"></td>
-                <td colspan="9"> <b> You have not made any expenditures yet. </b> </td>
+                <td colspan="9"> <b> There are 0 expenditures. </b> </td>
             </tr>
         </tbody>
         <!-- Table Footer -->
         <tfoot>
 			<tr>
 				<td colspan="10" class="text-right">
-					<div st-pagination="" st-items-by-page="10"
+					<div st-pagination="" st-items-by-page="12"
                          st-template="www/html/pagination.html"></div>
 				</td>
 			</tr>
@@ -209,7 +196,7 @@
                         <span aria-hidden="true"> &times; </span>
                     </button>
                     <!-- Title -->
-                    <h4 class="modal-title">
+                    <h4 class="modal-title text-success">
                         <b> Add Expenditure </b>
                     </h4>
                 </div>
@@ -265,7 +252,7 @@
                                          'has-feedback': (addForm.question.$dirty ||
                                                           addForm.$submitted) &&
                                                           addForm.question.$invalid }">
-                            <label class="control-label" for="question"> Is this an invoice from a subcontractor? </label>
+                            <label class="control-label" for="question"> Is this expenditure an invoice from a subcontractor? </label>
                             <select class="form-control"
                                     name="question"
                                     ng-model="vm.expenditure.question"
@@ -299,7 +286,7 @@
                             <select class="form-control"
                                     name="subcontractor"
                                     ng-model="vm.expenditure.subcontractor"
-                                    ng-options="subcontractor.name for subcontractor in vm.subcontractorList track by subcontractor.id"
+                                    ng-options="subcontractor.company for subcontractor in vm.subcontractorList track by subcontractor.id"
                                     required>
                                 <option value="" disabled selected> Select a subcontractor </option>
                             </select>
@@ -347,7 +334,7 @@
                                      class="help-block"> This field cannot be longer than 50 characters. </div>
                             </div>
                         </div>
-                        <!-- Item Field -->
+                        <!-- Job Item Field -->
                         <div class="form-group"
                              ng-class="{ 'has-error': (addForm.item.$dirty ||
                                                        addForm.$submitted) &&
@@ -355,13 +342,13 @@
                                          'has-feedback': (addForm.item.$dirty ||
                                                           addForm.$submitted) &&
                                                           addForm.item.$invalid }">
-                            <label class="control-label" for="item"> Budget Item </label>
+                            <label class="control-label" for="item"> Job Item </label>
                             <select class="form-control"
                                     name="item"
                                     ng-model="vm.expenditure.item"
                                     ng-options="item.name group by item.category.name for item in vm.itemList track by item.id"
                                     required>
-                                <option value="" disabled selected> Select a budget item </option>
+                                <option value="" disabled selected> Select a job item </option>
                             </select>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
                                   ng-if="(addForm.item.$dirty ||
@@ -374,34 +361,6 @@
                                          addForm.item.$invalid">
                                 <div ng-message="required"
                                      class="help-block"> This field is required. </div>
-                            </div>
-                        </div>
-                        <!-- Notes Field -->
-                        <div class="form-group"
-                             ng-class="{ 'has-error': (addForm.notes.$dirty ||
-                                                       addForm.$submitted) &&
-                                                       addForm.notes.$invalid,
-                                         'has-feedback': (addForm.notes.$dirty ||
-                                                          addForm.$submitted) &&
-                                                          addForm.notes.$invalid }">
-                            <label class="control-label" for="notes"> Notes </label>
-                            <input class="form-control"
-                                   name="notes"
-                                   type="text"
-                                   placeholder="Notes (Optional)"
-                                   ng-model="vm.expenditure.notes"
-                                   ng-maxlength=80>
-                            <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="(addForm.notes.$dirty ||
-                                          addForm.$submitted) &&
-                                          addForm.notes.$invalid">
-                            </span>
-                            <div ng-messages="addForm.notes.$error"
-                                 ng-if="(addForm.notes.$dirty ||
-                                         addForm.$submitted) &&
-                                         addForm.notes.$invalid">
-                                <div ng-message="maxlength"
-                                     class="help-block"> This field cannot be longer than 80 characters. </div>
                             </div>
                         </div>
                         <!-- Cost Field -->
@@ -705,34 +664,6 @@
                                          updateForm.item.$invalid">
                                 <div ng-message="required"
                                      class="help-block"> This field is required. </div>
-                            </div>
-                        </div>
-                        <!-- Notes Field -->
-                        <div class="form-group"
-                             ng-class="{ 'has-error': (updateForm.notes.$dirty ||
-                                                       updateForm.$submitted) &&
-                                                       updateForm.notes.$invalid,
-                                         'has-feedback': (updateForm.notes.$dirty ||
-                                                          updateForm.$submitted) &&
-                                                          updateForm.notes.$invalid }">
-                            <label class="control-label" for="notes"> Notes </label>
-                            <input class="form-control"
-                                   name="notes"
-                                   type="text"
-                                   placeholder="Notes (Optional)"
-                                   ng-model="vm.expenditure.notes"
-                                   ng-maxlength=80>
-                            <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="(updateForm.notes.$dirty ||
-                                          updateForm.$submitted) &&
-                                          updateForm.notes.$invalid">
-                            </span>
-                            <div ng-messages="updateForm.notes.$error"
-                                 ng-if="(updateForm.notes.$dirty ||
-                                         updateForm.$submitted) &&
-                                         updateForm.notes.$invalid">
-                                <div ng-message="maxlength"
-                                     class="help-block"> This field cannot be longer than 80 characters. </div>
                             </div>
                         </div>
                         <!-- Cost Field -->
