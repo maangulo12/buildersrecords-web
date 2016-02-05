@@ -22,7 +22,8 @@ var target = {
         'src/*.module.js',
         'src/*.js',
         'src/**/*.module.js',
-        'src/**/*.js'
+        'src/**/*.js',
+        '!src/**/*.spec.js'
     ],
     jsVendorSrc: [
         'vendor/jquery/jquery-1.11.3.min.js',
@@ -36,7 +37,7 @@ var target = {
         'vendor/smart-table/smart-table.min.js',
         'vendor/highcharts/highcharts.min.js'
     ],
-    jsTestsSrc: 'tests/**/*.spec.js',
+    jsTestsSrc: 'src/**/*.spec.js',
     jsDest:     'www/js',
     jsDocsDest: 'docs'
 };
