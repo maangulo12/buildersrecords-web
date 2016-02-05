@@ -5,10 +5,10 @@
         .module('app.service.stripe', [])
         .factory('stripeService', stripeService);
 
-    stripeService.$inject = ['$http', 'store', '$q'];
+    stripeService.$inject = ['$http', 'store', '$q', 'API_URL'];
 
-    function stripeService($http, store, $q) {
-        var url = store.get('url') + '/api/stripe';
+    function stripeService($http, store, $q, API_URL) {
+        var url = API_URL + '/api/stripe';
         var service = {
             validateCard:         validateCard,
             createCardToken:      createCardToken,

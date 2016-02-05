@@ -5,10 +5,10 @@
         .module('app.service.user', [])
         .factory('userService', userService);
 
-    userService.$inject = ['$http', 'store', '$q'];
+    userService.$inject = ['$http', 'store', '$q', 'API_URL'];
 
-    function userService($http, store, $q) {
-        var url = store.get('url') + '/api/users';
+    function userService($http, store, $q, API_URL) {
+        var url = API_URL + '/api/users';
         var service = {
             retrieve:       retrieve,
             updateUser:     updateUser,

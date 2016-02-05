@@ -12,10 +12,10 @@
         .module('app.service.expenditure', [])
         .factory('expenditureService', expenditureService);
 
-    expenditureService.$inject = ['$http', 'store', '$q', '$filter'];
+    expenditureService.$inject = ['$http', 'store', '$q', '$filter', 'API_URL'];
 
-    function expenditureService($http, store, $q, $filter) {
-        var url = store.get('url') + '/api/expenditures';
+    function expenditureService($http, store, $q, $filter, API_URL) {
+        var url = API_URL + '/api/expenditures';
         var service = {
             retrieveList:       retrieveList,
             create:             create,

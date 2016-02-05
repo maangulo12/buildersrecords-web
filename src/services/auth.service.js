@@ -12,10 +12,10 @@
         .module('app.service.auth', [])
         .factory('authService', authService);
 
-    authService.$inject = ['$http', 'store', 'jwtHelper', '$q'];
+    authService.$inject = ['$http', 'store', 'jwtHelper', '$q', 'API_URL'];
 
-    function authService($http, store, jwtHelper, $q) {
-        var url = store.get('url') + '/api/auth';
+    function authService($http, store, jwtHelper, $q, API_URL) {
+        var url = API_URL + '/api/auth';
         var service = {
             authenticate: authenticate
         };

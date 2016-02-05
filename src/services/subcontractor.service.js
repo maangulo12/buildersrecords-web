@@ -12,10 +12,10 @@
         .module('app.service.subcontractor', [])
         .factory('subcontractorService', subcontractorService);
 
-    subcontractorService.$inject = ['$http', 'store', '$q'];
+    subcontractorService.$inject = ['$http', 'store', '$q', 'API_URL'];
 
-    function subcontractorService($http, store, $q) {
-        var url = store.get('url') + '/api/subcontractors';
+    function subcontractorService($http, store, $q, API_URL) {
+        var url = API_URL + '/api/subcontractors';
         var service = {
             retrieveList: retrieveList,
             create:       create,

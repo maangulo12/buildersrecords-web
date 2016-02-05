@@ -12,10 +12,10 @@
         .module('app.service.fund', [])
         .factory('fundService', fundService);
 
-    fundService.$inject = ['$http', 'store', '$q'];
+    fundService.$inject = ['$http', 'store', '$q', 'API_URL'];
 
-    function fundService($http, store, $q) {
-        var url = store.get('url') + '/api/funds';
+    function fundService($http, store, $q, API_URL) {
+        var url = API_URL + '/api/funds';
         var service = {
             retrieveList: retrieveList,
             create:       create,

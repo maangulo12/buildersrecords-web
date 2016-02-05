@@ -5,10 +5,10 @@
         .module('app.service.utility', [])
         .factory('utilityService', utilityService);
 
-    utilityService.$inject = ['$http', 'store', '$q'];
+    utilityService.$inject = ['$http', 'store', '$q', 'API_URL'];
 
-    function utilityService($http, store, $q) {
-        var url = store.get('url') + '/api/utility';
+    function utilityService($http, store, $q, API_URL) {
+        var url = API_URL + '/api/utility';
         var service = {
             verifyEmail:       verifyEmail,
             verifyUsername:    verifyUsername,

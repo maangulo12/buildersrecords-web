@@ -12,10 +12,10 @@
         .module('app.service.category', [])
         .factory('categoryService', categoryService);
 
-    categoryService.$inject = ['$http', 'store', '$q'];
+    categoryService.$inject = ['$http', 'store', '$q', 'API_URL'];
 
-    function categoryService($http, store, $q) {
-        var url = store.get('url') + '/api/categories';
+    function categoryService($http, store, $q, API_URL) {
+        var url = API_URL + '/api/categories';
         var service = {
             retrieveList: retrieveList,
             create:       create,

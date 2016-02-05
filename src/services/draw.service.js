@@ -5,10 +5,10 @@
         .module('app.service.draw', [])
         .factory('drawService', drawService);
 
-    drawService.$inject = ['$http', 'store', '$q'];
+    drawService.$inject = ['$http', 'store', '$q', 'API_URL'];
 
-    function drawService($http, store, $q) {
-        var url = store.get('url') + '/api/draws';
+    function drawService($http, store, $q, API_URL) {
+        var url = API_URL + '/api/draws';
         var service = {
             create:       create,
             update:       update,
