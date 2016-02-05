@@ -240,7 +240,7 @@
             var date = new Date(expenditure.date);
             vm.expenditure        = {};
             vm.expenditure.id     = expenditure.id;
-            vm.expenditure.date   = new Date(date.getTime() + date.getTimezoneOffset()*60000);
+            vm.expenditure.date   = new Date(date.getTime() + date.getTimezoneOffset() * 60000);
             vm.expenditure.vendor = expenditure.vendor;
             vm.expenditure.item   = {
                 id  : expenditure.items.id,
