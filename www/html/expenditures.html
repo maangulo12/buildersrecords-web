@@ -97,8 +97,8 @@
                 <th st-sort="date" style="width: 5%">
                     <a href style="text-decoration: none; color: #fff;"> Date </a>
                 </th>
-                <th st-sort="vendor">
-                    <a href style="text-decoration: none; color: #fff;"> Vendor </a>
+                <th st-sort="company">
+                    <a href style="text-decoration: none; color: #fff;"> Company </a>
                 </th>
                 <th st-sort="categories.name">
                     <a href style="text-decoration: none; color: #fff;"> Job Category </a>
@@ -128,9 +128,9 @@
                 <td style="width: 5%">
                     {{ expenditure.date | date: 'MM/dd/yyyy' }}
                 </td>
-                <!-- Vendor -->
+                <!-- Company -->
                 <td class="text-success">
-                    <b> {{ expenditure.vendor }} </b>
+                    <b> {{ expenditure.company }} </b>
                 </td>
                 <!-- Job Category -->
                 <td>
@@ -252,7 +252,7 @@
                                          'has-feedback': (addForm.question.$dirty ||
                                                           addForm.$submitted) &&
                                                           addForm.question.$invalid }">
-                            <label class="control-label" for="question"> Is this expenditure an invoice from a subcontractor? </label>
+                            <label class="control-label" for="question"> Is this an invoice from a subcontractor? </label>
                             <select class="form-control"
                                     name="question"
                                     ng-model="vm.expenditure.question"
@@ -303,31 +303,31 @@
                                      class="help-block"> This field is required. </div>
                             </div>
                         </div>
-                        <!-- Vendor Field -->
+                        <!-- Company Field -->
                         <div ng-if="vm.expenditure.question == 0" class="form-group"
-                             ng-class="{ 'has-error': (addForm.vendor.$dirty ||
+                             ng-class="{ 'has-error': (addForm.company.$dirty ||
                                                        addForm.$submitted) &&
-                                                       addForm.vendor.$invalid,
-                                         'has-feedback': (addForm.vendor.$dirty ||
+                                                       addForm.company.$invalid,
+                                         'has-feedback': (addForm.company.$dirty ||
                                                           addForm.$submitted) &&
-                                                          addForm.vendor.$invalid }">
-                            <label class="control-label" for="vendor"> Vendor Name </label>
+                                                          addForm.company.$invalid }">
+                            <label class="control-label" for="company"> Company Name </label>
                             <input class="form-control"
-                                   name="vendor"
+                                   name="company"
                                    type="text"
-                                   placeholder="Vendor Name"
-                                   ng-model="vm.expenditure.vendor"
+                                   placeholder="Company Name"
+                                   ng-model="vm.expenditure.company"
                                    required
                                    ng-maxlength=50>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="(addForm.vendor.$dirty ||
+                                  ng-if="(addForm.company.$dirty ||
                                           addForm.$submitted) &&
-                                          addForm.vendor.$invalid">
+                                          addForm.company.$invalid">
                             </span>
-                            <div ng-messages="addForm.vendor.$error"
-                                 ng-if="(addForm.vendor.$dirty ||
+                            <div ng-messages="addForm.company.$error"
+                                 ng-if="(addForm.company.$dirty ||
                                          addForm.$submitted) &&
-                                         addForm.vendor.$invalid">
+                                         addForm.company.$invalid">
                                 <div ng-message="required"
                                      class="help-block"> This field is required. </div>
                                 <div ng-message="maxlength"
@@ -476,7 +476,7 @@
                     </div>
                     <!-- Message -->
                     <p class="text-center">
-                        Are you sure you would like to <b> delete </b>?
+                        Are you sure you would like to <b> delete </b> the selected <b> expenditures</b>?
                     </p>
                 </div>
                 <!-- Modal Footer -->
@@ -526,7 +526,7 @@
                     </div>
                     <!-- Message -->
                     <p class="text-center">
-                        Are you sure you would like to <b> delete </b>?
+                        Are you sure you would like to <b> delete </b> this <b> expenditure</b>?
                     </p>
                 </div>
                 <!-- Modal Footer -->
@@ -607,31 +607,31 @@
                                      class="help-block"> This field is required. </div>
                             </div>
                         </div>
-                        <!-- Vendor Field -->
+                        <!-- Company Field -->
                         <div class="form-group"
-                             ng-class="{ 'has-error': (updateForm.vendor.$dirty ||
+                             ng-class="{ 'has-error': (updateForm.company.$dirty ||
                                                        updateForm.$submitted) &&
-                                                       updateForm.vendor.$invalid,
-                                         'has-feedback': (updateForm.vendor.$dirty ||
+                                                       updateForm.company.$invalid,
+                                         'has-feedback': (updateForm.company.$dirty ||
                                                           updateForm.$submitted) &&
-                                                          updateForm.vendor.$invalid }">
-                            <label class="control-label" for="vendor"> Vendor Name </label>
+                                                          updateForm.company.$invalid }">
+                            <label class="control-label" for="company"> Company Name </label>
                             <input class="form-control"
-                                   name="vendor"
+                                   name="company"
                                    type="text"
-                                   placeholder="Vendor Name"
-                                   ng-model="vm.expenditure.vendor"
+                                   placeholder="Company Name"
+                                   ng-model="vm.expenditure.company"
                                    required
                                    ng-maxlength=50>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="(updateForm.vendor.$dirty ||
+                                  ng-if="(updateForm.company.$dirty ||
                                           updateForm.$submitted) &&
-                                          updateForm.vendor.$invalid">
+                                          updateForm.company.$invalid">
                             </span>
-                            <div ng-messages="updateForm.vendor.$error"
-                                 ng-if="(updateForm.vendor.$dirty ||
+                            <div ng-messages="updateForm.company.$error"
+                                 ng-if="(updateForm.company.$dirty ||
                                          updateForm.$submitted) &&
-                                         updateForm.vendor.$invalid">
+                                         updateForm.company.$invalid">
                                 <div ng-message="required"
                                      class="help-block"> This field is required. </div>
                                 <div ng-message="maxlength"
