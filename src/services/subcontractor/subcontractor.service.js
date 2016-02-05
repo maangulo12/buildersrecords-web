@@ -32,10 +32,10 @@
 
         function create(subcontractor) {
             var data = {
-                name:           subcontractor.name,
-                company:        subcontractor.company,
-                contact_number: subcontractor.contactNumber,
-                project_id:     store.get('project').id
+                company:    subcontractor.company,
+                person:     subcontractor.person,
+                number:     subcontractor.number,
+                project_id: store.get('project').id
             };
             return $http.post(url, data)
                 .then(success)
@@ -44,10 +44,10 @@
 
         function update(subcontractor) {
             var data = {
-                name:           subcontractor.name,
-                company:        subcontractor.company,
-                contact_number: subcontractor.contactNumber,
-                project_id:     store.get('project').id
+                company:    subcontractor.company,
+                person:     subcontractor.person,
+                number:     subcontractor.number,
+                project_id: store.get('project').id
             };
             return $http.put(url + '/' + subcontractor.id, data)
                 .then(success)
