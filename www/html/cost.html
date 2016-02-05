@@ -189,20 +189,6 @@
                 <td colspan="7"> <b> There are 0 job cost items. </b> </td>
             </tr>
         </tbody>
-        <!-- Table Footer -->
-        <tfoot ng-if="vm.categoryList.length != 0">
-            <tr class="footer-color">
-                <td></td>
-                <td class="text-left"> <b> Grand Total </b> </td>
-                <td></td>
-                <td class="text-right"> <b> {{ vm.grandTotalEstimated | currency }} </b> </td>
-                <td class="text-right"> <b> {{ vm.grandTotalActual | currency }} </b> </td>
-                <td class="text-right" ng-class="{ 'text-danger': vm.grandTotalActual > vm.grandTotalEstimated }">
-                    <b> {{ vm.grandTotalActual - vm.grandTotalEstimated | currency }} </b>
-                </td>
-                <td colspan="3"> </td>
-            </tr>
-        </tfoot>
     </table>
     <!-- Line Breaks -->
     <br><br><br><br>
