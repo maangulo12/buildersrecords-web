@@ -48,13 +48,13 @@
                 amount:     fund.amount,
                 project_id: store.get('project').id
             };
-            return $http.put(url + '/' + store.get('fund').id, data)
+            return $http.put(url + '/' + fund.id, data)
                 .then(success)
                 .catch(error);
         }
 
-        function remove() {
-            return $http.delete(url + '/' + store.get('fund').id)
+        function remove(fund) {
+            return $http.delete(url + '/' + fund.id)
                 .then(success)
                 .catch(error);
         }
