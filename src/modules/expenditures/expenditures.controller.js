@@ -17,9 +17,7 @@
 
         // GET Expenditures
         function showExpenditures() {
-            return getExpenditures()
-                .then(calculateTotal)
-                .catch(error);
+            return getExpenditures();
 
             function getExpenditures() {
                 return expenditureService.retrieveList()
@@ -30,17 +28,9 @@
                     vm.expenditureList = response.data.objects;
                     return vm.expenditureList;
                 }
-            }
-            function calculateTotal() {
-                var total = 0;
-
-                angular.forEach(vm.expenditureList, function(expenditure) {
-                    total += expenditure.cost;
-                });
-                vm.totalCost = total;
-            }
-            function error() {
-                vm.errorGet = true;
+                function error() {
+                    vm.errorGet = true;
+                }
             }
         }
 
