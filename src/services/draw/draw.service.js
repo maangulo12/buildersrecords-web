@@ -45,8 +45,8 @@
                 .catch(error);
         }
 
-        function removeByFund() {
-            return $http.delete(url + query('fund_id', 'equals', store.get('fund').id))
+        function removeByFund(fund) {
+            return $http.delete(url + query('fund_id', 'equals', fund.id))
                 .then(success)
                 .catch(error);
         }
