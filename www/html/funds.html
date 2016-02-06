@@ -67,13 +67,16 @@
     </div>
     <!-- Page Header -->
     <div class="page-header">
-        <h1> Your Funds </h1>
+        <h1>
+            <span class="glyphicon glyphicon-piggy-bank glyphicon-padding" aria-hidden="true"></span>
+            Funds
+        </h1>
     </div>
     <!-- Button - Add -->
     <button type="button" class="btn btn-success" title="Add Fund"
             ng-click="addFundModal()">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-        <b> Add
+        <b> Add </b>
     </button>
     <!-- Line Breaks -->
     <br><br>
@@ -104,12 +107,12 @@
                         <div class="text-right">
                             <h4 class="panel-title">
                                 <!-- Edit Fund -->
-                                <a href title="Edit" ng-click="clickedFund(fund) && showEditFundModal()">
+                                <a href title="Edit" ng-click="updateFundModal(fund)">
                                     <span class="glyphicon glyphicon-cog glyphicon-padding"
                                           aria-hidden="true"></span>
                                 </a>
                                 <!-- Delete Fund -->
-                                <a href title="Delete" ng-click="clickedFund(fund) && showDeleteFundModal()">
+                                <a href title="Delete" ng-click="deleteFundModal(fund)">
                                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                                 </a>
                             </h4>
@@ -331,8 +334,8 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true"> &times; </span>
                     </button>
-                    <h4 class="modal-title">
-                        <b> Add a Fund or Loan </b>
+                    <h4 class="modal-title text-success">
+                        <b> Add Fund </b>
                     </h4>
                 </div>
                 <!-- Form -->
@@ -357,7 +360,7 @@
                                                           addFundForm.$submitted) &&
                                                           addFundForm.loan.$invalid }">
                             <label class="control-label" for="loan"> Is this a loan? </label>
-                            <p class="text-warning"> <b> For out of pocket money or savings funds, select "No" </b> </p>
+                            <p> <i> For out of pocket money or savings funds, select "No" </i> </p>
                             <select class="form-control"
                                     name="loan"
                                     ng-model="vm.fund.loan"
@@ -548,15 +551,15 @@
                 <div class="modal-body">
                     <!-- Alert -->
                     <div class="alert alert-danger alert-dismissible text-center" role="alert"
-                         ng-if="vm.errorMsgDelete">
+                         ng-if="vm.errorDeleteFund">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         <span class="sr-only"> Error: </span>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true"> &times; </span>
-                        </button> <b> Could not delete your fund. </b>
+                        </button> <b> Could not delete the fund. </b>
                     </div>
                     <p class="text-center">
-                        Are you sure you would like to <b>delete</b>?
+                        Are you sure you would like to <b>delete</b> this <b> fund</b>?
                     </p>
                 </div>
                 <!-- Modal Footer -->
@@ -575,9 +578,9 @@
     </div>
 </div>
 
-<!-- Modal - Edit Fund -->
+<!-- Modal - Update Fund -->
 <div class="container">
-    <div class="modal fade" id="edit-fund-modal" aria-hidden="true">
+    <div class="modal fade" id="update-fund-modal" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <!-- Modal Header -->
@@ -590,43 +593,43 @@
                     </h4>
                 </div>
                 <!-- Form -->
-                <form name="editFundForm" novalidate>
+                <form name="updateFundForm" novalidate>
                     <!-- Modal Body -->
                     <div class="modal-body">
                         <!-- Alert -->
                         <div class="alert alert-danger alert-dismissible text-center" role="alert"
-                             ng-if="editFundForm.$invalid && editFundForm.$submitted">
+                             ng-if="updateFundForm.$invalid && updateFundForm.$submitted">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             <span class="sr-only"> Error: </span>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true"> &times; </span>
-                            </button> <b> There were problems updating your fund. </b>
+                            </button> <b> There were problems updating the fund. </b>
                         </div>
                         <!-- Name Field -->
                         <div class="form-group"
-                             ng-class="{ 'has-error': (editFundForm.name.$dirty ||
-                                                       editFundForm.$submitted) &&
-                                                       editFundForm.name.$invalid,
-                                         'has-feedback': (editFundForm.name.$dirty ||
-                                                          editFundForm.$submitted) &&
-                                                          editFundForm.name.$invalid }">
+                             ng-class="{ 'has-error': (updateFundForm.name.$dirty ||
+                                                       updateFundForm.$submitted) &&
+                                                       updateFundForm.name.$invalid,
+                                         'has-feedback': (updateFundForm.name.$dirty ||
+                                                          updateFundForm.$submitted) &&
+                                                          updateFundForm.name.$invalid }">
                             <label class="control-label" for="name"> Fund Name </label>
                             <input class="form-control"
                                    name="name"
                                    type="text"
                                    placeholder="Fund Name"
-                                   ng-model="vm.updatedFund.name"
+                                   ng-model="vm.fund.name"
                                    required
                                    ng-maxlength=50>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="(editFundForm.name.$dirty ||
-                                          editFundForm.$submitted) &&
-                                          editFundForm.name.$invalid">
+                                  ng-if="(updateFundForm.name.$dirty ||
+                                          updateFundForm.$submitted) &&
+                                          updateFundForm.name.$invalid">
                             </span>
-                            <div ng-messages="editFundForm.name.$error"
-                                 ng-if="(editFundForm.name.$dirty ||
-                                         editFundForm.$submitted) &&
-                                         editFundForm.name.$invalid">
+                            <div ng-messages="updateFundForm.name.$error"
+                                 ng-if="(updateFundForm.name.$dirty ||
+                                         updateFundForm.$submitted) &&
+                                         updateFundForm.name.$invalid">
                                 <div ng-message="required"
                                      class="help-block"> This field is required. </div>
                                 <div ng-message="maxlength"
@@ -635,12 +638,12 @@
                         </div>
                         <!-- Amount Field -->
                         <div class="form-group"
-                             ng-class="{ 'has-error': (editFundForm.amount.$dirty ||
-                                                       editFundForm.$submitted) &&
-                                                       editFundForm.amount.$invalid,
-                                         'has-feedback': (editFundForm.amount.$dirty ||
-                                                          editFundForm.$submitted) &&
-                                                          editFundForm.amount.$invalid }">
+                             ng-class="{ 'has-error': (updateFundForm.amount.$dirty ||
+                                                       updateFundForm.$submitted) &&
+                                                       updateFundForm.amount.$invalid,
+                                         'has-feedback': (updateFundForm.amount.$dirty ||
+                                                          updateFundForm.$submitted) &&
+                                                          updateFundForm.amount.$invalid }">
                             <label class="control-label" for="amount"> Total Amount of Fund </label>
                             <div class="input-group">
                                 <span class="input-group-addon"> $ </span>
@@ -648,20 +651,20 @@
                                        name="amount"
                                        type="text"
                                        placeholder="Amount"
-                                       ng-model="vm.updatedFund.amount"
+                                       ng-model="vm.fund.amount"
                                        required
                                        ng-maxlength=12
                                        format="number">
                             </div>
                             <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  ng-if="(editFundForm.amount.$dirty ||
-                                          editFundForm.$submitted) &&
-                                          editFundForm.amount.$invalid">
+                                  ng-if="(updateFundForm.amount.$dirty ||
+                                          updateFundForm.$submitted) &&
+                                          updateFundForm.amount.$invalid">
                             </span>
-                            <div ng-messages="editFundForm.amount.$error"
-                                 ng-if="(editFundForm.amount.$dirty ||
-                                         editFundForm.$submitted) &&
-                                         editFundForm.amount.$invalid">
+                            <div ng-messages="updateFundForm.amount.$error"
+                                 ng-if="(updateFundForm.amount.$dirty ||
+                                         updateFundForm.$submitted) &&
+                                         updateFundForm.amount.$invalid">
                                 <div ng-message="required"
                                      class="help-block"> This field is required. </div>
                                 <div ng-message="maxlength"
@@ -678,7 +681,7 @@
                         <!-- Submit -->
                         <button id="update-fund-button" type="submit" class="btn btn-primary"
                                 data-loading-text="Saving..."
-                                ng-click="editFundForm.$valid && updateFund()">
+                                ng-click="updateFundForm.$valid && updateFund()">
                             <b> Save Changes </b>
                         </button>
                     </div>
