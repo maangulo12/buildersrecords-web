@@ -12,10 +12,10 @@
         .module('app.service.expenditure', [])
         .factory('expenditureService', expenditureService);
 
-    expenditureService.$inject = ['$http', 'store', '$q', '$filter'];
+    expenditureService.$inject = ['$http', 'store', '$q', '$filter', 'API_URL'];
 
-    function expenditureService($http, store, $q, $filter) {
-        var url = store.get('url') + '/api/expenditures';
+    function expenditureService($http, store, $q, $filter, API_URL) {
+        var url = API_URL + '/api/expenditures';
         var service = {
             retrieveList:       retrieveList,
             create:             create,
@@ -35,8 +35,7 @@
         function create(expenditure) {
             var data = {
                 date:        $filter('date')(expenditure.date,'yyyy-MM-dd'),
-                vendor:      expenditure.vendor,
-                notes:       expenditure.notes,
+                company:     expenditure.company,
                 cost:        expenditure.cost,
                 fund_id:     expenditure.fund.id,
                 category_id: expenditure.item.category.id,
@@ -51,8 +50,7 @@
         function update(expenditure) {
             var data = {
                 date:        $filter('date')(expenditure.date,'yyyy-MM-dd'),
-                vendor:      expenditure.vendor,
-                notes:       expenditure.notes,
+                company:     expenditure.company,
                 cost:        expenditure.cost,
                 fund_id:     expenditure.fund.id,
                 category_id: expenditure.item.category.id,

@@ -12,10 +12,10 @@
         .module('app.service.item', [])
         .factory('itemService', itemService);
 
-    itemService.$inject = ['$http', 'store', '$q'];
+    itemService.$inject = ['$http', 'store', '$q', 'API_URL'];
 
-    function itemService($http, store, $q) {
-        var url = store.get('url') + '/api/items';
+    function itemService($http, store, $q, API_URL) {
+        var url = API_URL + '/api/items';
         var service = {
             retrieveList:       retrieveList,
             create:             create,

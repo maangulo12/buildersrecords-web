@@ -88,8 +88,9 @@
             }
         };
 
+        // ADD Fund
         $scope.addFundModal = function() {
-            vm.fund         = {};
+            vm.fund = {};
             vm.loanQuestion = [{ value: true, name: 'Yes' }, { value: false, name: 'No' }];
             $scope.addFundForm.$setPristine();
             $('#add-fund-button').button('reset');
@@ -105,79 +106,85 @@
             function addFund() {
                 return fundService.create(vm.fund);
             }
-            function success(response) {
+            function success() {
                 $('#add-fund-modal').modal('hide');
                 showFunds();
             }
-            function error(response) {
+            function error() {
                 $scope.addFundForm.$invalid = true;
                 $('#add-fund-button').button('reset');
             }
         };
 
-        $scope.showDeleteFundModal = function() {
-            vm.errorMsgDelete = false;
+        // DELETE Fund
+        $scope.deleteFundModal = function(fund) {
+            vm.errorDeleteFund = false;
+            vm.fund = {};
+            vm.fund = fund;
+            $('#delete-fund-button').button('reset');
             $('#delete-fund-modal').modal('show');
         };
         $scope.deleteFund = function() {
-            var btn = $('#delete-fund-button').button('loading');
+            $('#delete-fund-button').button('loading');
 
-            if (store.get('fund').draws === 0) {
-                deleteFund()
-                    .then(deleteSuccess)
+            if (vm.fund.draws.length === 0) {
+                return deleteFund()
+                    .then(success)
                     .catch(error);
             } else {
-                deleteDraws()
+                return deleteDraws()
                     .then(deleteFund)
-                    .then(deleteSuccess)
+                    .then(success)
                     .catch(error);
             }
 
             function deleteDraws() {
-                return drawService.removeByFund();
+                return drawService.removeByFund(vm.fund);
             }
             function deleteFund() {
-                return fundService.remove();
+                return fundService.remove(vm.fund);
             }
-            function deleteSuccess(response) {
+            function success() {
                 $('#delete-fund-modal').modal('hide');
-                btn.button('reset');
                 showFunds();
             }
             function error(response) {
-                vm.errorMsgDelete = true;
-                btn.button('reset');
+                vm.errorDeleteFund = true;
+                $('#delete-fund-button').button('reset');
             }
         };
 
-        $scope.showEditFundModal = function() {
-            vm.updatedFund        = {};
-            vm.updatedFund.name   = store.get('fund').name;
-            vm.updatedFund.amount = store.get('fund').amount;
-            $scope.editFundForm.$setPristine();
-            $('#edit-fund-modal').modal('show');
+        // UPDATE Fund
+        $scope.updateFundModal = function(fund) {
+            vm.fund        = {};
+            vm.fund.id     = fund.id;
+            vm.fund.name   = fund.name;
+            vm.fund.amount = fund.amount;
+            $scope.updateFundForm.$setPristine();
+            $('#update-fund-button').button('reset');
+            $('#update-fund-modal').modal('show');
         };
         $scope.updateFund = function() {
-            var btn = $('#update-fund-button').button('loading');
+            $('#update-fund-button').button('loading');
 
-            updateFund()
-                .then(updateSuccess)
+            return updateFund()
+                .then(success)
                 .catch(error);
 
             function updateFund() {
-                return fundService.update(vm.updatedFund);
+                return fundService.update(vm.fund);
             }
-            function updateSuccess(response) {
-                $('#edit-fund-modal').modal('hide');
-                btn.button('reset');
+            function success() {
+                $('#update-fund-modal').modal('hide');
                 showFunds();
             }
-            function error(response) {
-                $scope.editFundForm.$invalid = true;
-                btn.button('reset');
+            function error() {
+                $scope.updateFundForm.$invalid = true;
+                $('#update-fund-button').button('reset');
             }
         };
 
+        // ADD Draw
         $scope.showAddDrawModal = function() {
             vm.draw      = {};
             vm.draw.date = new Date();

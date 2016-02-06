@@ -1,21 +1,21 @@
 /**
  * @ngdoc service
- * @name categoryService
+ * @name subcontractorService
  * @description
  *
- * This is the service module for Category.
+ * This is the service module for Subcontractor.
 **/
 (function() {
     'use strict';
 
     angular
-        .module('app.service.category', [])
-        .factory('categoryService', categoryService);
+        .module('app.service.subcontractor', [])
+        .factory('subcontractorService', subcontractorService);
 
-    categoryService.$inject = ['$http', 'store', '$q'];
+    subcontractorService.$inject = ['$http', 'store', '$q', 'API_URL'];
 
-    function categoryService($http, store, $q) {
-        var url = store.get('url') + '/api/categories';
+    function subcontractorService($http, store, $q, API_URL) {
+        var url = API_URL + '/api/subcontractors';
         var service = {
             retrieveList: retrieveList,
             create:       create,
@@ -25,14 +25,16 @@
         return service;
 
         function retrieveList() {
-			return $http.get(url + query('project_id', 'equals', store.get('project').id))
+            return $http.get(url + query('project_id', 'equals', store.get('project').id))
                 .then(success)
                 .catch(error);
         }
 
-        function create(name) {
+        function create(subcontractor) {
             var data = {
-                name:       name,
+                company:    subcontractor.company,
+                person:     subcontractor.person,
+                number:     subcontractor.number,
                 project_id: store.get('project').id
             };
             return $http.post(url, data)
@@ -40,18 +42,20 @@
                 .catch(error);
         }
 
-        function update(category) {
+        function update(subcontractor) {
             var data = {
-                name:       category.name,
+                company:    subcontractor.company,
+                person:     subcontractor.person,
+                number:     subcontractor.number,
                 project_id: store.get('project').id
             };
-            return $http.put(url + '/' + category.id, data)
+            return $http.put(url + '/' + subcontractor.id, data)
                 .then(success)
                 .catch(error);
         }
 
-        function remove(category) {
-            return $http.delete(url + '/' + category.id)
+        function remove(subcontractor) {
+            return $http.delete(url + '/' + subcontractor.id)
                 .then(success)
                 .catch(error);
         }

@@ -2,12 +2,12 @@
     'use strict';
 
     angular
-        .module('app.projects.budget')
-        .controller('BudgetController', BudgetController);
+        .module('app.projects.cost')
+        .controller('CostController', CostController);
 
-    BudgetController.$inject = ['$scope', 'store', 'categoryService', 'itemService', 'expenditureService'];
+    CostController.$inject = ['$scope', 'store', 'categoryService', 'itemService', 'expenditureService'];
 
-    function BudgetController($scope, store, categoryService, itemService, expenditureService) {
+    function CostController($scope, store, categoryService, itemService, expenditureService) {
         var vm = this;
         vm.project = store.get('project');
         showCategories();

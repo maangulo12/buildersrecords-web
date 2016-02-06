@@ -17,9 +17,7 @@
 
         // GET Expenditures
         function showExpenditures() {
-            return getExpenditures()
-                .then(calculateTotal)
-                .catch(error);
+            return getExpenditures();
 
             function getExpenditures() {
                 return expenditureService.retrieveList()
@@ -30,17 +28,9 @@
                     vm.expenditureList = response.data.objects;
                     return vm.expenditureList;
                 }
-            }
-            function calculateTotal() {
-                var total = 0;
-
-                angular.forEach(vm.expenditureList, function(expenditure) {
-                    total += expenditure.cost;
-                });
-                vm.totalCost = total;
-            }
-            function error() {
-                vm.errorGet = true;
+                function error() {
+                    vm.errorGet = true;
+                }
             }
         }
 
@@ -154,7 +144,7 @@
             $('#add-button').button('loading');
 
             if (vm.expenditure.question == 1) {
-                vm.expenditure.vendor = vm.expenditure.subcontractor.name;
+                vm.expenditure.company = vm.expenditure.subcontractor.company;
             }
 
             return addExpenditure()
@@ -238,11 +228,12 @@
         // UPDATE functions
         $scope.updateModal = function(expenditure) {
             var date = new Date(expenditure.date);
-            vm.expenditure        = {};
-            vm.expenditure.id     = expenditure.id;
-            vm.expenditure.date   = new Date(date.getTime() + date.getTimezoneOffset()*60000);
-            vm.expenditure.vendor = expenditure.vendor;
-            vm.expenditure.item   = {
+
+            vm.expenditure         = {};
+            vm.expenditure.id      = expenditure.id;
+            vm.expenditure.date    = new Date(date.getTime() + date.getTimezoneOffset() * 60000);
+            vm.expenditure.company = expenditure.company;
+            vm.expenditure.item    = {
                 id  : expenditure.items.id,
                 name: expenditure.items.name,
                 category: {

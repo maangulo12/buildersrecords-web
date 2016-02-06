@@ -4,7 +4,7 @@ module.exports = function(config) {
     config.set({
         browsers: ['PhantomJS'],
         preprocessors: {
-            'tests/**/*spec.js': ['browserify']
+            'src/**/*.spec.js': ['browserify']
         },
         frameworks: [
             'browserify',
@@ -25,8 +25,7 @@ module.exports = function(config) {
             'src/app.module.js',
             'src/*.js',
             'src/**/*.module.js',
-            'src/**/*.js',
-            'tests/**/*spec.js'
+            'src/**/*.js'
         ],
         plugins: [
             'karma-phantomjs-launcher',

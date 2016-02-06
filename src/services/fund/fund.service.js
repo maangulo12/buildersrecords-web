@@ -12,10 +12,10 @@
         .module('app.service.fund', [])
         .factory('fundService', fundService);
 
-    fundService.$inject = ['$http', 'store', '$q'];
+    fundService.$inject = ['$http', 'store', '$q', 'API_URL'];
 
-    function fundService($http, store, $q) {
-        var url = store.get('url') + '/api/funds';
+    function fundService($http, store, $q, API_URL) {
+        var url = API_URL + '/api/funds';
         var service = {
             retrieveList: retrieveList,
             create:       create,
@@ -48,13 +48,13 @@
                 amount:     fund.amount,
                 project_id: store.get('project').id
             };
-            return $http.put(url + '/' + store.get('fund').id, data)
+            return $http.put(url + '/' + fund.id, data)
                 .then(success)
                 .catch(error);
         }
 
-        function remove() {
-            return $http.delete(url + '/' + store.get('fund').id)
+        function remove(fund) {
+            return $http.delete(url + '/' + fund.id)
                 .then(success)
                 .catch(error);
         }

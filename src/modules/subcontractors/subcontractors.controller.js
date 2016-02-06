@@ -132,11 +132,11 @@
 
         // UPDATE functions
         $scope.updateModal = function(subcontractor) {
-            vm.subcontractor               = {};
-            vm.subcontractor.id            = subcontractor.id;
-            vm.subcontractor.name          = subcontractor.name;
-            vm.subcontractor.company       = subcontractor.company;
-            vm.subcontractor.contactNumber = subcontractor.contact_number;
+            vm.subcontractor         = {};
+            vm.subcontractor.id      = subcontractor.id;
+            vm.subcontractor.company = subcontractor.company;
+            vm.subcontractor.person  = subcontractor.person;
+            vm.subcontractor.number  = subcontractor.number;
             $scope.updateForm.$setPristine();
             $('#update-button').button('reset');
             $('#update-modal').modal('show');
