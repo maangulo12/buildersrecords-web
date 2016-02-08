@@ -27,25 +27,18 @@ BuildersRecords Web Application.
     * Overview chart number commas
     * Overview table check values
 
-    * Budget
-    * Budget Table resizing
-    * Budget Delete Items & Categories
-
     * Expenditures
-    * Expenditures Add, Delete, update
-    * Expenditure Table resizing
+    * Track draws
+    * Track receipts #
 
     * Funds
     * Change to table
+    * Delete Fund deletes expenditures
 
-    * JsDoc
-    * Angular Testing SPEC
-
-    * Edit Draw date is off
-
-    * Payment not processed
-
-    * Send Feedback
+    * ng-doc
+    * unit testing
+    * e2e testing
+    * how tables are updated
 ```
 
 ## Required Software
