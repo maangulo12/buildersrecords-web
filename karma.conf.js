@@ -8,7 +8,8 @@ module.exports = function(config) {
         },
         frameworks: [
             'browserify',
-            'mocha'
+            'mocha',
+            'chai'
         ],
         files: [
             'vendor/jquery/jquery-1.11.3.min.js',
@@ -30,7 +31,8 @@ module.exports = function(config) {
         plugins: [
             'karma-phantomjs-launcher',
             'karma-browserify',
-            'karma-mocha'
+            'karma-mocha',
+            'karma-chai'
         ]
     });
 };
