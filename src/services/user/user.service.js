@@ -11,6 +11,7 @@
         var url = API_URL + '/api/users';
         var service = {
             retrieve:       retrieve,
+            create:         create,
             updateUser:     updateUser,
             updatePassword: updatePassword
         };
@@ -18,6 +19,17 @@
 
         function retrieve() {
             return $http.get(url + '/' + store.get('user').id)
+                .then(success)
+                .catch(error);
+        }
+
+        function create(user) {
+            var data = {
+                email:    user.email,
+                username: user.username,
+                password: user.password
+            };
+            return $http.post(url, data)
                 .then(success)
                 .catch(error);
         }
