@@ -33,9 +33,12 @@
             function success(response) {
                 var token   = response.data.token;
                 var payload = jwtHelper.decodeToken(token);
-                var user    = {
-                    id:     payload.user_id,
-                    stripe: payload.stripe_id
+                // var user    = {
+                //     id:     payload.user_id,
+                //     stripe: payload.stripe_id
+                // };
+                var user = {
+                    id: payload.user_id
                 };
                 store.set('jwt', token);
                 store.set('user', user);

@@ -9,7 +9,6 @@ BuildersRecords Web Application.
     * Home - Update Home Page
     * Login - Forgot Password
     * Signup - Update Signup Page
-    * Signup - Sign Up Error Messages
     * Signup - Terms of Service & Privacy Policy
     * Tutorial - Tutorial Write-up and Video
     * Projects - Bulk delete project
@@ -17,14 +16,9 @@ BuildersRecords Web Application.
 
     * Update email / username
     * Change password
-    * Update credit card
-    * Update plan
-    * Cancel subscription
-    * Invoice history
 
     * Overview
     * Overview table missing values
-    * Overview chart number commas
     * Overview table check values
 
     * Expenditures
