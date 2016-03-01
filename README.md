@@ -6,16 +6,19 @@ BuildersRecords Web Application.
 
 + Priorities:
 ```
+    *** Brochure
+
     * Home - Update Home Page
     * Login - Forgot Password
-    * Signup - Update Signup Page
     * Signup - Terms of Service & Privacy Policy
+
     * Tutorial - Tutorial Write-up and Video
+
     * Projects - Bulk delete project
     * Projects - Upload file error message
 
-    * Update email / username
-    * Change password
+    * Account - Update email / username
+    * Account - Change password
 
     * Overview
     * Overview table missing values
