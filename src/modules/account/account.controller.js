@@ -9,23 +9,21 @@
 
     function AccountController($scope, User, userService) {
         var vm = this;
-        vm.account = {};
-        vm.account.email = User.email;
+        vm.account          = {};
+        vm.account.email    = User.email;
         vm.account.username = User.username;
 
-        // Needs work
-        // Change email in Stripe
         $scope.updateAccount = function() {
             var btn = $('#update-account-button').button('loading');
 
-            updateAccount()
-                .then(updateSuccess)
+            return updateAccount()
+                .then(success)
                 .catch(error);
 
             function updateAccount() {
                 return userService.updateUser(vm.account);
             }
-            function updateSuccess(response) {
+            function success(response) {
                 vm.updateAccountSuccess = true;
                 btn.button('reset');
             }
@@ -42,14 +40,14 @@
         $scope.updatePassword = function() {
             var btn = $('#update-password-button').button('loading');
 
-            updatePassword()
-                .then(updateSuccess)
+            return updatePassword()
+                .then(success)
                 .catch(error);
 
             function updatePassword() {
                 return userService.updatePassword(vm.account.newPassword);
             }
-            function updateSuccess(response) {
+            function success(response) {
                 vm.updatePasswordSuccess = true;
                 btn.button('reset');
             }
