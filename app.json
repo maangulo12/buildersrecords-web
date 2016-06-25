@@ -1,0 +1,12 @@
+{
+  "name": "buildersrecords-web",
+  "description": "BuildersRecords Web Application",
+  "keywords": ["node", "express", "buildersrecords"],
+  "website": "http://www.buildersrecords.com",
+  "repository": "https://github.com/maangulo12/buildersrecords-web",
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}
