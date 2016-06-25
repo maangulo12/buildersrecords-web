@@ -4,6 +4,7 @@ BuildersRecords Web Application.
 
 ## To Do List
 ```
+    *** Angular 1.5.7
     *** Brochure
     *** Heroku Deployment
     * Home - Update Home Page
