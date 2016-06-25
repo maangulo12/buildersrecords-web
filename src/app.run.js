@@ -8,9 +8,6 @@
     runBlock.$inject = ['$rootScope', '$state', 'store', 'jwtHelper'];
 
     function runBlock($rootScope, $state, store, jwtHelper) {
-        // Set Stripe publishable key
-        // Stripe.setPublishableKey(PUBLISHABLE_KEY);
-        // Restricts access to routes that require login
         $rootScope.$on('$stateChangeStart', change);
         // Change function
         function change(e, to) {
