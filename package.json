@@ -1,16 +1,20 @@
 {
   "name": "buildersrecords-web",
-  "description": "BuildersRecords Web App",
-  "version": "1.0.0",
+  "description": "BuildersRecords Web Application",
+  "keywords": ["node", "express", "angular", "buildersrecords"],
+  "version": "0.0.1",
+  "engines": {
+    "node": "6.2.2"
+  },
+  "main": "server.js",
+  "scripts": {
+    "start": "npm run lite",
+    "lite": "lite-server"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/maangulo12/buildersrecords-web.git"
+    "url": "https://github.com/maangulo12/buildersrecords-web"
   },
-  "author": "Miguel A. Angulo",
-  "bugs": {
-    "url": "https://github.com/maangulo12/buildersrecords-web/issues"
-  },
-  "homepage": "https://github.com/maangulo12/buildersrecords-web#readme",
   "devDependencies": {
     "browserify": "^13.0.0",
     "chai": "^3.4.1",
@@ -33,8 +37,12 @@
     "karma-chai": "^0.1.0",
     "karma-mocha": "^0.2.1",
     "karma-phantomjs-launcher": "^1.0.0",
+    "lite-server": "^2.2.0",
     "mocha": "^2.4.4",
     "phantomjs-prebuilt": "^2.1.3",
     "watchify": "^3.7.0"
+  },
+  "dependencies": {
+    "express": "^4.14.0"
   }
 }

@@ -14,29 +14,11 @@
 
         $scope.signUp = function() {
             var btn = $('#signup-button').button('loading');
-            //var valid = stripeService.validateCard(vm);
 
             return createUser()
                 .then(authenticateUser)
                 .then(goTutorial)
                 .catch(error);
-
-            // if (valid) {
-            //     return createToken()
-            //         .then(subscribeUser)
-            //         .then(authenticateUser)
-            //         .then(goTutorial)
-            //         .catch(error);
-            // } else {
-            //     error();
-            // }
-
-            // function createToken() {
-            //     return stripeService.createCardToken(vm);
-            // }
-            // function subscribeUser(response) {
-            //     return stripeService.createSubscription(vm, response.id);
-            // }
 
             function createUser() {
                 return userService.create(vm);

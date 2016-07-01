@@ -12,10 +12,10 @@
             url: '/signup',
             views: {
                 'nav': {
-                    templateUrl: 'www/html/nav1.html'
+                    templateUrl: 'html/nav1.html'
                 },
                 'body': {
-                    templateUrl:  'www/html/signup.html',
+                    templateUrl:  'html/signup.html',
                     controller:   'SignupController',
                     controllerAs: 'vm'
                 }

@@ -26,13 +26,13 @@
             },
             views: {
                 'nav': {
-                    templateUrl: 'www/html/nav2.html',
+                    templateUrl: 'html/nav2.html',
                     controller: function($scope, User) {
                         $scope.username = User.username;
                     }
                 },
                 'body': {
-                    templateUrl:  'www/html/billing.html',
+                    templateUrl:  'html/billing.html',
                     controller:   'BillingController',
                     controllerAs: 'vm'
                 }
