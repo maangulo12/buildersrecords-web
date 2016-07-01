@@ -1,7 +1,6 @@
-# [BuildersRecords Web Application] (http://www.buildersrecords.com)
+# [BuildersRecords] (http://buildersrecords.com)
 
-This is a web application that enables home builders to
-manage their construction projects.
+BuildersRecords lets home builders manage their construction projects.
 
 ## To Do List
 ```
@@ -32,34 +31,32 @@ manage their construction projects.
     * how tables are updated
 ```
 
-## To Contribute
+## Contributing
 
-#### Step 1: Download the required software
+#### Step 1: Download the required software.
 
-+ [NodeJS 4] (https://nodejs.org/en/)
++ [NodeJS 6] (https://nodejs.org/en/)
 
-#### Step 2: Clone the project
+#### Step 2: Clone the project.
 >
 ```bash
 $ git clone git@github.com:maangulo12/buildersrecords-web.git
 ```
 
-#### Step 3: Change directory into the cloned project
+#### Step 3: Change directory into the project.
 >
 ```bash
 $ cd buildersrecords-web
 ```
 
-#### Step 3: Install the project dependencies
+#### Step 3: Install project dependencies.
 >
 ```bash
 $ npm install  
 ```
 
-#### Step 4: Run the application
+#### Step 4: Run the application.
 >
 ```bash
-$ node index.js    
+$ npm start    
 ```
-
-#### Step 5: Open [http://localhost:5555] (http://localhost:5555)
