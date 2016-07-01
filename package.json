@@ -1,14 +1,15 @@
 {
   "name": "buildersrecords-web",
   "description": "BuildersRecords Web Application",
-  "keywords": ["node", "express", "buildersrecords"],
-  "version": "0.1.0",
+  "keywords": ["node", "express", "angular", "buildersrecords"],
+  "version": "0.0.1",
   "engines": {
-    "node": "4.4.6"
+    "node": "6.2.2"
   },
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "npm run lite",
+    "lite": "lite-server"
   },
   "repository": {
     "type": "git",
@@ -36,6 +37,7 @@
     "karma-chai": "^0.1.0",
     "karma-mocha": "^0.2.1",
     "karma-phantomjs-launcher": "^1.0.0",
+    "lite-server": "^2.2.0",
     "mocha": "^2.4.4",
     "phantomjs-prebuilt": "^2.1.3",
     "watchify": "^3.7.0"
