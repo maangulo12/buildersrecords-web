@@ -1,6 +1,7 @@
-# [BuildersRecords Web App] (http://www.buildersrecords.com)
+# [BuildersRecords Web Application] (http://www.buildersrecords.com)
 
-BuildersRecords Web Application.
+This is a web application that enables home builders to
+manage their construction projects.
 
 ## To Do List
 ```
