@@ -5,6 +5,7 @@ manage their construction projects.
 
 ## To Do List
 ```
+    *** TravisCI testing
     *** Angular 1.5.7
     *** Brochure
     *** Heroku Deployment
