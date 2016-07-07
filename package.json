@@ -1,7 +1,12 @@
 {
   "name": "buildersrecords-web",
   "description": "BuildersRecords Web Application",
-  "keywords": ["node", "express", "angular", "buildersrecords"],
+  "keywords": [
+    "javascript",
+    "frontend",
+    "angular",
+    "buildersrecords"
+  ],
   "version": "0.0.1",
   "engines": {
     "node": "6.2.2"
