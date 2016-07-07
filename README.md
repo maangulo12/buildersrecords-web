@@ -1,11 +1,11 @@
 # [BuildersRecords] (http://buildersrecords.com)
 
-BuildersRecords lets home builders manage their construction projects.
+BuildersRecords is construction accounting software that enables home builders
+to easily manage their construction projects.
 
 ## To Do List
 ```
     *** TravisCI testing
-    *** Angular 1.5.7
     *** Brochure
     *** Heroku Deployment
     * Home - Update Home Page
