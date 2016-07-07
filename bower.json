@@ -1,0 +1,31 @@
+{
+  "name": "buildersrecords-web",
+  "description": "BuildersRecords Web Application",
+  "keywords": [
+    "javascript",
+    "frontend",
+    "angular",
+    "buildersrecords"
+  ],
+  "main": "runserver.js",
+  "homepage": "https://github.com/maangulo12/buildersrecords-web",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-jwt": "^0.0.9",
+    "a0-angular-storage": "^0.0.15",
+    "angular-ui-router": "^0.3.1",
+    "angular-ui-validate": "^1.2.2",
+    "angular": "^1.5.7",
+    "bootstrap": "^3.3.6",
+    "highcharts": "^4.2.5",
+    "jquery": "^3.0.0",
+    "angular-smart-table": "^2.1.8",
+    "bootswatch": "^3.3.6+2"
+  }
+}
