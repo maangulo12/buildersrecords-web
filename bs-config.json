@@ -1,4 +1,6 @@
 {
-  "server": { "baseDir": "./www" },
+  "server": {
+    "baseDir": "./www" 
+  },
   "browser": "chrome"
 }
