@@ -22,12 +22,12 @@ var target = {
   srcBootstrapCss: 'bower_components/bootswatch/flatly/bootstrap.min.css',
   finalCss: 'www/css',
 
-  jsSrc:   [
-    'src/*.module.js',
-    'src/*.js',
-    'src/**/*.module.js',
-    'src/**/*.js',
-    '!src/**/*.spec.js'
+  srcAppJs: [
+    'app/*.module.js',
+    'app/*.js',
+    'app/**/*.module.js',
+    'app/**/*.js',
+    '!app/**/*.spec.js'
   ],
   jsVendorSrc: [
     'vendor/jquery/jquery-1.11.3.min.js',
@@ -66,18 +66,17 @@ gulp.task('css-concat', function () {
     .pipe(gulp.dest(target.finalCss));
 });
 
-// gulp.task('js', function() {
-//     return gulp.src(target.jsSrc)
-//         .pipe(plumber())
-//         .pipe(jshint())
-//         .pipe(jshint.reporter(stylish))
-//         .pipe(concat('app.min.js'))
-//         //.pipe(ngAnnotate({ add: true }))
-//         //.pipe(uglify({ mangle: true }))
-//         .pipe(gulp.dest(target.jsDest))
-//         .pipe(notify({ message: 'JS processed!' }));
-// });
 //
+gulp.task('js', function() {
+  return gulp.src(target.srcAppJs)
+    .pipe(jshint())
+    .pipe(jshint.reporter(stylish))
+    .pipe(concat('app.min.js'))
+    //.pipe(ngAnnotate({ add: true }))
+    //.pipe(uglify({ mangle: true }))
+    .pipe(gulp.dest(target.jsDest));
+});
+
 // gulp.task('js-vendor', function() {
 //     return gulp.src(target.jsVendorSrc)
 //         .pipe(plumber())
