@@ -6,47 +6,50 @@ var autoprefixer = require('gulp-autoprefixer');
 var cssnano      = require('gulp-cssnano');
 var rename       = require('gulp-rename');
 var concat       = require('gulp-concat');
-
 var jshint       = require('gulp-jshint');
 var stylish      = require('jshint-stylish');
 var uglify       = require('gulp-uglify');
+var runSequence  = require('run-sequence');
+
 var notify       = require('gulp-notify');
-var plumber      = require('gulp-plumber');
 var ngAnnotate   = require('gulp-ng-annotate');
 var karma        = require('karma');
 var gulpDocs     = require('gulp-ngdocs');
 
 var target = {
   srcSass: 'sass/*.scss',
-  srcCss: 'sass/*.min.css',
-  srcBootstrapCss: 'bower_components/bootswatch/flatly/bootstrap.min.css',
+  srcCssMin: 'sass/*.min.css',
+  srcCssBootstrap: 'bower_components/bootswatch/flatly/bootstrap.min.css',
   finalCss: 'www/css',
 
-  jsSrc:   [
-    'src/*.module.js',
-    'src/*.js',
-    'src/**/*.module.js',
-    'src/**/*.js',
-    '!src/**/*.spec.js'
+  srcJs: [
+    'app/*.module.js',
+    'app/*.js',
+    'app/**/*.module.js',
+    'app/**/*.js',
+    '!app/**/*.spec.js'
   ],
-  jsVendorSrc: [
-    'vendor/jquery/jquery-1.11.3.min.js',
-    'vendor/bootstrap/bootstrap.min.js',
-    'vendor/angularjs/1.4.5/angular.min.js',
-    'vendor/angularjs/1.4.5/angular-messages.min.js',
-    'vendor/angular-ui/validate.min.js',
-    'vendor/angular-ui/angular-ui-router.min.js',
-    'vendor/angular-jwt/angular-jwt.min.js',
-    'vendor/angular-storage/angular-storage.min.js',
-    'vendor/smart-table/smart-table.min.js',
-    'vendor/highcharts/highcharts.min.js'
+  srcJsMin: 'www/js/app.min.js',
+  srcJsAll: [
+    'bower_components/jquery/dist/jquery.min.js',
+    'bower_components/bootstrap/dist/js/bootstrap.min.js',
+    'bower_components/angular/angular.min.js',
+    'bower_components/angular-messages/angular-messages.min.js',
+    'bower_components/angular-ui-validate/dist/validate.min.js',
+    'bower_components/angular-ui-router/release/angular-ui-router.min.js',
+    'bower_components/angular-jwt/dist/angular-jwt.min.js',
+    'bower_components/a0-angular-storage/dist/angular-storage.min.js',
+    'bower_components/angular-smart-table/dist/smart-table.min.js',
+    'bower_components/highcharts/highcharts.js',
+    'www/js/app.min.js'
   ],
-  jsTestsSrc: 'src/**/*.spec.js',
-  jsDest: 'www/js',
+  finalJs: 'www/js',
+
+  srcTests: 'app/**/*.spec.js',
   jsDocsDest: 'docs'
 };
 
-// Converts SASS -> CSS, autoprefixes CSS, and minifies CSS
+// Compile SASS, autoprefix, and minify CSS files
 gulp.task('sass', function () {
   return gulp.src(target.srcSass)
     .pipe(sass())
@@ -59,35 +62,45 @@ gulp.task('sass', function () {
     .pipe(gulp.dest('sass'));
 });
 
-// Concats all CSS files
+// Concat all CSS files
 gulp.task('css-concat', function () {
-  return gulp.src([target.srcBootstrapCss, target.srcCss])
+  return gulp.src([target.srcCssBootstrap, target.srcCssMin])
     .pipe(concat('all.min.css'))
     .pipe(gulp.dest(target.finalCss));
 });
 
-// gulp.task('js', function() {
-//     return gulp.src(target.jsSrc)
-//         .pipe(plumber())
-//         .pipe(jshint())
-//         .pipe(jshint.reporter(stylish))
-//         .pipe(concat('app.min.js'))
-//         //.pipe(ngAnnotate({ add: true }))
-//         //.pipe(uglify({ mangle: true }))
-//         .pipe(gulp.dest(target.jsDest))
-//         .pipe(notify({ message: 'JS processed!' }));
-// });
-//
-// gulp.task('js-vendor', function() {
-//     return gulp.src(target.jsVendorSrc)
-//         .pipe(plumber())
-//         //.pipe(uglify())
-//         .pipe(concat('vendor.min.js'))
-//         .pipe(gulp.dest(target.jsDest))
-//         .pipe(notify({ message: 'JS Vendor processed!' }));
-// });
-//
-// gulp.task('js-docs', function() {
+// JSHint, concat, and minify JS files
+gulp.task('js', function () {
+  return gulp.src(target.srcJs)
+    .pipe(jshint())
+    .pipe(jshint.reporter(stylish))
+    .pipe(concat('app.min.js'))
+    .pipe(uglify({ mangle: false }))
+    .pipe(gulp.dest(target.finalJs));
+});
+
+// Concat all JS files
+gulp.task('js-concat', function () {
+  return gulp.src(target.srcJsAll)
+    .pipe(concat('all.min.js'))
+    .pipe(gulp.dest(target.finalJs));
+});
+
+// Build task for CSS
+gulp.task('build-css', function () {
+  return runSequence('sass', 'css-concat', function () {
+    console.log('CSS is ready!');
+  });
+});
+
+// Build task for JS
+gulp.task('build-js', function () {
+  return runSequence('js', 'js-concat', function () {
+    console.log('JS is ready!');
+  });
+});
+
+// gulp.task('js-docs', function () {
 //     return gulp.src(target.jsSrc)
 //         .pipe(plumber())
 //         .pipe(gulpDocs.process())
@@ -95,7 +108,7 @@ gulp.task('css-concat', function () {
 //         .pipe(notify({ message: 'JS Docs processed!' }));
 // });
 //
-// gulp.task('test', function(done) {
+// gulp.task('test', function (done) {
 //     var Server = karma.Server;
 //     new Server({
 //         configFile: __dirname + '/karma.conf.js',
@@ -103,28 +116,29 @@ gulp.task('css-concat', function () {
 //     }, done).start();
 // });
 //
-// gulp.task('tdd', function(done) {
+// gulp.task('tdd', function (done) {
 //     var Server = karma.Server;
 //     new Server({
 //         configFile: __dirname + '/karma.conf.js'
 //     }, done).start();
 // });
 //
-// gulp.task('lint-tests', function(done) {
+// gulp.task('lint-tests', function (done) {
 //     return gulp.src(target.jsTestsSrc)
 //         .pipe(plumber())
 //         .pipe(jshint())
 //         .pipe(jshint.reporter(stylish))
 //         .pipe(notify({ message: 'Tests linted!' }));
 // });
-//
-gulp.task('watch', function() {
-  gulp.watch(target.srcSass, ['sass', 'css-concat']);
-  // gulp.watch(target.jsSrc, ['js', 'js-docs', 'test']);
+
+// Watch task
+gulp.task('watch', function () {
+  gulp.watch(target.srcSass, ['build-css']);
+  gulp.watch(target.srcJs, ['build-js']);
   // gulp.watch(target.jsVendorSrc, ['js-vendor']);
   // gulp.watch(target.jsTestsSrc, ['lint-tests']);
 });
 
-gulp.task('default', ['sass', 'css-concat', 'watch']);
+gulp.task('default', ['build-css', 'build-js', 'watch']);
 
 // gulp.task('default', ['sass', 'js', 'js-vendor', 'js-docs', 'lint-tests', 'tdd', 'watch']);
