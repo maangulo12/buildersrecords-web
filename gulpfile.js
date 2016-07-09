@@ -100,7 +100,8 @@ gulp.task('build-js', function () {
   });
 });
 
-// gulp.task('js-docs', function () {
+
+// gulp.task('js-docs', function() {
 //     return gulp.src(target.jsSrc)
 //         .pipe(plumber())
 //         .pipe(gulpDocs.process())
