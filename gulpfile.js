@@ -11,10 +11,10 @@ var stylish      = require('jshint-stylish');
 var uglify       = require('gulp-uglify');
 var runSequence  = require('run-sequence');
 
-var notify       = require('gulp-notify');
 var ngAnnotate   = require('gulp-ng-annotate');
 var karma        = require('karma');
 var gulpDocs     = require('gulp-ngdocs');
+
 
 var target = {
   srcSass: 'sass/*.scss',
@@ -44,6 +44,12 @@ var target = {
     'www/js/app.min.js'
   ],
   finalJs: 'www/js',
+
+  srcHtml: [
+    'app/*.html',
+    'app/**/*.html'
+  ],
+  finalHtml: 'www/html',
 
   srcTests: 'app/**/*.spec.js',
   jsDocsDest: 'docs'
@@ -86,6 +92,13 @@ gulp.task('js-concat', function () {
     .pipe(gulp.dest(target.finalJs));
 });
 
+// Copy HTML templates
+gulp.task('html', function () {
+  return gulp.src(target.srcHtml)
+    .pipe(concat('all.min.js'))
+    .pipe(gulp.dest(target.finalHtml));
+});
+
 // Build task for CSS
 gulp.task('build-css', function () {
   return runSequence('sass', 'css-concat', function () {
@@ -99,7 +112,6 @@ gulp.task('build-js', function () {
     console.log('JS is ready!');
   });
 });
-
 
 // gulp.task('js-docs', function() {
 //     return gulp.src(target.jsSrc)
@@ -136,10 +148,10 @@ gulp.task('build-js', function () {
 gulp.task('watch', function () {
   gulp.watch(target.srcSass, ['build-css']);
   gulp.watch(target.srcJs, ['build-js']);
-  // gulp.watch(target.jsVendorSrc, ['js-vendor']);
+  gulp.watch(target.srcHtml, ['html']);
   // gulp.watch(target.jsTestsSrc, ['lint-tests']);
 });
 
-gulp.task('default', ['build-css', 'build-js', 'watch']);
+gulp.task('default', ['build-css', 'build-js', 'html', 'watch']);
 
 // gulp.task('default', ['sass', 'js', 'js-vendor', 'js-docs', 'lint-tests', 'tdd', 'watch']);
