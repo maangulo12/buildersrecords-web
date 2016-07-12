@@ -1,0 +1,336 @@
+<!-- Container -->
+<div class="container">
+    <div class="row">
+        <!-- Left Side -->
+        <div class="col-md-3">
+            <!-- List Group -->
+            <ul class="list-group">
+                <!-- Tutorial -->
+                <a ui-sref="tutorial" class="list-group-item">
+                    <span class="glyphicon glyphicon-book glyphicon-padding" aria-hidden="true"></span>
+                    <b> Tutorial </b>
+                </a>
+                <!-- Projects -->
+                <a ui-sref="projects" class="list-group-item">
+                    <span class="glyphicon glyphicon-folder-open glyphicon-padding" aria-hidden="true"></span>
+                    <b> Projects </b>
+                </a>
+                <!-- Account Settings -->
+                <a ui-sref="account" class="list-group-item active">
+                    <span class="glyphicon glyphicon-cog glyphicon-padding" aria-hidden="true"></span>
+                    <b> Account Settings </b>
+                </a>
+                <!-- Send Feedback -->
+                <a ui-sref="feedback" class="list-group-item">
+                    <span class="glyphicon glyphicon-comment glyphicon-padding" aria-hidden="true"></span>
+                    <b> Send Feedback </b>
+                </a>
+            </ul>
+        </div>
+        <!-- Right Side -->
+        <div class="col-md-9">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1> Account Settings </h1>
+            </div>
+            <!-- Tabs -->
+            <ul class="nav nav-tabs">
+                <!-- Account -->
+                <li class="active">
+                    <a ui-sref="account">
+                        <span class="glyphicon glyphicon-user glyphicon-padding" aria-hidden="true"></span>
+                        Account
+                    </a>
+                </li>
+                <!-- Billing
+                <li>
+                    <a ui-sref="billing">
+                        <span class="glyphicon glyphicon-credit-card glyphicon-padding" aria-hidden="true"></span>
+                        Billing
+                    </a>
+                </li>
+                -->
+            </ul>
+            <!-- Header -->
+            <div class="page-header">
+                <h3> Account Information </h3>
+                <!-- Horizontal Rule -->
+                <hr>
+            </div>
+            <!-- Well -->
+            <div class="well">
+                <!-- Error Alert -->
+                <div class="alert alert-danger alert-dismissible text-center" role="alert"
+                     ng-if="vm.updateAccountError">
+                    <span class="glyphicon glyphicon-exclamation-sign glyphicon-padding" aria-hidden="true"></span>
+                    <span class="sr-only"> Error: </span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true"> &times; </span>
+                    </button> <b> Could not update your account information. </b>
+                </div>
+                <!-- Success Alert -->
+                <div class="alert alert-success alert-dismissible text-center" role="alert"
+                     ng-if="vm.updateAccountSuccess">
+                    <span class="glyphicon glyphicon-ok glyphicon-padding" aria-hidden="true"></span>
+                    <span class="sr-only"> Error: </span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true"> &times; </span>
+                    </button> <b> Successfully updated your account information. </b>
+                </div>
+                <!-- Form -->
+                <form class="form-horizontal" name="accountForm" novalidate>
+                    <!-- Email Field -->
+                    <div class="form-group"
+                         ng-class="{ 'has-error': (accountForm.email.$dirty ||
+                                                   accountForm.$submitted) &&
+                                                   accountForm.email.$invalid,
+                                     'has-feedback': (accountForm.email.$dirty ||
+                                                      accountForm.$submitted) &&
+                                                      accountForm.email.$invalid }">
+                        <label class="col-sm-3 control-label" for="email"> Email Address </label>
+                        <div class="col-sm-9">
+                            <input class="form-control"
+                                   name="email"
+                                   type="email"
+                                   placeholder="Email Address"
+                                   ng-model="vm.account.email"
+                                   required
+                                   ng-maxlength=50
+                                   ng-model-options="{ debounce: 500 }"
+                                   email-availability>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(accountForm.email.$dirty ||
+                                          accountForm.$submitted) &&
+                                          accountForm.email.$invalid">
+                            </span>
+                            <div ng-messages="accountForm.email.$error"
+                                 ng-if="(accountForm.email.$dirty ||
+                                         accountForm.$submitted) &&
+                                         accountForm.email.$invalid">
+                                <div ng-message="required" class="help-block">
+                                    This field is required.
+                                </div>
+                                <div ng-message="maxlength" class="help-block">
+                                    This field cannot be longer than 50 characters.
+                                </div>
+                                <div ng-message="emailAvailability" class="help-block">
+                                    This email address is already registered.
+                                </div>
+                            </div>
+                            <div ng-if="accountForm.email.$pending">
+                                <span class="help-block">
+                                    Checking Email...
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Username Field -->
+                    <div class="form-group"
+                         ng-class="{ 'has-error': (accountForm.username.$dirty ||
+                                                   accountForm.$submitted) &&
+                                                   accountForm.username.$invalid,
+                                     'has-feedback': (accountForm.username.$dirty ||
+                                                      accountForm.$submitted) &&
+                                                      accountForm.username.$invalid }">
+                        <label class="col-sm-3 control-label" for="username"> Username </label>
+                        <div class="col-sm-9">
+                            <input class="form-control"
+                                   name="username"
+                                   type="text"
+                                   placeholder="Username"
+                                   ng-model="vm.account.username"
+                                   required
+                                   ng-minlength=4
+                                   ng-maxlength=30
+                                   ng-model-options="{ debounce: 500 }"
+                                   username-availability>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(accountForm.username.$dirty ||
+                                          accountForm.$submitted) &&
+                                          accountForm.username.$invalid">
+                            </span>
+                            <div ng-messages="accountForm.username.$error"
+                                 ng-if="(accountForm.username.$dirty ||
+                                         accountForm.$submitted) &&
+                                         accountForm.username.$invalid">
+                                <div ng-message="required" class="help-block">
+                                    This field is required.
+                                </div>
+                                <div ng-message="minlength" class="help-block">
+                                    This field cannot be shorter than 4 characters.
+                                </div>
+                                <div ng-message="maxlength" class="help-block">
+                                    This field cannot be longer than 30 characters.
+                                </div>
+                                <div ng-message="usernameAvailability" class="help-block">
+                                    This username is not available.
+                                </div>
+                            </div>
+                            <div ng-if="accountForm.username.$pending">
+                                <span class="help-block">
+                                    Checking Username...
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Update Button -->
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            <button id="update-account-button" type="submit"
+                                    class="btn btn-primary"
+                                    data-loading-text="Updating..."
+                                    ng-click="accountForm.$valid && updateAccount()"> <b> Save Changes </b>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- Header -->
+            <div class="page-header">
+                <h3> Change your password </h3>
+                <!-- Horizontal Rule -->
+                <hr>
+            </div>
+            <!-- Well -->
+            <div class="well">
+                <!-- Error Alert -->
+                <div class="alert alert-danger alert-dismissible text-center" role="alert"
+                     ng-if="vm.updatePasswordError">
+                    <span class="glyphicon glyphicon-exclamation-sign glyphicon-padding" aria-hidden="true"></span>
+                    <span class="sr-only"> Error: </span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true"> &times; </span>
+                    </button> <b> Could not update your password. </b>
+                </div>
+                <!-- Success Alert -->
+                <div class="alert alert-success alert-dismissible text-center" role="alert"
+                     ng-if="vm.updatePasswordSuccess">
+                    <span class="glyphicon glyphicon-ok glyphicon-padding" aria-hidden="true"></span>
+                    <span class="sr-only"> Error: </span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true"> &times; </span>
+                    </button> <b> Successfully updated your password. </b>
+                </div>
+                <!-- Form - Password -->
+                <form class="form-horizontal" name="passwordForm" novalidate>
+                    <!-- Current Password Field -->
+                    <div class="form-group"
+                         ng-class="{ 'has-error': (passwordForm.currentPassword.$dirty ||
+                                                   passwordForm.$submitted) &&
+                                                   passwordForm.currentPassword.$invalid,
+                                     'has-feedback': (passwordForm.currentPassword.$dirty ||
+                                                      passwordForm.$submitted) &&
+                                                      passwordForm.currentPassword.$invalid }">
+                        <label class="col-sm-3 control-label" for="currentPassword"> Current Password </label>
+                        <div class="col-sm-9">
+                            <input class="form-control"
+                                   name="currentPassword"
+                                   type="password"
+                                   placeholder="Current Password"
+                                   ng-model="vm.account.currentPassword"
+                                   required>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(passwordForm.currentPassword.$dirty ||
+                                          passwordForm.$submitted) &&
+                                          passwordForm.currentPassword.$invalid">
+                            </span>
+                            <div ng-messages="passwordForm.currentPassword.$error"
+                                 ng-if="(passwordForm.currentPassword.$dirty ||
+                                         passwordForm.$submitted) &&
+                                         passwordForm.currentPassword.$invalid">
+                                <div ng-message="required" class="help-block">
+                                    This field is required.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- New Password Field -->
+                    <div class="form-group"
+                         ng-class="{ 'has-error': (passwordForm.newPassword.$dirty ||
+                                                   passwordForm.$submitted) &&
+                                                   passwordForm.newPassword.$invalid,
+                                     'has-feedback': (passwordForm.newPassword.$dirty ||
+                                                      passwordForm.$submitted) &&
+                                                      passwordForm.newPassword.$invalid }">
+                        <label class="col-sm-3 control-label" for="newPassword"> New Password </label>
+                        <div class="col-sm-9">
+                            <input class="form-control"
+                                   name="newPassword"
+                                   type="password"
+                                   placeholder="New Password"
+                                   ng-model="vm.account.newPassword"
+                                   required>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(passwordForm.newPassword.$dirty ||
+                                          passwordForm.$submitted) &&
+                                          passwordForm.newPassword.$invalid">
+                            </span>
+                            <div ng-messages="passwordForm.newPassword.$error"
+                                 ng-if="(passwordForm.newPassword.$dirty ||
+                                         passwordForm.$submitted) &&
+                                         passwordForm.newPassword.$invalid">
+                                <div ng-message="required" class="help-block">
+                                    This field is required.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Confirm New Password Field -->
+                    <div class="form-group"
+                         ng-class="{ 'has-error': (passwordForm.confirmNewPassword.$dirty ||
+                                                   passwordForm.$submitted) &&
+                                                   passwordForm.confirmNewPassword.$invalid,
+                                     'has-feedback': (passwordForm.confirmNewPassword.$dirty ||
+                                                      passwordForm.$submitted) &&
+                                                      passwordForm.confirmNewPassword.$invalid }">
+                        <label class="col-sm-3 control-label" for="confirmNewPassword"> Confirm New Password </label>
+                        <div class="col-sm-9">
+                            <input class="form-control"
+                                   name="confirmNewPassword"
+                                   type="password"
+                                   placeholder="Confirm New Password"
+                                   ng-model="vm.account.confirmNewPassword"
+                                   required
+                                   ui-validate="'$value==vm.account.newPassword'"
+                                   ui-validate-watch="'vm.account.newPassword'">
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(passwordForm.confirmNewPassword.$dirty ||
+                                          passwordForm.$submitted) &&
+                                          passwordForm.confirmNewPassword.$invalid">
+                            </span>
+                            <div ng-messages="passwordForm.confirmNewPassword.$error"
+                                 ng-if="(passwordForm.confirmNewPassword.$dirty ||
+                                         passwordForm.$submitted) &&
+                                         passwordForm.confirmNewPassword.$invalid">
+                                <div ng-message="required" class="help-block">
+                                    This field is required.
+                                </div>
+                                <div ng-message="validator" class="help-block">
+                                    Passwords do not match.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Forgot Password -->
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            <a ui-sref="forgot_password" href> <b> Forgot Password </b> </a>
+                        </div>
+                    </div>
+                    <!-- Update Button -->
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            <button id="update-password-button" type="submit" class="btn btn-primary"
+                                    data-loading-text="Updating..."
+                                    ng-click="passwordForm.$valid && updatePassword()">
+                                <b> Update Password </b>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Line Breaks -->
+    <br><br><br><br>
+</div>

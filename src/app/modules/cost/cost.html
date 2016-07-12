@@ -1,0 +1,861 @@
+<!-- Container -->
+<div class="container">
+    <!-- Breadcrumb -->
+    <ol class="breadcrumb">
+        <!-- Projects -->
+        <li>
+            <a ui-sref="projects">
+                <span class="glyphicon glyphicon-folder-open glyphicon-padding" aria-hidden="true"></span>
+                <b> Projects </b>
+            </a>
+        </li>
+        <!-- Project Name -->
+        <li class="active"> {{ vm.project.name }} </li>
+    </ol>
+    <!--Line Break -->
+    <br>
+    <!-- Tabs -->
+    <ul class="nav nav-tabs">
+        <!-- Overview -->
+        <li role="presentation">
+            <a ui-sref="overview">
+                <span class="glyphicon glyphicon-dashboard glyphicon-padding" aria-hidden="true"></span>
+                <b> Overview </b>
+            </a>
+        </li>
+        <!-- Job Costing -->
+        <li role="presentation" class="active">
+            <a ui-sref="cost">
+                <span class="glyphicon glyphicon-list-alt glyphicon-padding" aria-hidden="true"></span>
+                <b> Job Costing </b>
+            </a>
+        </li>
+        <!-- Subcontractors -->
+        <li role="presentation">
+            <a ui-sref="subcontractors">
+                <span class="glyphicon glyphicon-link glyphicon-padding" aria-hidden="true"></span>
+                <b> Subcontractors </b>
+            </a>
+        </li>
+        <!-- Funds -->
+        <li role="presentation">
+            <a ui-sref="funds">
+                <span class="glyphicon glyphicon-piggy-bank glyphicon-padding" aria-hidden="true"></span>
+                <b> Funds </b>
+            </a>
+        </li>
+        <!-- Expenditures -->
+        <li role="presentation">
+            <a ui-sref="expenditures">
+                <span class="glyphicon glyphicon-usd glyphicon-padding" aria-hidden="true"></span>
+                <b> Expenditures </b>
+            </a>
+        </li>
+    </ul>
+    <!-- Error Alert -->
+    <div ng-if="vm.errorGet">
+        <!-- Line Break -->
+        <br>
+        <!-- Alert -->
+        <div class="alert alert-danger alert-dismissible text-center" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only"> Error: </span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true"> &times; </span>
+            </button>
+            <b> Could not access your job costing information. </b>
+        </div>
+    </div>
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>
+            <span class="glyphicon glyphicon-list-alt glyphicon-padding" aria-hidden="true"></span>
+            Job Costing
+        </h1>
+    </div>
+    <!-- Button - Add -->
+    <button type="button" class="btn btn-success" title="Add Item"
+            ng-click="addItemModal()">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        <b> Add </b>
+    </button>
+    <!-- Button - Delete -->
+    <button id="delete-button" type="button" class="btn btn-danger" title="Delete Selected"
+            ng-class="{ 'disabled': !vm.selected }" ng-click="deleteManyItemsModal()">
+        <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+        <b> Delete </b>
+    </button>
+    <!-- Line Breaks -->
+    <br>
+    <br>
+    <!-- Table -->
+    <table st-table="vm.categoryList"
+           class="table table-condensed table-striped table-hover table-responsive">
+        <!-- Table Header -->
+        <thead>
+            <tr>
+                <th style="width: 4%"> </th>
+                <th colspan="2" class="text-left"> Job Cost Category / Item </th>
+                <th class="text-right"> Estimated Cost </th>
+                <th class="text-right"> Actual Cost </th>
+                <th class="text-right"> Over / Under </th>
+                <th colspan="2" style="width: 7%"> </th>
+            </tr>
+        </thead>
+        <!-- Table Body -->
+        <tbody ng-repeat="category in vm.categoryList">
+            <!-- Categories -->
+            <tr>
+                <!-- Expand Button -->
+                <td>
+                    <button ng-if="category.expanded" ng-click="category.expanded = false"> - </button>
+                    <button ng-if="!category.expanded" ng-click="category.expanded = true"> + </button>
+                </td>
+                <!-- Name -->
+                <td colspan="2"> <b> {{ category.name }} </b> </td>
+                <!-- Estimated -->
+                <td class="text-right">
+                    <b> {{ category.totalEstimated | currency }} </b>
+                </td>
+                <!-- Actual -->
+                <td class="text-right">
+                    <b> {{ category.totalActual | currency }} </b>
+                </td>
+                <!-- Over/Under -->
+                <td class="text-right"
+                    ng-class="{ 'text-danger': category.totalActual > category.totalEstimated }">
+                    <b> {{ category.totalActual - category.totalEstimated | currency }} </b>
+                </td>
+                <!-- Edit -->
+                <td class="text-center">
+                    <a href title="Edit" class="text-primary"
+                       ng-click="updateCategoryModal(category)">
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                    </a>
+                </td>
+                <!-- Delete -->
+                <td class="text-center">
+                    <a href title="Delete" class="text-danger text-center"
+                       ng-click="deleteCategoryModal(category)">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </a>
+                </td>
+            </tr>
+            <!-- Items -->
+            <tr ng-if="category.expanded" ng-repeat="item in category.items">
+                <!-- Checkbox -->
+                <td style="width: 2%">
+                    <input type="checkbox" class="checkbox" ng-model="item.selected"
+                           ng-click="clickedCheckbox(category)">
+                </td>
+                <!-- Name -->
+                <td> {{ item.name }} </td>
+                <!-- Description -->
+                <td class="text-left">
+                    {{ item.description }}
+                </td>
+                <!-- Estimated -->
+                <td class="text-right">
+                    {{ item.estimated | currency }}
+                </td>
+                <!-- Actual -->
+                <td class="text-right">
+                    {{ item.actual | currency }}
+                </td>
+                <!-- Over/Under -->
+                <td class="text-right" ng-class="{ 'text-danger': item.actual > item.estimated }">
+                    {{ item.actual - item.estimated | currency }}
+                </td>
+                <!-- Edit -->
+                <td class="text-center">
+                    <a href title="Edit" class="text-primary"
+                       ng-click="updateItemModal(category, item)">
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                    </a>
+                </td>
+                <!-- Delete -->
+                <td class="text-center">
+                    <a href title="Delete" class="text-danger"
+                       ng-click="deleteItemModal(item)">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+        <!-- Empty Project -->
+        <tbody ng-if="vm.categoryList.length == 0">
+            <tr class="active">
+                <td> </td>
+                <td colspan="7"> <b> There are 0 job cost items. </b> </td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- Line Breaks -->
+    <br><br><br><br>
+</div>
+
+<!-- MODALS -->
+<!-- Modal - Add Item -->
+<div class="container">
+    <div class="modal fade" id="add-item-modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <!-- Close Button -->
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"> &times; </span>
+                    </button>
+                    <!-- Title -->
+                    <h4 class="modal-title text-success">
+                        <b> Add Job Cost Item </b>
+                    </h4>
+                </div>
+                <!-- Form -->
+                <form name="addItemForm" novalidate>
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+                        <!-- Alert -->
+                        <div class="alert alert-danger alert-dismissible text-center" role="alert"
+                             ng-if="addItemForm.$invalid && addItemForm.$submitted">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            <span class="sr-only"> Error: </span>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true"> &times; </span>
+                            </button> <b> There were problems creating the job cost item. </b>
+                        </div>
+                        <!-- Job Category Field -->
+                        <div class="form-group"
+                             ng-class="{ 'has-error': (addItemForm.category.$dirty ||
+                                                       addItemForm.$submitted) &&
+                                                       addItemForm.category.$invalid,
+                                         'has-feedback': (addItemForm.category.$dirty ||
+                                                          addItemForm.$submitted) &&
+                                                          addItemForm.category.$invalid }">
+                            <label class="control-label" for="category"> Job Category </label>
+                            <select class="form-control"
+                                    name="category"
+                                    ng-model="vm.item.category"
+                                    required>
+                                <option value="" disabled selected> Select a category </option>
+                                <option ng-repeat="category in vm.categoryList" value="{{ category.id }}">
+                                    {{ category.name }}
+                                </option>
+                                <option value="new"> * Create New Category </option>
+                            </select>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(addItemForm.category.$dirty ||
+                                          addItemForm.$submitted) &&
+                                          addItemForm.category.$invalid">
+                            </span>
+                            <div ng-messages="addItemForm.category.$error"
+                                 ng-if="(addItemForm.category.$dirty ||
+                                         addItemForm.$submitted) &&
+                                         addItemForm.category.$invalid">
+                                <div ng-message="required"
+                                     class="help-block"> This field is required. </div>
+                            </div>
+                        </div>
+                        <div ng-if="vm.item.category=='new'">
+                            <!-- New Job Category Field -->
+                            <div class="form-group"
+                                 ng-class="{ 'has-error': (addItemForm.newCategory.$dirty ||
+                                                           addItemForm.$submitted) &&
+                                                           addItemForm.newCategory.$invalid,
+                                             'has-feedback': (addItemForm.newCategory.$dirty ||
+                                                              addItemForm.$submitted) &&
+                                                              addItemForm.newCategory.$invalid }">
+                                <label class="control-label" for="newCategory"> New Job Category </label>
+                                <input class="form-control"
+                                       name="newCategory"
+                                       type="text"
+                                       placeholder="New Job Category"
+                                       ng-model="vm.item.newCategory"
+                                       required
+                                       ng-maxlength=50>
+                                <span class="glyphicon glyphicon-remove form-control-feedback"
+                                      ng-if="(addItemForm.newCategory.$dirty ||
+                                              addItemForm.$submitted) &&
+                                              addItemForm.newCategory.$invalid">
+                                </span>
+                                <div ng-messages="addItemForm.newCategory.$error"
+                                     ng-if="(addItemForm.newCategory.$dirty ||
+                                             addItemForm.$submitted) &&
+                                             addItemForm.newCategory.$invalid">
+                                    <div ng-message="required"
+                                         class="help-block"> This field is required. </div>
+                                    <div ng-message="maxlength"
+                                         class="help-block"> This field cannot be longer than 50 characters. </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Job Item Field -->
+                        <div class="form-group"
+                             ng-class="{ 'has-error': (addItemForm.name.$dirty ||
+                                                       addItemForm.$submitted) &&
+                                                       addItemForm.name.$invalid,
+                                         'has-feedback': (addItemForm.name.$dirty ||
+                                                          addItemForm.$submitted) &&
+                                                          addItemForm.name.$invalid }">
+                            <label class="control-label" for="name"> Job Item </label>
+                            <input class="form-control"
+                                   name="name"
+                                   type="text"
+                                   placeholder="Job Item"
+                                   ng-model="vm.item.name"
+                                   required
+                                   ng-maxlength=50>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(addItemForm.name.$dirty ||
+                                          addItemForm.$submitted) &&
+                                          SaddItemForm.name.$invalid">
+                            </span>
+                            <div ng-messages="addItemForm.name.$error"
+                                 ng-if="(addItemForm.name.$dirty ||
+                                         addItemForm.$submitted) &&
+                                         addItemForm.name.$invalid">
+                                <div ng-message="required"
+                                     class="help-block"> This field is required. </div>
+                                <div ng-message="maxlength"
+                                     class="help-block"> This field cannot be longer than 50 characters. </div>
+                            </div>
+                        </div>
+                        <!-- Job Description Field -->
+                        <div class="form-group"
+                             ng-class="{ 'has-error': (addItemForm.description.$dirty ||
+                                                       addItemForm.$submitted) &&
+                                                       addItemForm.description.$invalid,
+                                         'has-feedback': (addItemForm.description.$dirty ||
+                                                          addItemForm.$submitted) &&
+                                                          addItemForm.description.$invalid }">
+                            <label class="control-label" for="description"> Job Description </label>
+                            <input class="form-control"
+                                   name="description"
+                                   type="text"
+                                   placeholder="Job Description (Optional)"
+                                   ng-model="vm.item.description"
+                                   ng-maxlength=80>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(addItemForm.description.$dirty ||
+                                          addItemForm.$submitted) &&
+                                          addItemForm.description.$invalid">
+                            </span>
+                            <div ng-messages="addItemForm.description.$error"
+                                 ng-if="(addItemForm.description.$dirty ||
+                                         addItemForm.$submitted) &&
+                                         addItemForm.description.$invalid">
+                                <div ng-message="maxlength"
+                                     class="help-block"> This field cannot be longer than 80 characters. </div>
+                            </div>
+                        </div>
+                        <!-- Estimated Field -->
+                        <div class="form-group"
+                             ng-class="{ 'has-error': (addItemForm.estimated.$dirty ||
+                                                       addItemForm.$submitted) &&
+                                                       addItemForm.estimated.$invalid,
+                                         'has-feedback': (addItemForm.estimated.$dirty ||
+                                                          addItemForm.$submitted) &&
+                                                          addItemForm.estimated.$invalid }">
+                            <label class="control-label" for="estimated"> Estimated Cost </label>
+                            <div class="input-group">
+                                <span class="input-group-addon"> $ </span>
+                                <input class="form-control"
+                                       name="estimated"
+                                       type="text"
+                                       placeholder="Estimated Cost"
+                                       ng-model="vm.item.estimated"
+                                       ng-maxlength=12
+                                       format="number">
+                            </div>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(addItemForm.estimated.$dirty ||
+                                          addItemForm.$submitted) &&
+                                          addItemForm.estimated.$invalid">
+                            </span>
+                            <div ng-messages="addItemForm.estimated.$error"
+                                 ng-if="(addItemForm.estimated.$dirty ||
+                                         addItemForm.$submitted) &&
+                                         addItemForm.estimated.$invalid">
+                                <div ng-message="maxlength"
+                                     class="help-block"> This field cannot be longer than 12 digits. </div>
+                            </div>
+                        </div>
+                        <!-- Actual Field -->
+                        <div class="form-group"
+                             ng-class="{ 'has-error': (addItemForm.actual.$dirty ||
+                                                       addItemForm.$submitted) &&
+                                                       addItemForm.actual.$invalid,
+                                         'has-feedback': (addItemForm.actual.$dirty ||
+                                                          addItemForm.$submitted) &&
+                                                          addItemForm.actual.$invalid }">
+                            <label class="control-label" for="actual"> Actual Cost </label>
+                            <div class="input-group">
+                                <span class="input-group-addon"> $ </span>
+                                <input class="form-control"
+                                       name="actual"
+                                       type="text"
+                                       placeholder="Actual Cost"
+                                       ng-model="vm.item.actual"
+                                       ng-maxlength=12
+                                       format="number">
+                            </div>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(addItemForm.actual.$dirty ||
+                                          addItemForm.$submitted) &&
+                                          addItemForm.actual.$invalid">
+                            </span>
+                            <div ng-messages="addItemForm.actual.$error"
+                                 ng-if="(addItemForm.actual.$dirty ||
+                                         addItemForm.$submitted) &&
+                                         addItemForm.actual.$invalid">
+                                <div ng-message="maxlength"
+                                     class="help-block"> This field cannot be longer than 12 digits. </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                        <!-- Close -->
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            <b> Close </b>
+                        </button>
+                        <!-- Submit -->
+                        <button id="add-item-button" type="submit" class="btn btn-success"
+                                data-loading-text="Loading..."
+                                ng-click="addItemForm.$valid && addItem()">
+                            <b> Add </b>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal - Delete Many Items -->
+<div class="container">
+    <div class="modal fade" id="delete-many-items-modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <!-- Close Button -->
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"> &times; </span>
+                    </button>
+                    <!-- Title -->
+                    <h4 class="modal-title">
+                        <b class="text-danger"> Delete Job Cost Items </b>
+                    </h4>
+                </div>
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <!-- Alert -->
+                    <div class="alert alert-danger alert-dismissible text-center" role="alert"
+                         ng-if="vm.errorDeleteManyItems">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span class="sr-only"> Error: </span>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true"> &times; </span>
+                        </button> <b> Could not delete the job cost items. </b>
+                    </div>
+                    <!-- Message -->
+                    <p class="text-center">
+                        Are you sure you would like to <b> delete </b>
+                        the selected <b> job cost items</b>?
+                    </p>
+                </div>
+                <!-- Modal Footer -->
+                <div class="modal-footer">
+                    <!-- Cancel Button -->
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <b> No </b>
+                    </button>
+                    <!-- Delete Button -->
+                    <button id="delete-many-items-button" type="button" class="btn btn-danger"
+                            data-loading-text="Deleting..."
+                            ng-click="deleteManyItems()">
+                        <b> Yes, Delete </b>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal - Delete Item -->
+<div class="container">
+    <div class="modal fade" id="delete-item-modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <!-- Close Button -->
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"> &times; </span>
+                    </button>
+                    <!-- Title -->
+                    <h4 class="modal-title">
+                        <b class="text-danger"> Delete Job Cost Item </b>
+                    </h4>
+                </div>
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <!-- Alert -->
+                    <div class="alert alert-danger alert-dismissible text-center" role="alert"
+                         ng-if="vm.errorDeleteItem">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span class="sr-only"> Error: </span>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true"> &times; </span>
+                        </button> <b> Could not delete the job cost item. </b>
+                    </div>
+                    <p class="text-center">
+                        Are you sure you would like to <b> delete </b> this <b> job cost item</b>?
+                    </p>
+                </div>
+                <!-- Modal Footer -->
+                <div class="modal-footer">
+                    <!-- Cancel Button -->
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <b> No </b>
+                    </button>
+                    <!-- Delete Button -->
+                    <button id="delete-item-button" type="button" class="btn btn-danger"
+                            data-loading-text="Deleting..."
+                            ng-click="deleteItem()">
+                        <b> Yes, Delete </b>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal - Update Item -->
+<div class="container">
+    <div class="modal fade" id="update-item-modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <!-- Close Button -->
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"> &times; </span>
+                    </button>
+                    <!-- Title -->
+                    <h4 class="modal-title">
+                        <b> Edit Job Cost Item </b>
+                    </h4>
+                </div>
+                <!-- Form -->
+                <form name="updateItemForm" novalidate>
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+                        <!-- Alert -->
+                        <div class="alert alert-danger alert-dismissible text-center" role="alert"
+                             ng-if="updateItemForm.$invalid && updateItemForm.$submitted">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            <span class="sr-only"> Error: </span>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true"> &times; </span>
+                            </button> <b> There were problems updating the job cost item. </b>
+                        </div>
+                        <!-- Job Category Field -->
+                        <div class="form-group"
+                             ng-class="{ 'has-error': (updateItemForm.category.$dirty ||
+                                                       updateItemForm.$submitted) &&
+                                                       updateItemForm.category.$invalid,
+                                         'has-feedback': (updateItemForm.category.$dirty ||
+                                                          updateItemForm.$submitted) &&
+                                                          updateItemForm.category.$invalid }">
+                            <label class="control-label" for="category"> Job Category </label>
+                            <select class="form-control"
+                                    name="category"
+                                    ng-model="vm.item.category"
+                                    ng-options="category.name for category in vm.categoryList track by category.id"
+                                    required>
+                                <option value="" disabled selected> Select a category </option>
+                            </select>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(updateItemForm.category.$dirty ||
+                                          updateItemForm.$submitted) &&
+                                          updateItemForm.category.$invalid">
+                            </span>
+                            <div ng-messages="updateItemForm.category.$error"
+                                 ng-if="(updateItemForm.category.$dirty ||
+                                         updateItemForm.$submitted) &&
+                                         updateItemForm.category.$invalid">
+                                <div ng-message="required"
+                                     class="help-block"> This field is required. </div>
+                            </div>
+                        </div>
+                        <!-- Job Item Field -->
+                        <div class="form-group"
+                             ng-class="{ 'has-error': (updateItemForm.name.$dirty ||
+                                                       updateItemForm.$submitted) &&
+                                                       updateItemForm.name.$invalid,
+                                         'has-feedback': (updateItemForm.name.$dirty ||
+                                                          updateItemForm.$submitted) &&
+                                                          updateItemForm.name.$invalid }">
+                            <label class="control-label" for="name"> Job Item </label>
+                            <input class="form-control"
+                                   name="name"
+                                   type="text"
+                                   placeholder="Job Item"
+                                   ng-model="vm.item.name"
+                                   required
+                                   ng-maxlength=50>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(updateItemForm.name.$dirty ||
+                                          updateItemForm.$submitted) &&
+                                          updateItemForm.name.$invalid">
+                            </span>
+                            <div ng-messages="updateItemForm.name.$error"
+                                 ng-if="(updateItemForm.name.$dirty ||
+                                         updateItemForm.$submitted) &&
+                                         updateItemForm.name.$invalid">
+                                <div ng-message="required"
+                                     class="help-block"> This field is required. </div>
+                                <div ng-message="maxlength"
+                                     class="help-block"> This field cannot be longer than 50 characters. </div>
+                            </div>
+                        </div>
+                        <!-- Job Description Field -->
+                        <div class="form-group"
+                             ng-class="{ 'has-error': (updateItemForm.description.$dirty ||
+                                                       updateItemForm.$submitted) &&
+                                                       updateItemForm.description.$invalid,
+                                         'has-feedback': (updateItemForm.description.$dirty ||
+                                                          updateItemForm.$submitted) &&
+                                                          updateItemForm.description.$invalid }">
+                            <label class="control-label" for="description"> Job Description </label>
+                            <input class="form-control"
+                                   name="description"
+                                   type="text"
+                                   placeholder="Job Description (Optional)"
+                                   ng-model="vm.item.description"
+                                   ng-maxlength=80>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(updateItemForm.description.$dirty ||
+                                          updateItemForm.$submitted) &&
+                                          updateItemForm.description.$invalid">
+                            </span>
+                            <div ng-messages="updateItemForm.description.$error"
+                                 ng-if="(updateItemForm.description.$dirty ||
+                                         updateItemForm.$submitted) &&
+                                         updateItemForm.description.$invalid">
+                                <div ng-message="maxlength"
+                                     class="help-block"> This field cannot be longer than 80 characters. </div>
+                            </div>
+                        </div>
+                        <!-- Estimated Field -->
+                        <div class="form-group"
+                             ng-class="{ 'has-error': (updateItemForm.estimated.$dirty ||
+                                                       updateItemForm.$submitted) &&
+                                                       updateItemForm.estimated.$invalid,
+                                         'has-feedback': (updateItemForm.estimated.$dirty ||
+                                                          updateItemForm.$submitted) &&
+                                                          updateItemForm.estimated.$invalid }">
+                            <label class="control-label" for="estimated"> Estimated Cost </label>
+                            <div class="input-group">
+                                <span class="input-group-addon"> $ </span>
+                                <input class="form-control"
+                                       name="estimated"
+                                       type="text"
+                                       placeholder="Estimated Cost"
+                                       ng-model="vm.item.estimated"
+                                       required
+                                       ng-maxlength=12
+                                       format="number">
+                            </div>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(updateItemForm.estimated.$dirty ||
+                                          updateItemForm.$submitted) &&
+                                          updateItemForm.estimated.$invalid">
+                            </span>
+                            <div ng-messages="updateItemForm.estimated.$error"
+                                 ng-if="(updateItemForm.estimated.$dirty ||
+                                         updateItemForm.$submitted) &&
+                                         updateItemForm.estimated.$invalid">
+                                <div ng-message="required"
+                                     class="help-block"> This field is required. </div>
+                                <div ng-message="maxlength"
+                                     class="help-block"> This field cannot be longer than 12 digits. </div>
+                            </div>
+                        </div>
+                        <!-- Actual Field -->
+                        <div class="form-group"
+                             ng-class="{ 'has-error': (updateItemForm.actual.$dirty ||
+                                                       updateItemForm.$submitted) &&
+                                                       updateItemForm.actual.$invalid,
+                                         'has-feedback': (updateItemForm.actual.$dirty ||
+                                                          updateItemForm.$submitted) &&
+                                                          updateItemForm.actual.$invalid }">
+                            <label class="control-label" for="actual"> Actual Cost </label>
+                            <div class="input-group">
+                                <span class="input-group-addon"> $ </span>
+                                <input class="form-control"
+                                       name="actual"
+                                       type="text"
+                                       placeholder="Actual Cost"
+                                       ng-model="vm.item.actual"
+                                       ng-maxlength=12
+                                       format="number">
+                            </div>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(updateItemForm.actual.$dirty ||
+                                          updateItemForm.$submitted) &&
+                                          updateItemForm.actual.$invalid">
+                            </span>
+                            <div ng-messages="updateItemForm.actual.$error"
+                                 ng-if="(updateItemForm.actual.$dirty ||
+                                         updateItemForm.$submitted) &&
+                                         updateItemForm.actual.$invalid">
+                                <div ng-message="maxlength"
+                                     class="help-block"> This field cannot be longer than 12 digits. </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                        <!-- Close -->
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            <b> Close </b>
+                        </button>
+                        <!-- Submit -->
+                        <button id="update-item-button" type="submit" class="btn btn-primary"
+                                data-loading-text="Saving..."
+                                ng-click="updateItemForm.$valid && updateItem()">
+                            <b> Save Changes </b>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal - Delete Category -->
+<div class="container">
+    <div class="modal fade" id="delete-category-modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <!-- Close Button -->
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"> &times; </span>
+                    </button>
+                    <!-- Title -->
+                    <h4 class="modal-title">
+                        <b class="text-danger"> Delete Job Cost Category </b>
+                    </h4>
+                </div>
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <!-- Alert -->
+                    <div class="alert alert-danger alert-dismissible text-center" role="alert"
+                         ng-if="vm.errorDeleteCategory">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span class="sr-only"> Error: </span>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true"> &times; </span>
+                        </button> <b> Could not delete the job cost category. </b>
+                    </div>
+                    <!-- Message -->
+                    <p class="text-center">
+                        Deleting this <b> job cost category </b> will also delete all of the
+                        <b> job cost items </b> and <b> expenditures </b> associated to
+                        this category. Are you sure you would like to <b> delete </b>
+                        this <b> job cost category</b>?
+                    </p>
+                </div>
+                <!-- Modal Footer -->
+                <div class="modal-footer">
+                    <!-- Cancel Button -->
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <b> No </b>
+                    </button>
+                    <!-- Delete Button -->
+                    <button id="delete-category-button" type="button" class="btn btn-danger"
+                            data-loading-text="Deleting..."
+                            ng-click="deleteCategory()">
+                        <b> Yes, Delete </b>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal - Update Category -->
+<div class="container">
+    <div class="modal fade" id="update-category-modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <!-- Close Button -->
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"> &times; </span>
+                    </button>
+                    <!-- Title -->
+                    <h4 class="modal-title">
+                        <b> Edit Job Cost Category </b>
+                    </h4>
+                </div>
+                <!-- Form -->
+                <form name="updateCategoryForm" novalidate>
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+                        <!-- Category Field -->
+                        <div class="form-group"
+                             ng-class="{ 'has-error': (updateCategoryForm.category.$dirty ||
+                                                       updateCategoryForm.$submitted) &&
+                                                       updateCategoryForm.category.$invalid,
+                                         'has-feedback': (updateCategoryForm.category.$dirty ||
+                                                          updateCategoryForm.$submitted) &&
+                                                          updateCategoryForm.category.$invalid }">
+                            <label class="control-label" for="category"> Job Category </label>
+                            <input class="form-control"
+                                   name="category"
+                                   type="text"
+                                   placeholder="Job Category"
+                                   ng-model="vm.category.name"
+                                   required
+                                   ng-maxlength=50>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  ng-if="(updateCategoryForm.category.$dirty ||
+                                          updateCategoryForm.$submitted) &&
+                                          updateCategoryForm.category.$invalid">
+                            </span>
+                            <div ng-messages="updateCategoryForm.category.$error"
+                                 ng-if="(updateCategoryForm.category.$dirty ||
+                                         updateCategoryForm.$submitted) &&
+                                         updateCategoryForm.category.$invalid">
+                                <div ng-message="required"
+                                     class="help-block"> This field is required. </div>
+                                <div ng-message="maxlength"
+                                     class="help-block"> This field cannot be longer than 50 characters. </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                        <!-- Close -->
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            <b> Close </b>
+                        </button>
+                        <!-- Submit -->
+                        <button id="update-category-button" type="submit" class="btn btn-primary"
+                                data-loading-text="Saving..."
+                                ng-click="updateCategoryForm.$valid && updateCategory()">
+                            <b> Save Changes </b>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

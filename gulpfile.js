@@ -1,6 +1,8 @@
 'use strict';
 
+// devDependencies
 var gulp         = require('gulp');
+var clean        = require('gulp-clean');
 var sass         = require('gulp-sass');
 var autoprefixer = require('gulp-autoprefixer');
 var cssnano      = require('gulp-cssnano');
@@ -15,13 +17,18 @@ var ngAnnotate   = require('gulp-ng-annotate');
 var karma        = require('karma');
 var gulpDocs     = require('gulp-ngdocs');
 
+var bases = {
+  src:  'src/',
+  dist: 'dist/'
+};
 
-var target = {
-  srcSass: 'sass/*.scss',
-  srcCssMin: 'sass/*.min.css',
-  srcCssBootstrap: 'bower_components/bootswatch/flatly/bootstrap.min.css',
-  finalCss: 'www/css',
-
+var paths = {
+  sass: 'sass/*.scss',
+  cssAll: [
+    'bower_components/bootswatch/flatly/bootstrap.min.css',
+    'dist/css/*.min.css'
+  ],
+  // JS
   srcJs: [
     'app/*.module.js',
     'app/*.js',
@@ -29,7 +36,6 @@ var target = {
     'app/**/*.js',
     '!app/**/*.spec.js'
   ],
-  srcJsMin: 'www/js/app.min.js',
   srcJsAll: [
     'bower_components/jquery/dist/jquery.min.js',
     'bower_components/bootstrap/dist/js/bootstrap.min.js',
@@ -43,21 +49,26 @@ var target = {
     'bower_components/highcharts/highcharts.js',
     'www/js/app.min.js'
   ],
-  finalJs: 'www/js',
-
+  // HTML
   srcHtml: [
     'app/*.html',
     'app/**/*.html'
   ],
-  finalHtml: 'www/html',
-
+  // Tests
   srcTests: 'app/**/*.spec.js',
+  // Docs
   jsDocsDest: 'docs'
 };
 
+// Delete the dist directory
+gulp.task('clean', function () {
+  return gulp.src(bases.dist)
+    .pipe(clean());
+});
+
 // Compile SASS, autoprefix, and minify CSS files
-gulp.task('sass', function () {
-  return gulp.src(target.srcSass)
+gulp.task('sass', ['clean'], function () {
+  return gulp.src(paths.sass, {cwd: bases.src})
     .pipe(sass())
     .pipe(autoprefixer({
       browsers: ['last 2 versions'],
@@ -65,14 +76,14 @@ gulp.task('sass', function () {
     }))
     .pipe(cssnano())
     .pipe(rename({ suffix: '.min' }))
-    .pipe(gulp.dest('sass'));
+    .pipe(gulp.dest(bases.dist + 'css/'));
 });
 
 // Concat all CSS files
 gulp.task('css-concat', function () {
-  return gulp.src([target.srcCssBootstrap, target.srcCssMin])
+  return gulp.src(paths.cssAll)
     .pipe(concat('all.min.css'))
-    .pipe(gulp.dest(target.finalCss));
+    .pipe(gulp.dest('www/css'));
 });
 
 // JSHint, concat, and minify JS files
@@ -82,21 +93,20 @@ gulp.task('js', function () {
     .pipe(jshint.reporter(stylish))
     .pipe(concat('app.min.js'))
     .pipe(uglify({ mangle: false }))
-    .pipe(gulp.dest(target.finalJs));
+    .pipe(gulp.dest('www/js'));
 });
 
 // Concat all JS files
 gulp.task('js-concat', function () {
   return gulp.src(target.srcJsAll)
     .pipe(concat('all.min.js'))
-    .pipe(gulp.dest(target.finalJs));
+    .pipe(gulp.dest('www/js'));
 });
 
 // Copy HTML templates
 gulp.task('html', function () {
   return gulp.src(target.srcHtml)
-    .pipe(concat('all.min.js'))
-    .pipe(gulp.dest(target.finalHtml));
+    .pipe(gulp.dest('www/html'));
 });
 
 // Build task for CSS
